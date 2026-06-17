@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚖️ LegalQuest 2026 — Reino de Legalia</title>
+<style>
+:root{
+  --bg:#1b1410; --bg2:#241a13; --panel:#2c2017; --ink:#f3e8d6; --muted:#bda77f;
+  --gold:#e8b54b; --gold2:#c9912f; --green:#3fae6b; --greenbg:#1f3a29; --red:#d9534f; --redbg:#3a1f1f;
+  --blue:#5a8fb5; --line:#473521;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%, #34261a 0%, var(--bg) 60%);
+  color:var(--ink); font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5; min-height:100vh; padding:14px;
+}
+.wrap{max-width:880px;margin:0 auto}
+h1{font-size:1.5rem;margin:.2em 0;text-align:center;color:var(--gold);text-shadow:0 1px 0 #000}
+.sub{text-align:center;color:var(--muted);margin:0 0 12px;font-size:.9rem}
+b{color:#ffe9bd}
+a{color:var(--gold)}
+.card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+button{font-family:inherit;font-size:1rem;cursor:pointer;border-radius:10px;border:1px solid var(--line);
+  background:linear-gradient(180deg,#3a2a1c,#2a1e14);color:var(--ink);padding:12px 14px;transition:.15s;width:100%}
+button:hover{filter:brightness(1.12)}
+button:active{transform:translateY(1px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#241a10;font-weight:700;border-color:#8a5f17}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.small{font-size:.82rem;color:var(--muted)}
+.center{text-align:center}
+/* XP bar */
+.xpbox{position:sticky;top:0;z-index:5;background:rgba(20,15,10,.92);backdrop-filter:blur(4px);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.xprow{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.9rem}
+.rank{font-weight:700;color:var(--gold)}
+.bar{height:12px;border-radius:8px;background:#000;border:1px solid var(--line);overflow:hidden;margin-top:8px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width .6s cubic-bezier(.2,.8,.2,1)}
+/* map */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.btn-row3{grid-template-columns:1fr}}
+.tile{cursor:pointer;background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:14px;transition:.15s;position:relative}
+.tile:hover{border-color:var(--gold2);transform:translateY(-2px)}
+.tile .n{font-size:.75rem;color:var(--muted)}
+.tile .t{font-weight:700;margin:.2em 0;color:#ffe9bd}
+.tile .m{font-size:.8rem;color:var(--muted)}
+.tile .done{position:absolute;top:10px;right:12px}
+.tag{display:inline-block;font-size:.72rem;background:#000;border:1px solid var(--line);border-radius:20px;padding:2px 8px;color:var(--muted);margin-top:6px}
+/* quiz */
+.opt{margin:8px 0;text-align:left;white-space:normal}
+.opt.correct{background:var(--greenbg);border-color:var(--green);color:#d8ffe6}
+.opt.wrong{background:var(--redbg);border-color:var(--red);color:#ffd9d7}
+.expl{margin-top:10px;padding:10px;border-left:3px solid var(--gold2);background:rgba(0,0,0,.25);border-radius:6px;font-size:.92rem}
+.pill{display:inline-block;font-size:.75rem;background:#000;border:1px solid var(--line);border-radius:20px;padding:2px 9px;color:var(--gold)}
+.prog{font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.flip{min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.05rem;cursor:pointer;user-select:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--gold);color:#241a10;font-weight:700;padding:10px 18px;border-radius:30px;box-shadow:0 6px 20px rgba(0,0,0,.5);opacity:0;transition:.3s;pointer-events:none;z-index:50}
+.toast.show{opacity:1}
+.back{width:auto;display:inline-block;margin-bottom:8px;padding:8px 14px;font-size:.85rem}
+.rawmd{font-size:.9rem}
+.rawmd h3{color:var(--gold)}
+.hr{height:1px;background:var(--line);margin:10px 0;border:0}
+.kbd{font-family:ui-monospace,monospace;background:#000;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="xpbox">
+    <div class="xprow">
+      <div><span class="rank" id="rank">🪣 Becario</span> <span class="small" id="xpnum"></span></div>
+      <div class="small" id="hint">Toca una misión para empezar</div>
+    </div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+  </div>
+  <div id="app"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- Datos del juego: markdown crudo del pack de estudio -->
+<script id="src" type="text/plain"># LEGALQUEST 2026
+
+## El manual definitivo para sobrevivir (y dominar) "Introduction to Legal Systems"
+
+### Examen final: miércoles 24 de junio · Profesor Alexis Galán · CUNEF IBE 1º
+
+---
+
+> **Para ti, Fran.** Sí, esta asignatura es un ladrillo. Pero aquí no vamos a estudiar: vamos a JUGAR. Cada concepto es un cofre, cada caso un jefe, cada bloque un nivel. El examen es en inglés, así que **todos los términos clave, definiciones, nombres de casos y citas van en inglés y en negrita** — esas son las palabras que el profe quiere ver en tu papel. El resto te lo cuento yo, en cristiano y con mala leche, para que no te duermas. Dato científico: lo que te ríes se te queda. Vamos.
+
+---
+
+# 0) CÓMO JUGAR (lee esto o pierdes XP)
+
+## Sistema de puntos (XP)
+
+- Cada pregunta del Quiz vale puntos según dificultad: **fácil = 10pts**, **media = 20pts**, **difícil = 30pts**, **JEFE FINAL = 50pts**.
+- Hay 11 bloques. Hazlos, suma tus puntos y mira tu rango. El objetivo NO es sacar todo a la primera, es subir de nivel repitiendo.
+
+## Rangos (de pringado a togado)
+
+| Rango | XP acumulado | Traducción |
+|---|---|---|
+| 🪣 **Becario del bufete** | 0–400 | Acabas de llegar, traes los cafés. |
+| 📎 **Pasante con ínfulas** | 401–900 | Ya sabes dónde está la fotocopiadora del Derecho. |
+| 👔 **Abogado junior** | 901–1500 | Te dejan hablar en reuniones (poco). |
+| ⚖️ **Abogado litigante** | 1501–2200 | Ganas casos. A veces. |
+| 🎓 **Catedrático** | 2201–2900 | Citas a Hart de memoria en las cenas. Insoportable. |
+| 👑 **Juez del Tribunal Supremo** | 2901+ | Eres la ley. Aprobado clavado. |
+
+## QUÉ HACE CADA FORMATO POR TEMA (tu mapa del tesoro)
+
+| Bloque | 🎯 Quiz cubre... | 🃏 Flashcards/Mnemo cubren... | 🗺️ Misión narrativa cuenta... |
+|---|---|---|---|
+| **B1 ¿Qué es el Derecho?** | Multidimensionalidad, orden vs. justicia, casos Bellinger/Corbett | Definiciones de Hart, Bobbio, Denning, Cicero | El despertar de Fran ante el enigma "What is law?" |
+| **B2 Familias jurídicas** | Civil vs Common vs Mixed, rule of law, public/private | Países de cada familia, China, substantive/procedural | El viaje por el mundo de las tradiciones jurídicas |
+| **B3 Validity/Efficacy/Justice** | Las 3 dimensiones, descriptive vs prescriptive, independencia conceptual | Definir cada dimensión, las 8 combinaciones | El laboratorio donde se diseccionan las normas |
+| **B4 Natural Law** | Cognitivism, dualism, Aquinas, Fuller, Finnis | Cicero, Grotius, Fuller's 8, Dudley & Stephens | El oráculo de la Ley Superior y el barco maldito |
+| **B5 Common Law & Equity** | Writs, Chancellor, ratio decidendi, Judicature Acts | Maxims, casos, Lord Nottingham/Eldon | El reino medieval y la Corte de la Conciencia |
+| **B6 Soberanía/Westphalia** | 1648, Westphalian duo, tipos de soberanía | Bodin→Hobbes→Locke→Rousseau, elementos del Estado | El tablero de naciones de 1648 |
+| **B7 Constitutionalism** | Qué es constitución, formal vs material | 4 características, written/unwritten, façade | El pacto fundacional de Legalia |
+| **B8 Fundamental Rights** | 3 generaciones, formal/procedural/substantial | Locke, Bentham, generaciones, thin/thick | La cámara de los derechos sagrados |
+| **B9 Derecho Internacional** | Article 38, custom, jus cogens, erga omnes | Las 4 fuentes, treaties, hierarchy | El Consejo de la ONU |
+| **B10 Islamic Law** | 4 fuentes, 4 escuelas, hiyal, modernización | Qur'an/Sunna/Ijma/Qiyas, las 4 schools | El desierto y los cuatro sabios |
+| **B11 Far East** | Confucio, li, Legists, China, Japón | Li, Legists vs Confucians, BGB, conciliación | El templo de Confucio |
+
+**Plan recomendado:** misión narrativa primero (entiendes) → flashcards (fijas) → quiz (te autoevalúas). El plan completo de la semana está al final del documento.
+
+---
+
+# 1) 🎯 EL QUIZ — "LegalQuest Trivial"
+
+> Reglas: tapa las respuestas. Las opciones correctas están marcadas con ✅ y el "por qué". No hagas trampa, becario.
+
+---
+
+## 🎯 BLOQUE 1 — ¿Qué es el Derecho?
+
+**1.1 (10pts) Opción múltiple.** Según Hart en **The Concept of Law**, ¿qué tiene de raro la pregunta "What is law?"
+- A) Que nadie la ha respondido nunca
+- B) Que se ha respondido de formas tan diversas, extrañas y paradójicas como en ningún otro campo ✅
+- C) Que tiene una única respuesta científica
+- D) Que solo importa a los abogados
+
+*Por qué:* Hart dice que no hay literatura preguntando "What is chemistry?" como la hay con el Derecho. Es la pregunta eterna sin respuesta única.
+
+**1.2 (10pts) Respuesta corta.** Completa la cita de **Cicero**: "We are slaves of the law so that we may be ___."
+*Respuesta:* **free** (free / libres). El Derecho da libertad al poner orden.
+
+**1.3 (20pts) Opción múltiple.** Las tres dimensiones de la naturaleza multidimensional del Derecho son:
+- A) Order, chaos, justice
+- B) Law as a fact, law as a system of norms, law as values ✅
+- C) Civil, criminal, constitutional
+- D) Validity, efficacy, money
+
+*Por qué:* El Derecho es **a fact** (fenómeno humano e histórico), **a system of norms** y **a system of values**.
+
+**1.4 (20pts) Respuesta corta.** Según **Lord Denning**, ¿cuáles son los dos grandes objetivos del Derecho y qué problema tienen?
+*Respuesta:* **to preserve order and to do justice** — y el problema es que "**the two do not always coincide**" (no siempre coinciden).
+
+**1.5 (20pts) Opción múltiple.** En **Bellinger v Bellinger** (2001), la mayoría del tribunal decidió que:
+- A) La Sra. Bellinger era legalmente mujer
+- B) Los factores biológicos (de **Corbett v Corbett**) eran determinantes y cambiar la definición era cosa del Parlamento, no del tribunal ✅
+- C) El matrimonio era válido sin más
+- D) Había que esperar a la UE
+
+*Por qué:* La mayoría siguió **Corbett v Corbett [1971]** (factores cromosómicos, gonadales y genitales) y dijo que cambiar la definición de "female" era materia de **parliament not the court**.
+
+**1.6 (30pts) Respuesta corta.** ¿Qué tres tipos de certeza incluye la "**legal certainty**" dentro de la dimensión de orden?
+*Respuesta:* Certainty about **the content of the law**; certainty that the law **will be enforced**; certainty that the law **will be applied consistently**.
+
+**1.7 (30pts) Opción múltiple.** "**No legal system is politically neutral**" expresa la idea de:
+- A) Law as societal ordering
+- B) Law as a human phenomenon
+- C) Law as a system of values (political non-neutrality) ✅
+- D) Nudge theory
+
+*Por qué:* Bajo "**Law as a system of values**", la slide dice que ningún sistema legal es políticamente neutral y representa visiones sobre justicia y moral.
+
+**👹 JEFE FINAL B1 (50pts).** Explica por qué **Bellinger v Bellinger** ilustra a la vez la tensión **order vs justice** de Denning Y la idea de que el Derecho es "**a human phenomenon**" que "**evolves over time**".
+*Respuesta modelo:* La mayoría priorizó el **order/legal certainty** (la ley antigua era clara, **Corbett** mandaba) por encima de hacer **justice** al caso de la Sra. Bellinger; el juez disidente dijo que "**the world had moved on**", mostrando que el Derecho refleja valores cambiantes de la sociedad (carácter histórico) y que a veces orden y justicia no coinciden.
+
+---
+
+## 🎯 BLOQUE 2 — Familias jurídicas
+
+**2.1 (10pts) Respuesta corta.** Define en una frase el **rule of law**.
+*Respuesta:* **The notion that no one is above the law** — un sistema racional de reglas generales, claras, prospectivas e imparciales.
+
+**2.2 (10pts) Opción múltiple.** El sistema de **Common Law** se caracteriza por ser:
+- A) Codificado y textual
+- B) Esencialmente no textual, basado en cases y en la doctrine of precedent ✅
+- C) Basado solo en el Corán
+- D) Controlado por el Partido Comunista
+
+*Por qué:* Common Law = **unwritten law**, **case-based**, gobernado por **precedent** (decisiones previas rigen casos presentes).
+
+**2.3 (20pts) Opción múltiple.** El **German Civil Law** se aplica (entre otros) en:
+- A) Francia, Bélgica, España
+- B) Germany, Austria, Switzerland, Japan, South Korea ✅
+- C) Suecia, Dinamarca, Noruega
+- D) Solo en Alemania
+
+*Por qué:* **French Civil Law** = Francia, Bélgica, España, Italia... **German** = Alemania, Austria, Suiza, Portugal, Grecia, Turquía, **Japón, Corea del Sur, Taiwán**. **Scandinavian** = Suecia, Dinamarca, Noruega, Islandia.
+
+**2.4 (20pts) Respuesta corta.** En el sistema chino tradicional, ¿qué concepto confuciano se oponía a reglas universales fijas?
+*Respuesta:* El concepto **'li'** (li). Hoy China es **largely codified** pero pragmática y bajo control del **Communist Party**.
+
+**2.5 (20pts) Opción múltiple.** Un ejemplo clásico de **mixed legal system** es:
+- A) Francia
+- B) South Africa (Roman-Dutch Law + English Common Law) ✅
+- C) Japón
+- D) Arabia Saudí
+
+*Por qué:* Sudáfrica combina **Roman-Dutch Law** y **English Common Law**.
+
+**2.6 (20pts) Respuesta corta.** Diferencia **substantive law** de **procedural law**.
+*Respuesta:* **Substantive law** da derechos y determina qué deben hacer las personas; **procedural law** da las reglas de los procedimientos judiciales y la organización de la judicatura.
+
+**2.7 (30pts) Opción múltiple.** En la división **public vs private law**, la nota distintiva del **public law** es:
+- A) Que solo regula contratos
+- B) Que el gobierno juega un papel (incluye constitutional, administrative, criminal law) ✅
+- C) Que no hay tribunales
+- D) Que lo hace la UE
+
+*Por qué:* **Public law** = el government plays a role (constitutional/administrative/criminal). **Private law** = el government NO juega papel (contract/property/tort). **EU Law** difumina la línea.
+
+**👹 JEFE FINAL B2 (50pts).** Enumera las **4 características de la Western Legal Tradition** y explica por qué el **rule of law** es la más importante para "Western society itself".
+*Respuesta modelo:* (1) **Clear demarcation** entre instituciones legales y otras; (2) **Rule of law** (autoridad legal supremo sobre lo político); (3) **Legal doctrine** como fuente principal; (4) **Coherent body** con lógica interna. El **rule of law** es "**a fundamental element in the formation and significance of Western society itself**" porque garantiza que nadie está por encima de la ley y es freno al abuso de poder.
+
+---
+
+## 🎯 BLOQUE 3 — Dimensión normativa: Validity / Efficacy / Justice
+
+**3.1 (10pts) Opción múltiple.** Una **prescriptive statement** pertenece a la esfera de:
+- A) "What is" (descriptiva, true/false)
+- B) "What ought to be" — y NO puede analizarse como true/false ✅
+- C) La química
+- D) La eficacia
+
+*Por qué:* **Descriptive statements** = "what is", analizables como true/false. **Prescriptive statements** = "what ought to be", NO pueden ser true/false.
+
+**3.2 (10pts) Respuesta corta.** ¿Cuáles son los tres tipos de prescripción de una norma?
+*Respuesta:* **Compulsory, prohibited, or allowed** (obligatorio, prohibido o permitido).
+
+**3.3 (20pts) Opción múltiple.** La **validity** de una norma es un concepto:
+- A) Absoluto e independiente
+- B) Relacional: la norma es válida por su relación con otras reglas y por **pertenecer a un sistema legal específico** ✅
+- C) Moral únicamente
+- D) Basado en la opinión pública
+
+*Por qué:* **Validity is a relational concept** — la norma es válida por pertenecer a un legal system; implica que la acción es **binding** y respaldada por la maquinaria coercitiva del Estado.
+
+**3.4 (20pts) Respuesta corta.** Define **efficacy** y distínguela de **efficiency**.
+*Respuesta:* **Efficacy (effectiveness)** mide si los individuos obedecen la norma o son castigados por incumplir (impacto en la conducta). **Efficiency** mide si la norma logró sus objetivos/propósito.
+
+**3.5 (20pts) Respuesta corta.** Define **justice** de una norma (dimensión axiológica).
+*Respuesta:* **Justice of a legal norm is its adaptation to a certain ideal system of values**; ha sido tradicionalmente el "**ultimate goal of law**".
+
+**3.6 (30pts) Opción múltiple.** Sobre la relación entre las tres dimensiones, la slide distingue dos niveles:
+- A) Nacional e internacional
+- B) Norm level (conceptual independence) y legal system level (conceptual interdependence) ✅
+- C) Público y privado
+- D) Formal y material
+
+*Por qué:* A nivel de **norm** hay **conceptual independence** (puede haber normas válidas-ineficaces-injustas, etc., en 8 combinaciones); a nivel de **legal system** hay **conceptual interdependence**.
+
+**3.7 (30pts) Respuesta corta.** ¿Por qué a nivel de sistema legal **validity** y **justice** se vuelven interdependientes en sistemas democráticos?
+*Respuesta:* Porque los sistemas democráticos positivizan contenidos de justicia en sus **superior norms** (ej. **Article 1.1** de la Constitución española o el **Title I**); una condición de validez es no contradecir esas normas superiores, así que las normas, para ser válidas, no pueden contradecir esa idea de justicia.
+
+**👹 JEFE FINAL B3 (50pts).** Las cuatro situaciones del "**compliance spectrum**" van de máximo cumplimiento a cero. Nómbralas en orden y di a qué dimensión (validity/efficacy/justice) pertenece todo el espectro.
+*Respuesta modelo:* Pertenece a **efficacy**. Orden: (1) **Spontaneous compliance** (todos cumplen sin coacción); (2) **Threat-induced compliance** (solo cumplen con amenaza de sanción); (3) **Non-compliance despite threat** (no cumplen ni con amenaza); (4) **Complete non-compliance** (no cumplen ni aunque no se aplique sanción).
+
+---
+
+## 🎯 BLOQUE 4 — Natural Law
+
+**4.1 (10pts) Respuesta corta.** Traduce y di de quién es la máxima: "**Lex iniusta non est lex**".
+*Respuesta:* "**An unjust law is not law**" — de **Aquinas** (Aquino).
+
+**4.2 (10pts) Opción múltiple.** Las dos asunciones centrales del **Natural Law theory** son:
+- A) Positivism y realism
+- B) A cognitivist position in ethics (metaethics) + a dualist position in legal theory ✅
+- C) Order y justice
+- D) Validity y efficacy
+
+*Por qué:* Natural Law asume **cognitivism** en metaética (existen principios morales verdaderos) y **dualism** (natural law vs human-made/positive law).
+
+**4.3 (20pts) Opción múltiple.** **Hugo Grotius** sostuvo que el natural law:
+- A) Necesita a Dios para ser válido
+- B) NO requiere la existencia de Dios para su validez (sería tan natural como 2+2=4) ✅
+- C) Es pura emoción
+- D) Lo crea el Parlamento
+
+*Por qué:* Grotius: "**even if we were to say that there is no God, there would still be uncreated natural justice**" (tan natural como A=A o 2+2=4). Es la corriente **intuitionism**.
+
+**4.4 (20pts) Respuesta corta.** Nombra al menos cinco de los **basic goods** "self-evident" de **John Finnis**.
+*Respuesta:* **life (and health), knowledge, play, aesthetic experience, sociability (friendship), practical reasonableness, religion** (son siete).
+
+**4.5 (20pts) Opción múltiple.** Lo que distingue el test de **Lon Fuller** de los iusnaturalistas tradicionales es que:
+- A) Es puramente de contenido moral
+- B) Es un test de function and procedure, no principalmente de moral content ✅
+- C) No exige umbral alguno
+- D) Niega que exista el Derecho
+
+*Por qué:* Fuller habla de "**internal morality of law**" pero su test es de **function and procedure**, no de contenido moral; aun así considera esos principios morales.
+
+**4.6 (30pts) Respuesta corta.** En **R v Dudley and Stephens (1884)**, ¿qué precedente estableció el tribunal?
+*Respuesta:* Que **necessity is not a valid defence to a charge of murder** (la necesidad no es defensa válida frente a un cargo de asesinato). Lord Coleridge: "**We are often compelled to set up standards we cannot reach ourselves**".
+
+**4.7 (30pts) Opción múltiple.** Dentro del **cognitivism**, las dos formas de entender los principios morales universales son:
+- A) Emotivism y relativism
+- B) Naturalism (de la naturaleza humana observable, ej. **Cicero**, **Aquinas**) e Intuitionism (intuición moral directa, ej. **Grotius**) ✅
+- C) Deductivo e inductivo
+- D) Formal y material
+
+*Por qué:* **Naturalism** deriva los principios de la naturaleza humana observable y la razón; **Intuitionism** los percibe directamente por intuición moral.
+
+**👹 JEFE FINAL B4 (50pts).** Reconstruye la "**moral tale of King Rex**" de Fuller: nombra al menos 6 de las 8 formas en que el Rey Rex fracasa al hacer Derecho, y di qué pasa si un sistema falla en uno o varios de estos principios.
+*Respuesta modelo:* Rex falla por: (1) **no consistent rules** (todo ad hoc); (2) **lack of transparency / no promulgation**; (3) **retroactive legislation**; (4) **incomprehensible rules / lack of clarity**; (5) **contradictory rules**; (6) **impossible demands** (conducta imposible de cumplir); (7) **constant rule changes**; (8) **administrative inconsistency / lack of congruence**. Si un sistema no cumple uno de estos principios o falla sustancialmente en varios, "**it could not be said that 'law' existed in that community**".
+
+---
+
+## 🎯 BLOQUE 5 — Common Law & Equity
+
+**5.1 (10pts) Respuesta corta.** ¿De qué consejo del rey nacieron los common law courts en Inglaterra?
+*Respuesta:* Del **king's council (curia regis)**, tras la **Norman Conquest** (1066).
+
+**5.2 (10pts) Opción múltiple.** ¿Por qué nació la **equity**?
+- A) Para sustituir al common law
+- B) Porque el common law era rígido (sistema de **writs** limitados, remedios inadecuados) y dejaba injusticias sin remedio ✅
+- C) Por orden de la UE
+- D) Por el Corán
+
+*Por qué:* La equity surgió para cubrir el hueco "**whenever the common law might seem to fall short of the ideal**" — writs limitados, inflexibilidad, corrupción/intimidación.
+
+**5.3 (20pts) Respuesta corta.** ¿A quién acababa refiriendo el rey las peticiones de "conscience", y qué corte nació de ahí?
+*Respuesta:* Al **Lord Chancellor** (su chief secretary); de ahí nació el **Court of Chancery** (a finales del s. XIV).
+
+**5.4 (20pts) Opción múltiple.** ¿Sobre qué principio fundamental conducía el Chancellor su corte?
+- A) Precedent
+- B) **'Conscience'** (conciencia) ✅
+- C) Codificación
+- D) Soberanía
+
+*Por qué:* "**The basic tenet on which the Chancellor conducted his court was 'conscience'**" — el alivio se daba según su percepción individual de justicia.
+
+**5.5 (20pts) Respuesta corta.** ¿Qué es el **ratio decidendi** y de qué se distingue?
+*Respuesta:* El **ratio decidendi** es "**the reason for the decision**", el elemento vinculante de un caso; se distingue del **obiter dicta** ("things said by the way", no vinculante). Se halla analizando los **material facts**.
+
+**5.6 (30pts) Opción múltiple.** Cuando había conflicto entre common law y equity, ¿qué se decidió y en qué reinado?
+- A) Que prevalecía el common law, bajo Enrique VIII
+- B) Que la **equity should prevail**, en el reinado de **James I** ✅
+- C) Que se fusionaran totalmente, en 1066
+- D) Que decidiera el Papa
+
+*Por qué:* La equity usaba el **common injunction** para frenar la acción de common law; el conflicto se resolvió en el reinado de **James I**: la equity prevalece.
+
+**5.7 (30pts) Respuesta corta.** ¿Qué hicieron los **Judicature Acts 1873–75** y qué pasó con la fusión?
+*Respuesta:* Crearon un único **Supreme Court** (3 Divisions del High Court); cualquier División puede aplicar common law y equity, y en conflicto la **equity prevails**. Fusionaron la **administration** de ambos sistemas, pero el debate sigue: la visión predominante es que NO están fusionados como sistemas sustantivos (Ashburner: "**the two streams... run side by side and do not mingle their waters**").
+
+**👹 JEFE FINAL B5 (50pts).** Traza la **systematisation of equity**: nombra a los tres Chancellors clave (con su aportación) y di tres **maxims** de equity.
+*Respuesta modelo:* **Lord Nottingham (1675)** inició la sistematización (sentó los principios, fin de las decisiones idiosincráticas); **Lord Hardwicke (1737)** desarrolló los principios equilibrando certeza y flexibilidad; **Lord Eldon (1801)** insistió en que las decisiones se basaran en **precedent**. Maxims (cualquiera tres): "**He who seeks equity must do equity**"; "**Delay defeats equity**"; "**Equity follows the law**"; "**He who comes to equity must come with clean hands**"; "**Equity looks to intent rather than the form**".
+
+---
+
+## 🎯 BLOQUE 6 — Soberanía / Westphalia
+
+**6.1 (10pts) Respuesta corta.** ¿En qué año fue la **Peace of Westphalia** y qué dividió Europa?
+*Respuesta:* **1648** — dividió Europa en **sovereign Nation-States**, cada uno con poder exclusivo sobre su territorio.
+
+**6.2 (10pts) Opción múltiple.** El "**Westphalian duo**" se refiere a:
+- A) Francia y Alemania
+- B) National (State) law e International Public Law como las dos formas de derecho ✅
+- C) Common law y equity
+- D) Bodin y Hobbes
+
+*Por qué:* Westphalia estableció **national State law** e **international public law** como las dos únicas formas que el Derecho podía tomar: el **Westphalian duo**.
+
+**6.3 (20pts) Opción múltiple.** ¿Quién definió la soberanía como "**absolute and perpetual power**"?
+- A) Hobbes
+- B) **Jean Bodin** (s. XVI) ✅
+- C) Locke
+- D) Rousseau
+
+*Por qué:* **Jean Bodin (16th century)** definió sovereignty como "**absolute and perpetual power**", apoyando estados monárquicos fuertes.
+
+**6.4 (20pts) Respuesta corta.** Empareja: ¿quién introdujo la **popular sovereignty** y la **general will**?
+*Respuesta:* **Jean-Jacques Rousseau (1762)** — la **general will** del pueblo debe guiar el gobierno.
+
+**6.5 (20pts) Opción múltiple.** La diferencia entre **internal** y **external sovereignty** es:
+- A) Internal = recon. internacional; External = poder interno
+- B) Internal = autoridad absoluta dentro del territorio; External = reconocimiento como entidad independiente por otras naciones ✅
+- C) No existe tal distinción
+- D) Internal = legal; External = política
+
+*Por qué:* **Internal sovereignty** = autoridad absoluta dentro del territorio; **External sovereignty** = reconocimiento como entidad independiente por otros estados.
+
+**6.6 (30pts) Respuesta corta.** Nombra tres **challenges to modern state sovereignty**.
+*Respuesta:* (1) **Globalization and economic integration**; (2) **International law and human rights**; (3) **Supranational institutions** (EU, WTO, UN).
+
+**6.7 (30pts) Opción múltiple.** Tras Westphalia, el cambio de **natural law** a **legal positivism** se reforzó porque:
+- A) Se necesitaban sistemas legales formales independientes de interpretaciones religiosas ✅
+- B) Desapareció el Estado
+- C) Volvió el feudalismo
+- D) Llegó la UE
+
+*Por qué:* Westphalia reforzó la soberanía estatal y la necesidad de sistemas legales formales independientes de lo religioso, permitiendo consistencia, objetividad y predictibilidad.
+
+**👹 JEFE FINAL B6 (50pts).** Enumera los **essential elements of the State** y ordena cronológicamente a los **cuatro teóricos clásicos de la soberanía** indicando qué defendió cada uno.
+*Respuesta modelo:* Elementos: **Sovereignty**, **Government**, **Territory & Population**. Teóricos en orden: (1) **Jean Bodin (16th c.)** — "absolute and perpetual power", monarquía fuerte; (2) **Thomas Hobbes (1651)** — soberanía absoluta vía **social contract** (se ceden libertades por seguridad); (3) **John Locke (1689)** — **limited sovereignty**, gobierno por **consent of the people**; (4) **Jean-Jacques Rousseau (1762)** — **popular sovereignty** y **general will**.
+
+---
+
+## 🎯 BLOQUE 7 — Constitutionalism & Sovereignty
+
+**7.1 (10pts) Respuesta corta.** ¿Qué es el **constitutionalism** en una frase?
+*Respuesta:* El principio de que "**legal frameworks should limit government power**" (los marcos jurídicos deben limitar el poder del gobierno).
+
+**7.2 (10pts) Opción múltiple.** Según Finer/Bogdanor/Rudden, una constitución es un código de normas que aspira a:
+- A) Castigar delitos
+- B) Regular la asignación de poderes, funciones y deberes entre los órganos del gobierno y definir su relación con el público ✅
+- C) Crear contratos
+- D) Recaudar impuestos
+
+*Por qué:* Es la definición literal de la slide: regula "**the allocation of powers, functions, and duties among the various agencies and officers of government**".
+
+**7.3 (20pts) Respuesta corta.** Nombra las cuatro **key characteristics of constitutions**.
+*Respuesta:* (1) Debe ser **prior to a government**; (2) un gobierno legítimo se crea **subject to the specifications of the constitution**; (3) es **superior to ordinary law**; (4) está **entrenched** (atrincherada/protegida frente a reforma ordinaria).
+
+**7.4 (20pts) Opción múltiple.** El **formal constitutionalism** define la constitución como:
+- A) Cualquier ley antigua
+- B) El conjunto de normas con **absolute legal supremacy** sobre todas las demás (cima de la jerarquía, sujeta a constitutional review) ✅
+- C) Una guía moral
+- D) Un tratado internacional
+
+*Por qué:* **Formal constitutionalism** = constitución como normas con supremacía legal absoluta; requiere **judicial enforcement** (central o descentralizado) y **constitutional review**. Desde este punto de vista, ni la británica ni la china serían constituciones "reales".
+
+**7.5 (20pts) Respuesta corta.** Diferencia **written** y **unwritten constitutions** con un ejemplo de cada una.
+*Respuesta:* **Written/codified** (ej. **US Constitution**, **Spanish Constitution**), pueden estar entrenched; **unwritten/non-codified** (ej. **UK Constitution**), abiertas a cambio orgánico/incremental.
+
+**7.6 (30pts) Opción múltiple.** El **material constitutionalism** liga la constitución a dos ideas; las constituciones que carecen de ellas son:
+- A) "Real constitutions"
+- B) "**Façade constitutions**" (de fachada) — les faltan (representative) democracy y/o limited government con separación de poderes y derechos ✅
+- C) Tratados
+- D) Costumbre
+
+*Por qué:* **Material constitutionalism** liga la constitución a **(representative) democracy** y **limited government**; las que no garantizan separación de poderes y derechos son "**façade constitutions**".
+
+**7.7 (30pts) Respuesta corta.** ¿Cuál es la diferencia entre **democratic** y **liberal constitutionalism**?
+*Respuesta:* **Democratic constitutionalism** insiste en "**government of the people, by the people, for the people**" (**popular sovereignty**, representative government). **Liberal constitutionalism** exige **separation of powers** y **(human) rights** + "**government of laws, not of men**".
+
+**👹 JEFE FINAL B7 (50pts).** Explica cómo las cuatro características de una constitución (prior, legitimate government, superior, entrenched) se conectan con la idea de **limited government** y con el **constituent power** del pueblo.
+*Respuesta modelo:* La constitución debe ser **prior to a government** (las reglas existen antes); el gobierno legítimo se crea sujeto a ella, y su fuerza se traza al **constituent power** — una fuente de autoridad superior al propio gobierno, que en democracia es **the people** que respaldan sus términos. Al ser **superior to ordinary law**, los poderes no pueden exceder lo concedido por la constitución (empodera y limita); y al estar **entrenched** tiene longevidad y no se reforma como una ley ordinaria. Todo ello encarna el **limited government**: que quienes nos gobiernan no tengan poder ilimitado, corazón del constitutionalism.
+
+---
+
+## 🎯 BLOQUE 8 — Fundamental Rights
+
+**8.1 (10pts) Opción múltiple.** ¿Quién rechazó los **natural rights** llamándolos "**simple nonsense**"?
+- A) Locke
+- B) Maritain
+- C) **Bentham** (positive law) ✅
+- D) Senghor
+
+*Por qué:* Bentham: "**Right is a child of law... Natural rights is simple nonsense**". Defendía el positive law frente al natural law (Maritain) y a la American Declaration of Independence.
+
+**8.2 (10pts) Respuesta corta.** Nombra las **tres generaciones de derechos**.
+*Respuesta:* **First Generation: Civil and Political Rights**; **Second Generation: Economic, Social and Cultural Rights**; **Third Generation: Collective Rights**.
+
+**8.3 (20pts) Opción múltiple.** Los derechos de **primera generación** (civil y políticos) son típicamente:
+- A) Positive rights que exigen acción estatal
+- B) **Negative rights** dirigidos contra el Estado, exigiendo **non-intervention** ✅
+- C) Collective rights
+- D) Tratados internacionales
+
+*Por qué:* Los de primera generación tienen origen liberal (**Locke**: vida, libertad, propiedad) y son **negative rights** que exigen no-intervención del Estado.
+
+**8.4 (20pts) Respuesta corta.** ¿Qué cita de Senghor resume los derechos de segunda generación, y de qué tipo de Estado dependen?
+*Respuesta:* "**Human rights begin with breakfast**" (Leopold Senghor); dependen del **welfare state** (vía taxation en sociedades capitalistas; control de los medios de producción en socialistas).
+
+**8.5 (20pts) Opción múltiple.** El **substantial concept** de los fundamental rights añade a su dimensión positiva:
+- A) Nada
+- B) Una **ideal dimension** derivada de su conexión con los **human rights qua moral rights** (positivizan los derechos humanos) ✅
+- C) Solo protección judicial
+- D) Soberanía
+
+*Por qué:* El **substantial concept** dice que los derechos constitucionales, además de positivos/institucionalizados, tienen una **ideal dimension** ligada a los derechos humanos como derechos morales: positivizan los human rights.
+
+**8.6 (30pts) Respuesta corta.** Nombra dos **controversias** sobre los derechos de segunda generación (economic, social, cultural).
+*Respuesta:* (cualquiera dos) **Implementation problems** (difíciles de convertir en derechos exigibles); **judicial enforcement** como intrusión en la función del legislativo democrático; **budgetary impact**; problema de **separation of powers** (jueces decidiendo cuestiones distributivas).
+
+**8.7 (30pts) Opción múltiple.** La diferencia entre **thin** y **thick liberal constitutionalism** en la enforcement de derechos es:
+- A) Thin revisa solo acciones del ejecutivo; Thick exige que incluso la legislación parlamentaria sea revisada judicialmente ✅
+- B) Thin es más fuerte que Thick
+- C) Ninguna permite judicial review
+- D) Thin se aplica solo en China
+
+*Por qué:* **Thin liberal constitutionalism** restringe el judicial review a las **executive actions**; **thick** insiste en que incluso la **parliamentary legislation** se revise judicialmente por posible violación de fundamental rights.
+
+**👹 JEFE FINAL B8 (50pts).** Explica el "**dual nature**" de los fundamental rights (positive + ideal dimension) y conéctalo con el debate de orígenes **natural law vs positive law** (Maritain/Declaration vs Bentham).
+*Respuesta modelo:* Los fundamental rights tienen una **positive dimension** (establecidos por positive law a nivel constitucional) y una **ideal dimension** (conexión con los human rights como moral rights); los derechos constitucionales **positivize human rights**. Esto refleja el debate de orígenes: la postura **natural law** (Maritain: dignidad de la persona; American Declaration: "**endowed by their Creator with certain unalienable Rights**") frente al **positive law** de **Bentham** ("**from real laws come real rights... Natural rights is simple nonsense**"). La concepción sustancial integra ambas: derechos positivizados que conservan una raíz moral.
+
+---
+
+## 🎯 BLOQUE 9 — Derecho Internacional (naturaleza / fuentes / jerarquía)
+
+**9.1 (10pts) Respuesta corta.** Según la jueza **Rosalyn Higgins**, ¿qué es el International Law "in a world often divided by politics"?
+*Respuesta:* "**our common language**" — la ley que gobierna las relaciones entre Estados y entre Estados y organizaciones internacionales.
+
+**9.2 (10pts) Opción múltiple.** El International Law se diferencia del derecho nacional porque:
+- A) Tiene un parlamento mundial
+- B) NO hay global parliament, ni unified court system, ni global police force; es **consent-based** ✅
+- C) Tiene una policía global
+- D) No depende del consentimiento estatal
+
+*Por qué:* No hay legislativo global (la ley se forma vía **ILC**, **UN General Assembly**), no hay sistema judicial unificado (**ICJ, ICC**, etc.) ni policía global (enforcement vía **UN peacekeeping**, coaliciones).
+
+**9.3 (20pts) Opción múltiple.** El **Article 38** del ICJ Statute lista como fuentes:
+- A) Solo treaties
+- B) International conventions, international custom, general principles, y subsidiary means ✅
+- C) Solo custom y soft law
+- D) Constituciones nacionales
+
+*Por qué:* **Article 38**: (1) **international conventions** (treaties); (2) **international custom**; (3) **general principles** recognized by civilized nations; (4) **subsidiary means** (judicial decisions y teachings of qualified publicists).
+
+**9.4 (20pts) Respuesta corta.** ¿Cuáles son los dos elementos del **customary international law**?
+*Respuesta:* **State practice** (lo que los Estados hacen o no hacen) y **opinio juris** (la creencia de que esa práctica es requerida por la ley).
+
+**9.5 (20pts) Opción múltiple.** Un Estado que objeta consistentemente una regla desde el principio:
+- A) Se vincula igual
+- B) Es un **persistent objector** y NO queda vinculado por esa regla ✅
+- C) Pierde su soberanía
+- D) Debe abandonar la ONU
+
+*Por qué:* **The persistent objector**: un Estado que objeta consistentemente desde el inicio no queda vinculado. (Pero los **new states** sí se vinculan por reglas existentes aunque no consintieran su formación.)
+
+**9.6 (30pts) Respuesta corta.** Define **jus cogens** y da dos ejemplos.
+*Respuesta:* **Peremptory norms (jus cogens)**: normas de las que **no derogation is permitted**, aceptadas por la comunidad internacional de Estados como un todo; tratados que las contradicen son **void** (**Articles 53 and 64 VCLT**). Ejemplos (dos): **slavery & apartheid, crimes against humanity, war crimes, genocide, torture**.
+
+**9.7 (30pts) Opción múltiple.** Las **obligations erga omnes** son:
+- A) Iguales que jus cogens siempre
+- B) Obligaciones debidas a la **international community as a whole**; cualquier Estado puede invocar responsabilidad por su incumplimiento ✅
+- C) Solo entre dos Estados
+- D) Soft law no vinculante
+
+*Por qué:* **Erga omnes** = obligaciones debidas a toda la comunidad internacional; todos los Estados tienen interés en su cumplimiento. Todas las normas **jus cogens** tienen estatus erga omnes, pero no al revés (erga omnes es categoría más amplia).
+
+**👹 JEFE FINAL B9 (50pts).** Explica las **cuatro maneras** en que un treaty puede relacionarse con el customary international law, según las slides.
+*Respuesta modelo:* (1) **All parties are bound** por sus provisiones (el treaty es fuente de obligaciones para los Estados parte, no para los no-parte). (2) Un treaty puede **develop** custom (otros Estados no-parte empiezan a seguir la regla y se vuelve costumbre). (3) Un treaty puede **crystallise** una regla consuetudinaria en desarrollo (es suficiente state practice/opinio juris para mostrar que ya se ha formado). (4) Un treaty puede **codify** custom existente (vincula a las partes como treaty law y a los no-parte como custom).
+
+---
+
+## 🎯 BLOQUE 10 — Islamic Law
+
+**10.1 (10pts) Respuesta corta.** ¿Qué es la **Shariah** y cuál es su único fundamento de validez?
+*Respuesta:* El complejo de "**divinely revealed rules**" que el musulmán fiel debe observar; su único fundamento de validez es que es "**the manifested will of the Almighty**" (**Allah**), no depende de ningún legislador terrenal.
+
+**10.2 (10pts) Opción múltiple.** La diferencia clave entre Islamic law y Western law es:
+- A) Que el Islamic law cambia más rápido
+- B) Que en el Islam la sociedad debe adaptarse a la ley (revelada de una vez por todas), no la ley a la sociedad ✅
+- C) Que el Islamic law no tiene fuentes
+- D) Que es idéntico al common law
+
+*Por qué:* Western law cambia para adaptarse; en el Islam toda la ley viene de **Allah**, revelada de una vez por todas vía **Muhammad**, y "**society must adapt itself to the law**". Los juristas no **crean** ley, la **descubren**.
+
+**10.3 (20pts) Opción múltiple.** Las **cuatro fuentes ("roots")** del Islamic law son:
+- A) Qur'an, Bible, Torah, Sunna
+- B) Qur'an, Sunna, Ijma, Qiyas ✅
+- C) Maliki, Hanafi, Shafi'i, Hanbali
+- D) Allah, Muhammad, Caliphs, Schools
+
+*Por qué:* El scholar **As-Safi'i (d. 820)** codificó los cuatro "roots": **Qur'an** (Koran, la fuente más alta), **Sunna**, **Ijma** (juicio acordado de scholars) y **Qiyas**. La **ijma** tiene el rol crítico: solo ella decide finalmente qué regla válida puede extraerse del Koran o la Sunna.
+
+**10.4 (20pts) Respuesta corta.** ¿Qué es la **Sunna** y qué reconocen hoy los scholars sobre ella?
+*Respuesta:* La **Sunna** es "**the sum total of inspired practice attributed to the prophet and his disciples**", segunda gran fuente tras la muerte de Muhammad (632) cuando el liderazgo pasó a los **Caliphs**. Los scholars hoy reconocen que es "**largely unhistorical**" (Schacht).
+
+**10.5 (20pts) Respuesta corta.** Explica los **hiyal** con el ejemplo del "double sale".
+*Respuesta:* Los **hiyal** son actos de **evasión** legal aceptados por los tribunales ante la rigidez doctrinal. Ejemplo: como el Koran prohíbe la usura (interés), el prestatario "vendía" un objeto al prestamista, quien lo "revendía" inmediatamente a un "precio" inflado pagadero tras el periodo del préstamo — cobrando interés de facto pero respetando la letra de la Shariah.
+
+**10.6 (30pts) Opción múltiple.** ¿Qué país tomó el paso más drástico de modernización adoptando el **Swiss Civil Code en 1926**?
+- A) Egipto
+- B) Irán
+- C) **Turkey** (Turquía) ✅
+- D) Arabia Saudí
+
+*Por qué:* Solo **Turkey** adoptó el **Swiss Civil Code in 1926**, rompiendo completamente con la family y succession law islámica (aunque costó que la población lo aceptara).
+
+**10.7 (30pts) Respuesta corta.** ¿Qué fue la **reislamification of law** y qué la desencadenó?
+*Respuesta:* Un renacimiento de la tradición religiosa que revirtió la tendencia a codificar y secularizar; la desencadenó la **Iranian Revolution under Ayatollah Khomeini**. En Irán, ninguna ley es válida sin aprobación del **Supreme Supervisory Council** de sacerdotes islámicos.
+
+**👹 JEFE FINAL B10 (50pts).** Nombra las **cuatro escuelas** del Islamic law (ijma), su fundador/origen y dónde domina cada una.
+*Respuesta modelo:* (1) **Maliki School** — fundada en **Medina**, domina en **North, West, and Central Africa**; (2) **Hanafi School** — fundada en **Kufa, Iraq**, domina en el **Near and Middle East and the Indus Valley**; (3) **Shafi'i School** — nombrada por **As-Safi'i**, domina en **East Africa, Malaysia, and Indonesia**; (4) **Hanbali School** — fundada por **Ibn-Hanbal**, domina en **Saudi Arabia**. Las diferencias se redimen con el dicho: "**Differences of opinion in my community are a sign of the goodness of Allah**".
+
+---
+
+## 🎯 BLOQUE 11 — Far East
+
+**11.1 (10pts) Respuesta corta.** ¿Por qué NO existe una "**Far Eastern Legal Family**"?
+*Respuesta:* Porque **Chinese and Japanese law are fundamentally different** y deben estudiarse por separado, pese a compartir tradición **Confucian**. (Además: el doctrine de legal families no debe tomarse demasiado en serio.)
+
+**11.2 (10pts) Opción múltiple.** En el Far East, frente a la litigación occidental, se prefiere:
+- A) La pena de muerte
+- B) Informal dispute resolution: **conciliation, compromise, and arbitration** ✅
+- C) El common law
+- D) El jus cogens
+
+*Por qué:* En el Far East "**informal dispute resolution is enormously more important**" — conciliación, compromiso y arbitraje en lugar de litigación.
+
+**11.3 (20pts) Respuesta corta.** ¿Qué son las reglas **li** de Confucio?
+*Respuesta:* Las reglas de "**proper behaviour**" calibradas según el estatus social (posición familiar, edad, sexo, carrera, prestigio). El hombre ideal las sigue espontáneamente y reprime sus intereses para mantener la **cosmic harmony**.
+
+**11.4 (20pts) Opción múltiple.** En la lucha antigua, los **Legists** sostenían que:
+- A) El hombre es intrínsecamente bueno
+- B) El hombre es básicamente egoísta y debe ser disciplinado por legislación estatal y **severe penal sanctions**; todos iguales ante la ley ✅
+- C) No hace falta ley
+- D) Las diferencias de estatus son sagradas
+
+*Por qué:* Los **Legists**: el hombre es selfish, debe disciplinarse con legislación y sanciones penales severas, **all men are equal before the law**. Los **Confucians**: el hombre es intrínsecamente bueno, educable, y las diferencias de estatus reflejan una armonía superior.
+
+**11.5 (20pts) Respuesta corta.** ¿Qué dinastía favoreció a los Legists (quemando escritos confucianos) y cuál restauró el confucianismo como ideología del Estado durante 2000 años?
+*Respuesta:* La **TS'IN dynasty (221 BC)** favoreció a los Legists y quemó escritos confucianos; la **HAN dynasty (206 BC)** restauró el confucianismo como **ideology of the state for two thousand years**.
+
+**11.6 (30pts) Opción múltiple.** El Japanese Civil Code de **1898** se basó esencialmente en:
+- A) El Code civil francés
+- B) El **German BGB** ✅
+- C) El common law inglés
+- D) El Swiss Civil Code
+
+*Por qué:* Tras descartar el borrador francés de **Boissonade** (1890), el Japanese Civil Code (1898) se basó en el **German BGB** (el BGB era el producto más maduro, el Code civil ya mostraba defectos, los scholars japoneses gustaban del teorizar sistemático, y la postura conservadora alemana atraía a los líderes japoneses).
+
+**11.7 (30pts) Respuesta corta.** En la China imperial, ¿en qué se centraban los códigos y qué pasaba con el private law?
+*Respuesta:* Los códigos (el más antiguo completo, **T'ANG dynasty, c. s. VII**) trataban casi exclusivamente de **criminal and administrative law** (la legislación era un "necessary evil"); las penas se graduaban según estatus social (Confucian gradation). El **private law** (comercio, familia, sucesiones) apenas recibía atención: los conflictos se resolvían **fuera de los tribunales**.
+
+**👹 JEFE FINAL B11 (50pts).** Explica el principio "**Reception ≠ Implementation**" usando los casos de China y Japón: ¿por qué el derecho occidental importado no echó raíces fácilmente?
+*Respuesta modelo:* Ambos importaron códigos occidentales (China: Kuomintang con derecho alemán/suizo; Japón: BGB en 1898) pero el "**living law**" divergió de la letra. En Japón, los estatutos de 1890–1900 tuvieron poco efecto práctico: el **individualism** era ajeno, los lazos sociales (familia, gremio, aldea) seguían fuertes, y persistía el rechazo confuciano a llevar disputas a los tribunales (conciliación vía middlemen, "**invisible accounts**"). En China, el confucianismo (preferencia por la conciliación, reglas **li**) y luego la **Cultural Revolution** (que persiguió a los abogados) frenaron el arraigo; como dice **Lubman**, sin reforma política el Derecho no tendrá el valor que le atribuye Occidente. Lección: las legal families "**are not destiny**".
+
+---
+
+## 🏆 TABLA DE AUTOEVALUACIÓN (suma tu XP)
+
+Suma tus puntos de todos los bloques (máximo teórico ≈ 11 bloques × ~190pts = ~2090 por ronda; repite rondas para subir):
+
+| Tu XP en una pasada | Tu rango de esa ronda | Mensaje |
+|---|---|---|
+| 0–400 | 🪣 Becario del bufete | Toca volver a la misión narrativa. Sin estrés. |
+| 401–900 | 📎 Pasante con ínfulas | Vas pillando el rollo. Repasa flashcards. |
+| 901–1500 | 👔 Abogado junior | Bien. Refuerza los Jefes Finales. |
+| 1501–2200 | ⚖️ Abogado litigante | Muy bien. Ya casi lo tienes. |
+| 2201+ (sumando varias rondas/jefes) | 🎓 Catedrático / 👑 Juez del Supremo | Crack. Apruebas con la gorra. |
+
+> Truco: cada vez que falles una pregunta, NO pases página. Vuelve a la flashcard correspondiente, y reintenta esa pregunta al día siguiente. Eso es XP de verdad.
+
+---
+
+# 2) 🃏 FLASHCARDS + MNEMOTECNIA
+
+> Cómo se usan: tapa la columna "Respuesta" con la mano o un papel. Lee la pregunta, responde en voz alta (¡en inglés los términos!), destapa y comprueba.
+
+---
+
+## 🃏 BLOQUE 1 — ¿Qué es el Derecho?
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| Who wrote **The Concept of Law** and what question obsesses it? | **Hart** — la pregunta "**What is law?**", respondida de formas diversas y paradójicas. |
+| **Bobbio**'s point about defining law? | En toda definición de Law hay "**an element of arbitrariness**" al delimitar su alcance. |
+| **Cicero** on law and freedom? | "**We are slaves of the law so that we may be free.**" |
+| Las 3 dimensiones del Derecho / The 3 dimensions of law? | **Law as a fact**, **law as a system of norms**, **law as values**. |
+| **Lord Denning**'s two great objects of law? | "**To preserve order and to do justice**" — y no siempre coinciden. |
+| ¿Qué es la **nudge theory** ejemplo? | El Derecho fija patrones de conducta; ej. **smoking prohibitions** influyen en el comportamiento. |
+| The 3 aspects of **legal certainty** (order)? | Certainty about **content**, that it will be **enforced**, and **applied consistently**. |
+| The 3 aspects of **justice** in law? | **Balance/proportion**, **treat like cases alike**, **treat different cases differently**. |
+| Caso clave sobre **transsexual marriage** y definición de "female"? | **Bellinger v Bellinger (2001)** — siguió **Corbett v Corbett [1971]** (factores biológicos). |
+| "**No legal system is politically neutral**" pertenece a... | **Law as a system of values**. |
+
+---
+
+## 🃏 BLOQUE 2 — Familias jurídicas
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| The 4 features of the **Western Legal Tradition**? | **Clear demarcation**, **rule of law**, **legal doctrine** as principal source, **coherent body** with internal logic. |
+| Define **rule of law** | "**No one is above the law**"; sistema racional de reglas generales, claras, prospectivas, imparciales. |
+| ¿Dónde se aplica el **French Civil Law**? | Francia, Bélgica, Luxemburgo, Quebec, Italia, España y excolonias. |
+| ¿Dónde se aplica el **German Civil Law**? | Alemania, Austria, Suiza, Portugal, Grecia, Turquía, **Japón, Corea del Sur, Taiwán**. |
+| ¿Dónde el **Scandinavian Civil Law**? | Suecia, Dinamarca, Noruega, Islandia. |
+| 3 rasgos del **Common Law system**? | **Unwritten/non-textual law**, **case-based**, **precedent doctrine**. |
+| Ejemplo de **mixed legal system**? | **South Africa** = **Roman-Dutch Law** + **English Common Law**. |
+| ¿Qué concepto confuciano rechazaba reglas fijas en China? | **'Li'** — hoy China es **largely codified** pero bajo el **Communist Party**. |
+| **Public law** vs **private law**? | Public: el government juega un papel (constitutional/administrative/criminal). Private: no (contract/property/tort). |
+| **Substantive** vs **procedural law**? | Substantive da derechos; procedural da reglas de procedimiento y organización judicial. |
+| ¿Qué difumina la línea public/private? | **EU Law**. |
+
+---
+
+## 🃏 BLOQUE 3 — Validity / Efficacy / Justice
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| Los 3 criterios para analizar una norma? | **Validity, Efficacy, Justice**. |
+| **Descriptive** vs **prescriptive statements**? | Descriptive = "**what is**", true/false. Prescriptive = "**what ought to be**", NO true/false. |
+| Los 3 tipos de prescripción? | **Compulsory, prohibited, allowed**. |
+| Define **validity** | Concepto **relacional**: la norma es válida por pertenecer a un legal system; es **binding** y respaldada por la coacción estatal. |
+| Los 2 requisitos de validez? | **Formal requirements** y **material requirements**. |
+| Define **efficacy** | Evalúa la **effectiveness** en la práctica: si se obedece o se castiga el incumplimiento. |
+| **Efficacy** vs **efficiency**? | Efficacy = obediencia/castigo (impacto en conducta). Efficiency = si la norma logró sus objetivos. |
+| Define **justice** (axiological) | Adaptación de la norma a "**a certain ideal system of values**"; tradicional "**ultimate goal of law**". |
+| 4 razones para obedecer la ley? | **Habit**, **avoiding punishment**, **agreement**, **self-interest**. |
+| Los 2 niveles de relación entre las 3 dimensiones? | **Norm level** = conceptual **independence**. **Legal system level** = conceptual **interdependence**. |
+| ¿Por qué validity y justice se enlazan en democracias? | Las **superior norms** (ej. **Art. 1.1 Constitution**) positivizan justicia; una norma no puede ser válida si las contradice. |
+
+---
+
+## 🃏 BLOQUE 4 — Natural Law
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| Las 2 asunciones del Natural Law? | **Cognitivist position** en metaética + **dualist position** en teoría jurídica. |
+| ¿Qué es el **cognitivism**? | Existen principios morales universales verdaderos (**moral objectivism**), conocibles por la razón. |
+| **Naturalism** vs **Intuitionism**? | Naturalism: de la naturaleza humana observable + razón (**Cicero, Aquinas**). Intuitionism: por intuición moral directa (**Grotius, Finnis**). |
+| **Cicero** (naturalism) cita clave? | "**True law is right reason in agreement with nature**", universal y eterna; un único legislador: God. |
+| **Grotius** punto clave? | El natural law NO requiere a Dios: "**even if... there is no God, there would still be uncreated natural justice**" (como 2+2=4). |
+| Los **basic goods** de **Finnis**? | life/health, knowledge, play, aesthetic experience, sociability/friendship, practical reasonableness, religion. |
+| **Aquinas**: "**Lex iniusta non est lex**"? | "**An unjust law is not law**" — pero no siempre justifica desobedecer (salvo escándalo o desorden civil). |
+| **Lon Fuller**: ¿qué test propone? | "**Internal morality of law**": test de **function and procedure**, no de moral content. |
+| Caso del **King Rex**? | Cuento moral de Fuller: 8 formas en que Rex fracasa al hacer Derecho. |
+| **Non-cognitivism**: 2 corrientes? | **Emotivism** (juicios morales = emociones) y **moral relativism**. |
+| Caso de la **necessity defence**? | **R v Dudley and Stephens (1884)** — necessity NO es defensa válida ante murder. |
+
+---
+
+## 🃏 BLOQUE 5 — Common Law & Equity
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| ¿De dónde nacieron los common law courts? | Del **king's council (curia regis)** tras la **Norman Conquest (1066)**. |
+| ¿Qué limitaba al common law? | Sistema de **writs** limitados, **inflexibility**, **corruption and intimidation**. |
+| ¿Por qué nació la **equity**? | Para cubrir cuando el common law "**might seem to fall short of the ideal**". |
+| ¿A quién se petitionaba ("conscience")? | Al monarca ("**fountain of justice**"), que refería al **Lord Chancellor** → **Court of Chancery**. |
+| Principio rector de la Chancery? | "**Conscience**" — la percepción individual de justicia del Chancellor. |
+| Los 3 Chancellors sistematizadores? | **Lord Nottingham (1675)**, **Lord Hardwicke (1737)**, **Lord Eldon (1801)** — este último: **precedent**. |
+| ¿Cuándo se decidió que la equity prevalece? | En el reinado de **James I**. |
+| ¿Qué hicieron los **Judicature Acts 1873–75**? | Un único **Supreme Court** (3 Divisions); cualquiera aplica law y equity; **equity prevails** en conflicto. |
+| ¿Sistemas fusionados? (merger debate) | Visión predominante: NO; **Ashburner**: "**run side by side and do not mingle their waters**". |
+| ¿Qué es el **ratio decidendi**? | "**The reason for the decision**", elemento vinculante; vs **obiter dicta** (no vinculante). |
+| Caso clave de razonamiento por analogía? | **Donoghue v Stevenson** ("**decomposed snail**" vs "defective products"). |
+| 3 **equitable maxims**? | "**Clean hands**", "**delay defeats equity**", "**equity follows the law**". |
+
+---
+
+## 🃏 BLOQUE 6 — Soberanía / Westphalia
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| ¿Qué fue la **Peace of Westphalia (1648)**? | Acabó varias guerras y dividió Europa en **sovereign Nation-States**. |
+| ¿Qué había antes de Westphalia? | El **Ius Commune**. |
+| ¿Qué es el **Westphalian duo**? | **National (State) law** + **International Public Law** como las dos formas del Derecho. |
+| Los 3 essential elements of the State? | **Sovereignty**, **Government**, **Territory & Population**. |
+| **Bodin (16th c.)**? | Sovereignty = "**absolute and perpetual power**"; monarquía fuerte. |
+| **Hobbes (1651)**? | Soberanía absoluta vía **social contract**; se ceden libertades por seguridad. |
+| **Locke (1689)**? | **Limited sovereignty**; gobierno por **consent of the people**. |
+| **Rousseau (1762)**? | **Popular sovereignty**; la **general will** guía el gobierno. |
+| **Internal** vs **external** sovereignty? | Internal: autoridad absoluta dentro del territorio. External: reconocimiento por otras naciones. |
+| **Legal** vs **political** sovereignty? | Legal: poder último de hacer leyes (parlamento). Political: distribución práctica del poder. |
+| 3 **challenges** a la soberanía? | **Globalization**, **international law/human rights**, **supranational institutions**. |
+
+---
+
+## 🃏 BLOQUE 7 — Constitutionalism & Sovereignty
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| Define **constitutionalism** | Principio: "**legal frameworks should limit government power**". |
+| ¿Qué es una **constitution** (Finer et al.)? | Códigos de normas que regulan la **allocation of powers, functions, and duties** entre órganos del gobierno. |
+| Las 4 **key characteristics**? | **Prior to a government**; **legitimate government subject to it**; **superior to ordinary law**; **entrenched**. |
+| ¿Qué es el **constituent power**? | La fuerza normativa de la constitución se atribuye a una autoridad superior al propio gobierno: **the people**. |
+| **Written** vs **unwritten** constitutions? | Written/codified (US, Spain), pueden ser entrenched. Unwritten (UK), cambio orgánico. |
+| ¿Qué es el **formal constitutionalism**? | Constitución = normas con **absolute legal supremacy**; requiere judicial enforcement y constitutional review. |
+| Desde lo formal, ¿qué constituciones NO son "real"? | Ni la **British** ni la **Chinese**. |
+| ¿Qué es el **material constitutionalism**? | Liga la constitución a **(representative) democracy** y **limited government**. |
+| ¿Qué es una **façade constitution**? | La que carece de democracia o limited government (separación de poderes + derechos). |
+| **Democratic** vs **liberal** constitutionalism? | Democratic: "**of the people, by the people, for the people**". Liberal: **separation of powers** + **(human) rights**. |
+
+---
+
+## 🃏 BLOQUE 8 — Fundamental Rights
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| ¿Qué dice **Maritain** (natural law)? | La **dignity of the human person** significa que por natural law la persona es sujeto de derechos. |
+| ¿Qué dijo la **American Declaration of Independence**? | "**endowed by their Creator with certain unalienable Rights**: Life, Liberty, pursuit of Happiness". |
+| ¿Qué dijo **Bentham** (positive law)? | "**Natural rights is simple nonsense**"; los derechos son hijos de la ley. |
+| Las 3 generaciones de derechos? | 1ª **Civil and Political**; 2ª **Economic, Social and Cultural**; 3ª **Collective Rights**. |
+| ¿Cómo son los derechos de **1ª generación**? | **Negative rights** contra el Estado (non-intervention); origen liberal (**Locke**). |
+| Cita de los derechos de **2ª generación**? | "**Human rights begin with breakfast**" (Senghor); dependen del **welfare state**. |
+| ¿Qué son los **collective rights** (3ª)? | Derechos del grupo / para el grupo: self-determination, healthy environment, natural resources, cultural heritage. |
+| **Formal** concept de fundamental rights? | Derechos contenidos en la constitución o con protección especial (ej. constitutional complaint). |
+| **Procedural** concept? | Expresión de **distrust in the democratic process**; demasiado importantes para mayorías parlamentarias simples. |
+| **Substantial** concept? | Tienen además una **ideal dimension** ligada a human rights como moral rights; positivizan los human rights. |
+| **Thin** vs **thick** liberal constitutionalism? | Thin: judicial review solo de **executive actions**. Thick: también de la **parliamentary legislation**. |
+
+---
+
+## 🃏 BLOQUE 9 — Derecho Internacional
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| ¿Qué es el International Law (Higgins)? | "**Our common language**"; gobierna relaciones entre Estados y organizaciones internacionales. |
+| ¿Por qué difiere del derecho nacional? | No hay global parliament/court/police; es **consent-based**. |
+| Cita de **Louis Henkin**? | "**Almost all nations observe almost all principles of international law... almost all of the time.**" |
+| 3 basic principles del PIL? | **Sovereign equality of states**, **respect for independence**, **prohibition on war**. |
+| **Formal** vs **material sources**? | Formal: crea derecho vinculante (treaty). Material: identifica/evidencia el derecho, no lo crea (custom). |
+| Las 4 fuentes del **Article 38**? | **International conventions**, **international custom**, **general principles**, **subsidiary means**. |
+| Los 2 elementos del **custom**? | **State practice** + **opinio juris**. |
+| ¿Qué es un **persistent objector**? | Estado que objeta consistentemente desde el inicio → NO queda vinculado. |
+| Define **treaty** (VCLT Art. 2(1))? | Acuerdo internacional entre Estados, por escrito, regido por el derecho internacional. |
+| 4 formas treaty↔custom? | **Develop**, **crystallise**, **codify** custom; y vincula a las **parties**. |
+| ¿Qué es **jus cogens**? | **Peremptory norms**, sin derogación posible; tratados que las contradicen son **void** (VCLT Arts. 53, 64). |
+| Ejemplos de **jus cogens**? | Slavery, apartheid, crimes against humanity, war crimes, genocide, torture. |
+| ¿Qué son **erga omnes**? | Obligaciones debidas a la comunidad internacional como un todo; cualquier Estado puede invocar responsabilidad. |
+| ¿Hay jerarquía formal de fuentes en PIL? | NO; se valora el **content over source**. |
+
+---
+
+## 🃏 BLOQUE 10 — Islamic Law
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| ¿Qué es la **Shariah**? | "**Divinely revealed rules**"; su validez es ser la voluntad de **Allah**, no de legislador terrenal. |
+| Islamic vs Western law (clave)? | La sociedad se adapta a la ley (revelada de una vez vía **Muhammad**), no la ley a la sociedad. |
+| ¿Los juristas crean ley? | NO: la **descubren** y formulan; ya existe. |
+| Las 4 fuentes ("roots")? | **Qur'an**, **Sunna**, **Ijma**, **Qiyas** (codificadas por **As-Safi'i**, d. 820). |
+| ¿Cuál es la fuente más alta? | El **Qur'an (Koran)** — aunque pocas declaraciones son reglas legales directamente aplicables. |
+| ¿Qué es la **Sunna**? | Práctica inspirada atribuida al profeta y discípulos; 2ª fuente; "**largely unhistorical**" (Schacht). |
+| ¿Qué papel crítico tiene la **ijma**? | El juicio acordado de scholars; solo ella decide qué regla válida sale del Koran/Sunna. |
+| Las 4 escuelas y dónde dominan? | **Maliki** (N/W/C Africa), **Hanafi** (Near/Middle East + Indus), **Shafi'i** (E Africa/Malaysia/Indonesia), **Hanbali** (Saudi Arabia). |
+| ¿Qué son los **hiyal**? | Actos de evasión legal (ej. **double sale** para esquivar la prohibición de usura). |
+| ¿Qué país adoptó el **Swiss Civil Code (1926)**? | **Turkey** — ruptura completa con la family/succession law islámica. |
+| ¿Qué fue la **reislamification**? | Renacimiento religioso tras la **Iranian Revolution** (Khomeini). |
+| ¿Qué es el **Anglo-Muhammadan Law**? | Híbrido en British India: jueces británicos aplicaban Common Law donde la Shariah era deficiente; hoy case-law en India/Pakistán. |
+
+---
+
+## 🃏 BLOQUE 11 — Far East
+
+| Pregunta (EN/ES) | Respuesta |
+|---|---|
+| ¿Por qué no hay "Far Eastern Legal Family"? | China y Japón son **fundamentally different**; legal families "**are not destiny**". |
+| ¿Qué se prefiere a la litigación? | **Conciliation, compromise, and arbitration** (informal dispute resolution). |
+| ¿Quién fue **Confucius** y cuándo? | (**551–479 BC**); enseñó la **cosmic harmony** entre hombre, cielo, tierra y todas las cosas. |
+| ¿Qué son las reglas **li**? | Reglas de conducta "**proper**" calibradas por estatus social (familia, edad, sexo, carrera, prestigio). |
+| ¿Cómo veían los confucianos ir a los tribunales? | Como acto de persona "**disruptive, boorish, and uncultivated**"; virtud está en la **forbearance**. |
+| **Legists** vs **Confucians**? | Legists: hombre egoísta, leyes + **severe penal sanctions**, todos iguales. Confucians: hombre bueno, educación, estatus sagrado. |
+| ¿Qué dinastía favoreció a los Legists? | La **TS'IN (221 BC)** — quemó escritos confucianos. |
+| ¿Qué dinastía restauró el confucianismo 2000 años? | La **HAN (206 BC)**. |
+| ¿En qué se centraban los códigos chinos? | **Criminal and administrative law**; private law resuelto fuera de los tribunales. |
+| ¿En qué se basó el **Japanese Civil Code (1898)**? | En el **German BGB**. |
+| ¿Qué Constitución japonesa de 1889 y 1946? | 1889: modelo **Prussia**. 1946: ideas legales **American**. |
+| ¿Qué son las "**invisible accounts**" japonesas? | Deuda ética de gratitud, no demandable pero "**ethically binding**". |
+
+---
+
+## 🧠 TRUCOS PARA QUE NO SE TE OLVIDE (mnemotecnia gamberra)
+
+### ⭐ OBLIGATORIO 1 — Las 4 fuentes del Islam: **Qur'an · Sunna · Ijma · Qiyas**
+
+**Truco "QSIQ" = "QuieSI, Quiero":** *Quran, Sunna, Ijma, Qiyas.*
+Historia absurda: Imagina a **As-Safi'i** montando un mueble de IKEA con 4 patas (los "roots"). La pata 1 es el **Qur'an** (la palabra directa, viene de fábrica). La pata 2 es la **Sunna** (las instrucciones de montaje del profeta). La pata 3 es la **Ijma** (los scholars discutiendo si la pata está derecha — ¡y son ellos los que deciden!). La pata 4 es el **Qiyas** (analogía: "si esta pata va aquí, esta otra igual va allá").
+Orden de jerarquía: **Qur'an** arriba del todo; la **Ijma** es la jefa que decide qué sacas del Qur'an/Sunna.
+
+### ⭐ OBLIGATORIO 2 — Los 4 teóricos de soberanía en orden: **Bodin → Hobbes → Locke → Rousseau**
+
+**Acrónimo "BHLR" = "Bien Hecho, Listo, Rey".**
+Historia: cuatro tíos en una escalera de poder, de más absolutista a más popular.
+- **Bodin** (1500s): el abuelo monárquico, "**absolute and perpetual power**" (ABSOLUTO = el más antiguo).
+- **Hobbes** (1651): el del **social contract** que te quita la libertad a cambio de seguridad (piensa en "Hobbes = HObby de mandar"). Sigue siendo absoluto.
+- **Locke** (1689): el primero que dice "ojo, soberanía **limited**, hace falta el **consent of the people**" (Locke = LOCK, le pone candado al rey).
+- **Rousseau** (1762): el más moderno y popular, **popular sovereignty** + **general will** (Rousseau = "Rousseau el del pueblo").
+Regla de oro: cuanto MÁS TARDE el año, MÁS PODER AL PUEBLO. 1500s → 1762, de absoluto a popular.
+
+### ⭐ OBLIGATORIO 3 — Las 3 generaciones de derechos
+
+**Truco "Político → Pan → Pueblo" (las 3 P):**
+- **1ª gen = Civil & Political** (lo PolíTICO): negative rights, contra el Estado, origen **Locke**.
+- **2ª gen = Economic, Social & Cultural** (el PAN): "**Human rights begin with breakfast**" — ¡el desayuno es la 2ª gen!, welfare state.
+- **3ª gen = Collective** (el PUEBLO): derechos del grupo, self-determination, medio ambiente.
+Cronología lógica: primero te dejan en paz (1ª), luego te dan de comer (2ª), luego pensamos en el grupo (3ª).
+
+### ⭐ OBLIGATORIO 4 — Article 38 ICJ: las 4 fuentes
+
+**Acrónimo "CCGS" = "Casi Como Gente Seria":**
+- **C**onventions (treaties / international conventions)
+- **C**ustom (international custom = state practice + opinio juris)
+- **G**eneral principles (recognized by civilized nations)
+- **S**ubsidiary means (judicial decisions + teachings of qualified publicists)
+Truco extra: las dos primeras son las "grandes" (treaties y custom), la tercera el comodín (general principles), y la cuarta es el "ayudante" (subsidiary = subsidiario, son de apoyo, NO crean derecho).
+
+### ⭐ OBLIGATORIO 5 — Los 8 principios de Fuller (King Rex)
+
+**Acrónimo "G-P-N-C-N-P-C-C" — piensa: "Gran Pena, No Cumple, Ni Pizca, Coherente, Constante".** Los 8:
+1. **Generality** (que haya reglas, no caso a caso)
+2. **Promulgation** (publicarlas)
+3. **Non-retroactivity** (no hacia atrás)
+4. **Clarity** (comprensibles)
+5. **Non-contradiction** (no contradictorias)
+6. **Possibility of compliance** (que se puedan cumplir)
+7. **Constancy** (no cambiar a cada rato)
+8. **Congruence** (lo anunciado = lo administrado)
+Historia del **King Rex**: un rey inútil que falla en las 8 → resultado: "**no law existed in that community**". Si te acuerdas del rey pringado que (1) no tiene reglas, (2) no las publica, (3) las pone retroactivas... vas tirando del hilo.
+
+### ⭐ OBLIGATORIO 6 — Distinguir **Validity / Efficacy / Justice**
+
+**Truco "¿Pertenece, Funciona o Mola?":**
+- **Validity = ¿PERTENECE?** ¿La norma forma parte del sistema legal? (relacional, formal + material requirements). "**Belonging to a legal system.**"
+- **Efficacy = ¿FUNCIONA?** ¿La gente la obedece o la castigan? (impacto real). No la confundas con **efficiency** = ¿logra su objetivo?
+- **Justice = ¿MOLA (moralmente)?** ¿Se adapta a un ideal de valores? (axiológica, "ultimate goal of law").
+Regla nemo: **V**álida = **V**ínculo con el sistema; **E**ficaz = **E**fecto real; **J**usta = **J**uicio de valores. ¡Las 3 son INDEPENDIENTES a nivel de norma! Puede haber una norma válida, ineficaz e injusta a la vez.
+
+### ⭐ OBLIGATORIO 7 — Las 4 escuelas islámicas y dónde dominan
+
+**Truco "MHSH" con un mapa mental:**
+- **Maliki** → **M**edina (nació ahí) → **M**ayoría de **Á**frica (N, W, C Africa). "Maliki = Mali" (¡Mali está en África Occidental!, te lo chiva).
+- **Hanafi** → Kufa, Iraq → **Near/Middle East + Indus Valley**. "Hanafi suena a 'lejos' / Asia central".
+- **Shafi'i** → de **As-Safi'i** → **East Africa, Malaysia, Indonesia** (zona del Índico/mar). "Shafi'i = Surf/mar = costas e islas del Índico".
+- **Hanbali** → Ibn-Hanbal → **Saudi Arabia**. "HaNBaLi = casa NataL de la BaLa... = Arabia Saudí, la más estricta/conservadora".
+Frase que los une: "**Differences of opinion in my community are a sign of the goodness of Allah.**"
+
+### 🎁 EXTRA — Common Law & Equity
+
+- **Equity prevails** → ¿en reinado de quién? **James I** ("**Just James** = Just/Equity"). Y los Judicature Acts (**1873–75**) lo confirman.
+- Los 3 Chancellors en orden: **Nottingham (1675) → Hardwicke (1737) → Eldon (1801)**. Truco "NHE = No Hay Excusa": Nottingham empieza (sistematiza), Hardwicke desarrolla, Eldon cierra con **precedent**.
+- **Ratio vs obiter**: **Ratio** = la **R**azón de la decisión (vinculante). **Obiter** = lo que se dice de pasada (**O**lvidable, no vinculante).
+- Caso del caracol: **Donoghue v Stevenson** = "**decomposed snail**" → ¿caso del caracol o de productos defectuosos? Es EL ejemplo de razonar por analogía.
+
+### 🎁 EXTRA — Westphalia y el "duo"
+
+- **Westphalia = 1648** → truco: "16-48, el Estado se hace mayor de edad". El **Westphalian duo** = National law + International Public Law (los dos hermanos gemelos del Derecho).
+
+### 🎁 EXTRA — Far East: Legists vs Confucians
+
+- **Legists = LEY dura** ("Legist = Legislación + Látigo"): hombre egoísta, **severe penal sanctions**, todos iguales.
+- **Confucians = CONfían en la bondad**: hombre bueno, educación, estatus sagrado, reglas **li**.
+- Dinastías: **TS'IN (221 BC)** = Legists (quema libros); **HAN (206 BC)** = Confucianismo 2000 años. Truco: "TSin = Tirano Sin libros; HAN = Harmonía ANcestral".
+- China copió derecho **alemán/suizo** (Kuomintang); Japón copió el **German BGB (1898)**. Truco: "los dos asiáticos se enamoraron del alemán".
+
+### 🎁 EXTRA — Constitutionalism: formal vs material
+
+- **Formal** = la constitución es la norma SUPREMA (jerarquía pura). Desde aquí, **UK y China NO** tienen constitución "real".
+- **Material** = solo cuentan las que tienen **democracy + limited government**; si no, son **façade** (fachada).
+- Truco: "Formal = Forma (jerarquía); Material = Materia (democracia + derechos)".
+
+---
+
+# 3) 🗺️ LA AVENTURA NARRATIVA — "Las Crónicas del Reino de Legalia"
+
+> Eres **Fran, el Aprendiz**. Un día normal de junio, un pergamino aparece en tu mesa de CUNEF: *"Solo quien comprenda las 11 Pruebas del Derecho será nombrado Gran Jurista de Legalia. Falla, y serás Becario eterno."* No hay vuelta atrás. Coges tu mochila vacía (que irás llenando de **Botín de conocimiento**) y empiezas el viaje. Cada nivel te enseña la materia DENTRO de la historia. Lee despacio: estás aprendiendo aunque parezca un cuento.
+
+---
+
+## 🌅 NIVEL 1 — El Despertar: "¿Qué es la Ley?"
+
+Fran abre los ojos en una biblioteca infinita. Un anciano con gafas (**Profesor Hart**) le recibe: *"Aprendiz, llevamos 150 años preguntándonos lo mismo y nadie se pone de acuerdo: **What is law?** Nadie escribe libros preguntando '¿qué es la química?', pero sobre la ley... montañas."*
+
+Aparece un fantasma italiano, **Bobbio**, que susurra: *"Cuidado, toda definición de Law tiene 'an element of arbitrariness'."* Fran descubre que el Derecho tiene **tres caras** como un dado mágico: es **a fact** (nace de la sociedad, cambia con la historia), es **a system of norms** (manda conductas) y es **a system of values** (encarna ideas de justicia — y ojo: "**no legal system is politically neutral**").
+
+De repente entra **Lord Denning** con peluca: *"La ley tiene dos grandes objetivos, muchacho: **to preserve order and to do justice** — pero NO siempre coinciden."* Para probarlo, Fran presencia un juicio fantasma: el caso **Bellinger v Bellinger (2001)**. La Sra. Bellinger, mujer transexual, pide que su matrimonio sea válido. La mayoría del tribunal dice que los factores biológicos de **Corbett v Corbett [1971]** mandan, y que cambiar la definición de "female" es cosa del **parliament, not the court**. El juez disidente protesta: "**the world had moved on**". Fran entiende: aquí el **order** (certeza legal) chocó con la **justice** del caso concreto. Y la ley, como ser vivo, "**evolves over time**".
+
+> 🎒 **Botín de conocimiento:**
+> - El Derecho es **multidimensional**: fact + system of norms + values.
+> - **Denning**: order vs justice, y no siempre coinciden.
+> - **Bellinger v Bellinger** + **Corbett v Corbett**: cuando orden y justicia chocan.
+> - **Legal certainty** = content + enforcement + consistent application.
+>
+> 🔓 **Llave para avanzar:** Si la ley es "un producto de la sociedad" y cada sociedad es distinta... ¿significa que hay MUCHAS clases de Derecho en el mundo? Para averiguarlo, Fran debe cruzar la frontera hacia las distintas tradiciones jurídicas.
+
+---
+
+## 🌍 NIVEL 2 — El Atlas de las Familias Jurídicas
+
+Fran cruza un portal y aparece sobre un mapamundi gigante donde cada país brilla de un color. Una guía, la **Maestra de las Tradiciones**, le explica: *"Bienvenido al atlas de las **legal families**. Aquí, el Oeste tiene su propia tradición."* Y le muestra las 4 columnas de la **Western Legal Tradition**: **clear demarcation**, **rule of law**, **legal doctrine** y **coherent body**.
+
+*"El pilar central"*, dice ella señalando una torre luminosa, *"es el **rule of law**: 'no one is above the law'. Sin él, no hay sociedad occidental."*
+
+Fran pisa primero el continente del **Civil Law**: ve a Francia, España e Italia teñidos de azul (**French Civil Law**); Alemania, Austria, Suiza... y sorprendentemente **Japón y Corea del Sur** de verde (**German Civil Law**); y los países nórdicos de blanco (**Scandinavian Civil Law**). Luego salta a la isla del **Common Law**: aquí no hay códigos gordos, sino montones de **cases**. Es **unwritten**, **case-based**, y manda el **precedent**. En una esquina, **South Africa** parpadea con DOS colores: es un **mixed system** (**Roman-Dutch Law** + **English Common Law**). Y allá lejos, China, **largely codified** pero teledirigida por el **Communist Party**, con el viejo concepto **'li'** flotando como un fantasma confuciano.
+
+Por último, la Maestra le da dos pares de gafas. Las primeras separan **public law** (donde el gobierno juega: constitutional, administrative, criminal) de **private law** (donde no: contract, property, tort). Las segundas separan **substantive law** (te da derechos) de **procedural law** (las reglas del juego en los tribunales).
+
+> 🎒 **Botín de conocimiento:**
+> - **Western Legal Tradition**: 4 features, con el **rule of law** como corazón.
+> - Las familias: **Civil** (French/German/Scandinavian), **Common Law**, **Mixed** (South Africa).
+> - **Public vs private** y **substantive vs procedural**.
+>
+> 🔓 **Llave para avanzar:** Todas estas familias usan "reglas". Pero, ¿qué hace que una regla sea LEY de verdad y no las reglas del ajedrez? Para saberlo, Fran entra en un laboratorio donde diseccionan las normas.
+
+---
+
+## 🔬 NIVEL 3 — El Laboratorio de las Normas (Validity / Efficacy / Justice)
+
+Fran entra en un laboratorio lleno de tubos de ensayo etiquetados "NORMA". La **Doctora Normativa** le pone una bata: *"Aquí diseccionamos cada norma con TRES bisturíes: **Validity, Efficacy, Justice**."*
+
+Primero le enseña el lenguaje: hay frases **descriptive** ("what is", se analizan como true/false) y frases **prescriptive** ("what ought to be", NO son ni true ni false). La ley vive en el "ought to be" y manda conductas como **compulsory, prohibited, or allowed**.
+
+Luego, los tres bisturíes:
+1. **Validity (¿pertenece?):** concepto **relacional** — la norma es válida porque pertenece a un sistema legal y cumple **formal + material requirements**; entonces es **binding** y la respalda la fuerza del Estado.
+2. **Efficacy (¿funciona?):** ¿la gente la obedece o la castigan? La gente obedece por **habit, avoiding punishment, agreement o self-interest**. ¡Cuidado!, no es lo mismo que **efficiency** (¿logró su objetivo?).
+3. **Justice (¿mola moralmente?):** la adaptación de la norma a "**a certain ideal system of values**", el "**ultimate goal of law**".
+
+La Doctora abre entonces una caja con 8 cajones (las 8 combinaciones): puede haber una norma **valid, ineffective and unjust**, otra **invalid, effective and just**... porque a nivel de NORMA, las tres son **independientes**. *"Pero"*, advierte, *"a nivel de SISTEMA, se entrelazan: en una democracia, las normas superiores (como el **Article 1.1** de la Constitución) positivizan la justicia, así que una norma no puede ser válida si las contradice."*
+
+> 🎒 **Botín de conocimiento:**
+> - **Validity** (relacional, pertenece al sistema), **Efficacy** (obediencia real, ≠ efficiency), **Justice** (ideal de valores).
+> - **Descriptive** vs **prescriptive** statements.
+> - Norm level = **independence**; legal system level = **interdependence**.
+>
+> 🔓 **Llave para avanzar:** Si la **justice** es el objetivo último de la ley... ¿hay una ley MORAL "superior" contra la que medir todas las leyes? Fran sube una montaña en busca del oráculo del **Natural Law**.
+
+---
+
+## ⛰️ NIVEL 4 — El Oráculo de la Ley Superior (Natural Law)
+
+Fran asciende una montaña neblinosa hasta el **Oráculo de la Higher Law**. Una voz resuena: *"Hay un estándar superior contra el que se juzga toda ley humana. Los iusnaturalistas parten de la **justice**."*
+
+El Oráculo le revela las **dos asunciones** del Natural Law: una posición **cognitivist** en metaética (existen principios morales universales verdaderos, **moral objectivism**, conocibles por la razón) y una posición **dualist** (hay **natural law** ≠ **positive law**).
+
+Aparecen los sabios. **Cicero** (corriente **naturalism**) proclama: *"**True law is right reason in agreement with nature**, universal e inmutable; hay un único legislador: God."* **Aquinas** asiente: los principios naturales nos guían por nuestra naturaleza racional. Luego **Grotius** (corriente **intuitionism**) suelta la bomba: *"El natural law NO necesita a Dios — 'even if there is no God, there would still be uncreated natural justice', tan cierta como 2+2=4."* Y **Finnis** despliega sus siete **basic goods**: life/health, knowledge, play, aesthetic experience, friendship, practical reasonableness, religion.
+
+Entonces el Oráculo plantea la pregunta clave: ¿qué pasa con una ley injusta? **Aquinas** truena: "**Lex iniusta non est lex**" — an unjust law is not law (aunque no siempre justifica desobedecer). **Fuller** llega con su test distinto: la "**internal morality of law**", que NO es de contenido moral sino de **function and procedure**. Y cuenta el cuento del **King Rex**, un rey patético que falla en las 8 formas de hacer Derecho (sin reglas, sin publicarlas, retroactivas, incomprensibles, contradictorias, imposibles, cambiantes, incongruentes) → resultado: "**no law existed in that community**".
+
+Para terminar, el Oráculo proyecta un naufragio: **R v Dudley and Stephens (1884)**. Cuatro náufragos del *Mignonette*; el capitán **Dudley** y **Stephens** matan al grumete **Richard Parker** para comérselo y sobrevivir. ¿Vale la **necessity** como defensa del asesinato? El tribunal (Lord Coleridge) dice NO: "**We are often compelled to set up standards we cannot reach ourselves**". La necesidad no excusa el asesinato.
+
+> 🎒 **Botín de conocimiento:**
+> - Natural Law = **cognitivism** (metaética) + **dualism**.
+> - **Naturalism** (Cicero, Aquinas) vs **Intuitionism** (Grotius, Finnis).
+> - **Aquinas**: "Lex iniusta non est lex". **Fuller**: 8 principios (function & procedure).
+> - **R v Dudley and Stephens**: necessity ≠ defensa de murder.
+>
+> 🔓 **Llave para avanzar:** El natural law habla de "justicia ideal". Pero cuando el Derecho real choca con la justicia... ¿quién lo arregla? Fran viaja a un reino medieval inglés donde existe una corte especial: la **Corte de la Conciencia**.
+
+---
+
+## 🏰 NIVEL 5 — El Reino Medieval y la Corte de la Conciencia (Common Law & Equity)
+
+Fran aterriza en la Inglaterra medieval, tras la **Norman Conquest de 1066**. Ve nacer los tribunales del **common law** del consejo del rey (**curia regis**). Pero hay un problema: el sistema es RÍGIDO. Solo puedes demandar si existe un **writ** que cubra tu caso; los writs son pocos, todo es inflexible, y los poderosos intimidan a los jurados. Mucha gente se queda sin remedio: pura injusticia.
+
+Un campesino agraviado, sin writ que le valga, hace lo único que puede: **petitionar al monarca**, "fountain of justice", apelando a la "**conscience**" y "for the love of God". El rey, harto de tanto papel, deriva las peticiones a su secretario jefe: el **Lord Chancellor**. Así nace, a finales del s. XIV, la **Court of Chancery**, regida por un único principio: la **conscience**, la percepción individual de justicia del Chancellor.
+
+Con el tiempo, tres magos ordenan el caos de la equity: **Lord Nottingham (1675)** la sistematiza, **Lord Hardwicke (1737)** la desarrolla, y **Lord Eldon (1801)** la ancla en el **precedent**. Pero estalla la guerra: cuando common law y equity chocan, la equity usa el **common injunction** para frenar al common law. ¡Escándalo! El conflicto se resuelve en el reinado de **James I**: **equity prevails**.
+
+Siglos después llegan los **Judicature Acts 1873–75**: un único **Supreme Court** con 3 Divisions; cualquiera puede aplicar law y equity; y en conflicto, **equity prevails**. ¿Se fusionaron? El sabio **Ashburner** dice que no del todo: "**the two streams... run side by side and do not mingle their waters**".
+
+Antes de irse, Fran aprende a pensar como un common lawyer: hay que hallar el **ratio decidendi** ("the reason for the decision", vinculante) y distinguirlo del **obiter dicta** (lo dicho de pasada). Y se enfrenta al acertijo del caracol: **Donoghue v Stevenson** — ¿es un caso sobre "a bottle of beer with a decomposed snail" o sobre "defective products"? Razonar por analogía es el arte. Y recita las **maxims**: "**clean hands**", "**delay defeats equity**", "**equity follows the law**".
+
+> 🎒 **Botín de conocimiento:**
+> - Common law nació rígido (**writs**); la **equity** lo corrige vía el **Chancellor** y la **conscience**.
+> - **Equity prevails** (reinado de **James I**; **Judicature Acts 1873–75**).
+> - **Ratio decidendi** vs **obiter dicta**; **Donoghue v Stevenson**.
+> - Las **equitable maxims**.
+>
+> 🔓 **Llave para avanzar:** Hemos visto el Derecho DENTRO de un reino. Pero, ¿quién dice dónde acaba un reino y empieza otro? ¿Quién tiene el poder supremo sobre un territorio? Fran sale al gran tablero de las naciones: el año **1648**.
+
+---
+
+## ♟️ NIVEL 6 — El Tablero de las Naciones (Soberanía / Westphalia)
+
+Fran se planta ante un tablero gigante con forma de Europa. Antes, todo era un magma llamado **Ius Commune**. Pero en **1648**, los tratados de la **Peace of Westphalia** acaban varias guerras y cortan Europa en piezas: los **sovereign Nation-States**, cada uno con poder exclusivo sobre su territorio.
+
+Una herald anuncia: *"¡Desde hoy, el Derecho toma DOS formas y solo dos — el **Westphalian duo**: **national State law** e **International Public Law**!"* Fran observa que cada pieza del tablero (cada Estado) necesita tres cosas para existir: **Sovereignty**, **Government**, y **Territory & Population**.
+
+Entonces aparecen cuatro filósofos sentados en una escalera de poder, de más absolutista a más popular:
+- **Jean Bodin (s. XVI)**, el más antiguo y absolutista: soberanía = "**absolute and perpetual power**", monarquía fuerte.
+- **Thomas Hobbes (1651)**: soberanía absoluta vía **social contract** — cedes libertad por seguridad.
+- **John Locke (1689)**: ¡un giro! **limited sovereignty**, el gobierno deriva del **consent of the people**.
+- **Jean-Jacques Rousseau (1762)**, el más moderno: **popular sovereignty** y la **general will** del pueblo.
+
+Fran nota la regla del tablero: cuanto más tarde el año, más poder al pueblo. Luego la herald le muestra los tipos de soberanía: **internal** (autoridad absoluta dentro) vs **external** (reconocimiento por otras naciones); **legal** vs **political**; **negative** vs **positive**. Y le advierte de los tres monstruos que hoy amenazan la soberanía: **globalization**, **international law/human rights**, y las **supranational institutions** (EU, WTO, UN).
+
+> 🎒 **Botín de conocimiento:**
+> - **Westphalia 1648** → **sovereign Nation-States** + el **Westphalian duo**.
+> - Elementos del Estado: **Sovereignty, Government, Territory & Population**.
+> - Los 4 teóricos en orden: **Bodin → Hobbes → Locke → Rousseau**.
+> - Challenges: globalization, human rights, supranational institutions.
+>
+> 🔓 **Llave para avanzar:** Si los Estados tienen poder soberano... ¿quién evita que ese poder se vuelva tiranía? La respuesta es un documento sagrado que LIMITA al gobierno. Fran entra en la sala donde se firma el pacto fundacional.
+
+---
+
+## 📜 NIVEL 7 — El Pacto Fundacional de Legalia (Constitutionalism)
+
+Fran entra en una sala solemne donde el pueblo de Legalia va a firmar su **constitution**. El **Guardián del Pacto** explica: *"El **constitutionalism** es el principio de que 'legal frameworks should limit government power'. Una constitución regula la **allocation of powers, functions, and duties** entre los órganos del gobierno."*
+
+Le muestra las **4 características** que toda constitución debe cumplir:
+1. Debe ser **prior to a government** (las reglas existen ANTES del gobierno).
+2. Un gobierno legítimo se crea **subject to the specifications of the constitution** — su fuerza viene del **constituent power**, una autoridad superior: en democracia, **the people**.
+3. Es **superior to ordinary law** (los poderes no pueden exceder lo que la constitución concede; empodera Y limita).
+4. Está **entrenched** (protegida frente a reforma ordinaria, tiene longevidad).
+
+El Guardián saca dos cofres. El primero, **Formal Constitutionalism**: la constitución como norma con **absolute legal supremacy**, en la cima de la jerarquía, sujeta a **constitutional review**. *"Desde aquí"*, dice con ironía, *"ni la **British** ni la **Chinese** son constituciones 'reales'."* El segundo cofre, **Material Constitutionalism**: solo son "reales" las que tienen **(representative) democracy** y **limited government**; las demás son **façade constitutions**. Y se subdivide en **democratic** ("government of the people, by the people, for the people") y **liberal** (**separation of powers** + **(human) rights**, "government of laws, not of men"). Fran ve también la distinción **written** (US, Spain) vs **unwritten** (UK).
+
+> 🎒 **Botín de conocimiento:**
+> - **Constitutionalism** = limitar el poder del gobierno.
+> - Las 4 características: **prior, subject to it, superior, entrenched**.
+> - **Formal** (supremacía pura; UK/China no serían "reales") vs **material** (democracy + limited government; si no, **façade**).
+> - **Written** vs **unwritten**.
+>
+> 🔓 **Llave para avanzar:** El **liberal constitutionalism** habla de proteger derechos. Pero, ¿qué derechos son tan sagrados que ni la mayoría puede tocarlos? Fran desciende a la cámara de los derechos fundamentales.
+
+---
+
+## 🛡️ NIVEL 8 — La Cámara de los Derechos Sagrados (Fundamental Rights)
+
+Fran baja a una cámara con vitrinas que protegen derechos. La **Guardiana de los Derechos** explica que proteger los **fundamental rights** se volvió la tarea central de las constituciones del siglo XX, y actúan como freno a la soberanía interna: *"Without fundamental rights, there is no constitution."*
+
+Pero hay un debate fantasmal sobre su ORIGEN. A un lado, los iusnaturalistas: **Maritain** defiende la **dignity of the human person**, y la **American Declaration of Independence** proclama que estamos "**endowed by their Creator with certain unalienable Rights**". Al otro lado, el cínico **Bentham** se ríe: "**Natural rights is simple nonsense**" — los derechos son hijos de la ley positiva.
+
+La Guardiana ordena los derechos en TRES vitrinas (las generaciones):
+1. **First Generation — Civil and Political Rights:** de origen liberal (**Locke**: life, liberty, property). Son **negative rights** contra el Estado (exigen **non-intervention**).
+2. **Second Generation — Economic, Social and Cultural Rights:** la evolución de libertades "negativas" a derechos "positivos" que exigen acción estatal. Resume su esencia el presidente Senghor: "**Human rights begin with breakfast**". Dependen del **welfare state**. Polémicos por su **budgetary impact** y por la **separation of powers**.
+3. **Third Generation — Collective Rights:** derechos del grupo (self-determination, healthy environment, natural resources, cultural heritage).
+
+Por último, Fran aprende las tres concepciones: **formal** (derechos en la constitución), **procedural** (expresión de **distrust in the democratic process**) y **substantial** (tienen una **ideal dimension** ligada a los human rights como moral rights — los derechos constitucionales **positivize human rights**). Y la diferencia en enforcement: **thin** (judicial review solo del ejecutivo) vs **thick** (también de la legislación parlamentaria).
+
+> 🎒 **Botín de conocimiento:**
+> - Origen: natural law (**Maritain**, Declaration) vs positive law (**Bentham**).
+> - Las 3 generaciones: **Civil/Political → Economic/Social/Cultural → Collective**.
+> - "**Human rights begin with breakfast**" = 2ª generación.
+> - **Formal/procedural/substantial** concepts; **thin** vs **thick**.
+>
+> 🔓 **Llave para avanzar:** Hemos visto el Derecho dentro de los Estados. Pero, ¿qué ley gobierna ENTRE los Estados, donde no hay un parlamento mundial ni una policía global? Fran recibe una invitación al Consejo de la ONU.
+
+---
+
+## 🕊️ NIVEL 9 — El Consejo de la ONU (Derecho Internacional)
+
+Fran entra en una sala circular llena de banderas. La **jueza Higgins** le da la bienvenida: *"El **International Law** gobierna las relaciones entre Estados y organizaciones internacionales. In a world divided by politics, 'it is our common language'."*
+
+Lo primero que choca a Fran: aquí NO hay parlamento mundial, NO hay tribunal único, NO hay policía global. El sistema es **consent-based** (los Estados deben ratificar). La ley se forma vía la **ILC** y la **UN General Assembly**; se juzga en el **ICJ, ICC** y otros; y se hace cumplir vía **UN peacekeeping** y coaliciones. **Louis Henkin** lo resume: "**Almost all nations observe almost all principles of international law almost all of the time.**" Tres principios básicos: **sovereign equality of states**, **respect for independence** y **prohibition on war**.
+
+Un funcionario abre el libro sagrado: el **Article 38** del ICJ Statute, con las **cuatro fuentes**:
+- **International conventions** (treaties — los Estados solo se vinculan a lo que firman; VCLT Art. 2(1) define treaty).
+- **International custom** = **state practice** + **opinio juris** (¡los dos elementos!). Ojo al **persistent objector** (objeta desde el inicio → no se vincula) y a los **new states** (sí se vinculan).
+- **General principles** recognized by civilized nations (good faith, equity).
+- **Subsidiary means** (judicial decisions + teachings; NO crean derecho, sin binding precedent — Art. 59 ICJ).
+
+Fran descubre las 4 maneras en que un treaty se relaciona con la custom: vincula a las **parties**, puede **develop**, **crystallise** o **codify** la custom.
+
+Luego suben al piso de la **jerarquía**. Aquí no hay jerarquía formal de fuentes (se valora **content over source**), PERO existen las **peremptory norms (jus cogens)**: normas sin derogación posible, aceptadas por la comunidad de Estados como un todo; los tratados que las contradicen son **void** (VCLT Arts. **53 y 64**). Ejemplos: **slavery, apartheid, crimes against humanity, war crimes, genocide, torture**. Y existen las **obligations erga omnes**: debidas a toda la comunidad internacional, cualquier Estado puede invocar responsabilidad. (Todas las jus cogens son erga omnes, pero no al revés.)
+
+> 🎒 **Botín de conocimiento:**
+> - PIL = **consent-based**, sin parlamento/tribunal/policía global.
+> - **Article 38**: conventions, custom, general principles, subsidiary means.
+> - **Custom** = state practice + opinio juris; **persistent objector**.
+> - **Jus cogens** (void treaties, VCLT 53/64) y **erga omnes**.
+>
+> 🔓 **Llave para avanzar:** Todo lo visto hasta ahora es Derecho occidental o internacional. Pero medio mundo se rige por leyes con una lógica MUY distinta: una ley que viene directamente de lo divino. Fran cruza un desierto hacia cuatro sabios.
+
+---
+
+## 🏜️ NIVEL 10 — El Desierto y los Cuatro Sabios (Islamic Law)
+
+Fran camina por un desierto hasta una jaima. Un erudito le recibe: *"Esto es la **Shariah**: el complejo de '**divinely revealed rules**' que el fiel debe observar. Su único fundamento de validez es que es la voluntad manifiesta de **Allah** — no depende de ningún legislador terrenal."*
+
+El erudito marca la diferencia con Occidente: aquí la ley no cambia para adaptarse a la sociedad; al revés, "**society must adapt itself to the law**", revelada de una vez por todas vía **Muhammad**. Y un matiz crucial: los juristas islámicos no **crearon** ley nueva — la **descubrieron** y formularon, porque ya existía.
+
+Entonces aparece el sabio **As-Safi'i (d. 820)**, que codificó las **cuatro fuentes ("roots")**:
+1. **Qur'an (Koran):** la fuente más alta (aunque pocas frases son reglas legales directas; la mayoría son preceptos éticos).
+2. **Sunna:** la práctica inspirada del profeta y discípulos (tras su muerte en 632, el liderazgo pasó a los **Caliphs**); hoy se reconoce "**largely unhistorical**" (Schacht).
+3. **Ijma:** el juicio ACORDADO de los scholars — la fuente crítica, pues solo ella decide qué regla válida sale del Koran/Sunna.
+4. **Qiyas:** el razonamiento por analogía.
+
+De la **ijma** nacen, por desacuerdos entre scholars lejanos, **cuatro escuelas** (redimidas por el dicho "**Differences of opinion in my community are a sign of the goodness of Allah**"):
+- **Maliki** (fundada en **Medina**) → domina en **North, West, Central Africa**.
+- **Hanafi** (fundada en **Kufa, Iraq**) → domina en el **Near/Middle East + Indus Valley**.
+- **Shafi'i** (de **As-Safi'i**) → domina en **East Africa, Malaysia, Indonesia**.
+- **Hanbali** (de **Ibn-Hanbal**) → domina en **Saudi Arabia**.
+
+El erudito le cuenta un secreto: cuando la doctrina se volvió rígida (desde el s. IX), los tribunales aceptaron actos de evasión, los **hiyal** — como el **double sale** para cobrar interés esquivando la prohibición de usura. Por eso la Shariah quedó limitada sobre todo al **private law**. Y le narra la modernización: desde **1850**, con el declive otomano, llegan el **Majalla**, la adopción de códigos europeos, y el caso radical de **Turkey** (adoptó el **Swiss Civil Code en 1926**). Pero luego, la **Iranian Revolution** de Khomeini trajo la **reislamification of law**.
+
+> 🎒 **Botín de conocimiento:**
+> - **Shariah** = reglas reveladas por **Allah**; la sociedad se adapta a la ley.
+> - Las 4 fuentes: **Qur'an, Sunna, Ijma, Qiyas** (la **ijma** es la clave).
+> - Las 4 escuelas: **Maliki/Hanafi/Shafi'i/Hanbali** y dónde dominan.
+> - **Hiyal** (double sale); **Turkey 1926**; **reislamification** (Khomeini).
+>
+> 🔓 **Llave para avanzar:** Hemos visto una ley que viene de lo divino. Pero hay culturas donde la idea misma de ir a un tribunal se considera VERGONZOSA. Fran emprende su último viaje hacia un templo en Oriente.
+
+---
+
+## ⛩️ NIVEL 11 — El Templo de Confucio (Far East)
+
+Fran llega al último nivel: un templo silencioso en Oriente. Un monje le advierte de entrada: *"Aquí descubrirás que las asunciones occidentales sobre la ley son 'temporary and local', no universales. En el Far East, la **informal dispute resolution** — **conciliation, compromise, and arbitration** — es enormemente más importante que litigar."*
+
+El monje presenta al maestro **Confucius (551–479 BC)**, que enseñó que el hombre, el cielo, la tierra y todo forman un universo en **harmonía cósmica**. Las reglas de conducta "proper" se llaman **li**, calibradas según el estatus social (familia, edad, sexo, carrera, prestigio). *"Quien arrastra a un vecino a un tribunal público"*, dice el maestro, *"es 'disruptive, boorish, and uncultivated'. La virtud está en la **forbearance**, en aceptar la injusticia antes que insistir en tus derechos legales."*
+
+Fran presencia la antigua guerra entre dos bandos: los **Legists** (el hombre es egoísta, hay que disciplinarlo con legislación y **severe penal sanctions**; todos iguales ante la ley) y los **Confucians** (el hombre es bueno, se le educa, y las diferencias de estatus son sagradas). La **TS'IN dynasty (221 BC)** favoreció a los Legists y quemó los libros confucianos; pero la **HAN dynasty (206 BC)** restauró el confucianismo como **ideology of the state for two thousand years**.
+
+El monje le muestra dos caminos distintos, porque NO existe una "Far Eastern Legal Family" — China y Japón son **fundamentally different**:
+- **China:** sus códigos (el más antiguo completo, **T'ANG dynasty, s. VII**) trataban casi solo **criminal and administrative law**; el private law se resolvía fuera de los tribunales. Tras las "unequal treaties" (desde **1850**), el Kuomintang copió derecho **alemán y suizo**; en **1949** **Mao** funda la RPC; la **Cultural Revolution** persigue a los abogados; y tras la muerte de Mao (1976), **Deng Xiaoping** lidera un renacimiento legal (el **1987 Fundamentals of Private Law**). Pero **Lubman** advierte: sin reforma política, la ley en China no tendrá el valor que le atribuye Occidente.
+- **Japón:** copió primero del Este (cultura china, **Shogun**, **Tokugawa**), luego del Oeste tras la **Meiji** (las "unequal treaties" de 1853). En **1898** el Japanese Civil Code se basó en el **German BGB**; en 1889 la Constitución imitó a Prusia; tras la WWII, la Constitución de 1946 trajo ideas **americanas**. Pero el "living law" divergió: persistieron la conciliación, los middlemen y las "**invisible accounts**" (deuda ética de gratitud, no demandable pero "ethically binding").
+
+El monje cierra con la gran lección: *"**Reception ≠ Implementation**. Ambos importaron códigos, pero el derecho vivido fue otro. Y recuerda: las **legal families are not destiny** — no te las tomes demasiado en serio."*
+
+> 🎒 **Botín de conocimiento:**
+> - **Confucius** + las reglas **li** + preferencia por la conciliación sobre la litigación.
+> - **Legists vs Confucians**; **TS'IN (Legists)** vs **HAN (Confucianismo 2000 años)**.
+> - China (criminal/administrative codes; Mao; Cultural Revolution; Deng) vs Japón (**German BGB 1898**; influencia americana post-WWII).
+> - **Reception ≠ Implementation**; legal families "are not destiny".
+>
+> 🔓 **Llave final:** Fran ha completado las 11 Pruebas. El pergamino brilla y se transforma en un diploma: *"Por comprender el Derecho en todas sus formas — de Hart a Confucio, de la equity al jus cogens — yo te nombro **GRAN JURISTA DE LEGALIA**."* El miércoles 24 de junio, ese título se llama "aprobado". Ve a por él.
+
+---
+
+# 4) 📅 PLAN DE JUEGO DE LA SEMANA
+
+> Hoy es martes 17 de junio. Tienes hasta el miércoles 24. Una semana exacta. Aquí va el plan para no agobiarte y llegar con el examen dominado.
+
+**Lógica general (para CADA bloque nuevo):**
+1. 🗺️ **Misión narrativa primero** → para ENTENDER el tema sin que te aburras (la historia te mete los conceptos sin darte cuenta).
+2. 🃏 **Flashcards después** → para FIJAR términos en inglés y definiciones (tapa la respuesta, responde en voz alta).
+3. 🎯 **Quiz al final** → para AUTOEVALUARTE y ver qué falta.
+
+**Reparto sugerido (ajústalo a tu ritmo):**
+- **Mar 17:** B1 + B2 (misión → flashcards → quiz de cada uno). Calienta motores.
+- **Mié 18:** B3 + B4. (Natural Law cae mucho: dale cariño a Fuller y Dudley & Stephens.)
+- **Jue 19:** B5 + B6. (Equity y Westphalia: ojo a fechas y a los 4 teóricos.)
+- **Vie 20:** B7 + B8. (Constitutionalism y Rights: formal/material y las 3 generaciones.)
+- **Sáb 21:** B9 (Derecho Internacional, el más denso: Article 38, jus cogens, erga omnes).
+- **Dom 22:** B10 + B11 (Islam y Far East: las 4 fuentes, las 4 escuelas, Confucio).
+- **Lun 23 — DÍA DE REPASO TOTAL:** haz TODO el quiz seguido + los 11 **👹 Jefes Finales**. Apunta lo que falles y repasa SOLO esas flashcards por la noche.
+- **Mar 23 noche / Mié 24 mañana:** repaso ligero de mnemotecnias (los 7 trucos obligatorios) y de los Jefes Finales que fallaste. Nada nuevo. Duerme bien.
+
+**Regla de oro de Fran:** cada vez que falles una pregunta, NO te frustres — vuelve a la flashcard, y reintenta esa pregunta al día siguiente. Eso es subir de **becario** a **juez**. Tú puedes. 👑
+
+---
+
+---
+
+# 🔥 PARTE 2 — AMPLIACIÓN COMPLETA (temario entero, 26 lectures)
+
+> ¡Ya están descargados de Canvas los temas que faltaban! Aquí van **6 bloques nuevos**, mismo formato (quiz con puntos + 👹 jefe final, flashcards, mnemotecnia y misión). Con esto el temario está **COMPLETO**. Nuevo máximo de XP por ronda ≈ **3.300** (17 bloques), así que para llegar a 👑 **Juez del Supremo** ahora necesitas sumar más rondas. ¡A por ello!
+
+## 🗺️ Dónde encajan (mapa actualizado)
+| Bloque nuevo | Va justo después de… | 🎯 Quiz | 🃏 Flash | ⚔️ Misión |
+|---|---|---|---|---|
+| **B12 Legal Positivism** | B4 Natural Law | 7+jefe | 9 | El Duelo de los Tres Sabios (I) |
+| **B13 Legal Realism** | B12 | 7+jefe | 9 | El Duelo de los Tres Sabios (II) |
+| **B14 Justice & Theories of Justice** | B13 | 9+jefe | 11 | El Juicio del Velo |
+| **B15 Civil Law Tradition** (Roman/Ius Commune/Features) | B2 Familias | 8+jefe | 12 | La Ciudad Eterna y la Forja de los Códigos |
+| **B16 Common Law History** | B15 (antes de Equity) | 6+jefe | 10 | La Fortaleza de los Writs de Hierro |
+| **B17 European Union** (Understanding + Scope) | tras Internacional | 7+jefe | 11 | El Consejo de las Estrellas Azules |
+
+---
+
+## 🎯👹 B12 — LEGAL POSITIVISM
+
+**12.1 (10) Completa Austin:** "The existence of law is one thing; its ___ or demerit is another."
+*R:* **merit**. El positivismo separa lo que el derecho **es** de si es bueno o malo.
+
+**12.2 (20) MC.** El positivismo jurídico pone en el centro de su teoría:
+- A) justice  B) **validity** ✅  C) efficacy  D) morality
+*Por qué:* Natural Law → **justice**; **Legal Positivism → validity**; Legal Realism → **efficacy**.
+
+**12.3 (20) MC.** Las dos tesis básicas del positivismo son:
+- A) **Social thesis + Separability thesis** ✅  B) cognitivism + dualism  C) order + justice  D) act + rule
+*Por qué:* **Social thesis** (el derecho es un hecho social/convención) + **Separability thesis** (no hay conexión necesaria entre derecho y moral).
+
+**12.4 (20) Corta.** ¿Qué problema lógico señaló **Hume** contra el naturalismo?
+*R:* El salto **is/ought**: de premisas de hecho ("is") no se sigue lógicamente un "ought" (la **naturalistic fallacy**; la conclusión mete un término que no estaba en las premisas).
+
+**12.5 (20) MC.** Kelsen sobre la justicia:
+- A) la conoce con certeza  B) **"I cannot say what justice is… I must accept a relative justice"** ✅  C) la niega del todo
+*Por qué:* Kelsen, positivista, asume una **justicia relativa**: no hay justicia absoluta cognoscible.
+
+**12.6 (30) MC.** En el debate post-WWII sobre los regímenes nazis:
+- A) **Radbruch culpó al positivismo ("law is law"); Garzón Valdés dijo que los juristas nazis usaban un iusnaturalismo desviado** ✅
+- B) ambos culparon al iusnaturalismo  C) ambos al positivismo  D) nadie opinó
+*Por qué:* Es el famoso cruce de acusaciones sobre por qué los juristas alemanes no resistieron las leyes nazis.
+
+**12.7 (30) Corta.** Diferencia **inclusive** vs **exclusive legal positivism**.
+*R:* **ILP**: la moral **puede** ser criterio de validez **si el sistema la incorpora** (separabilidad posible, no necesaria). **ELP**: la moral **nunca** puede ser criterio de validez; la validez se basa solo en **social facts/pedigree** (legislación, precedente, fuentes sociales determinadas).
+
+**👹 JEFE FINAL B12 (50).** Explica por qué el positivismo es "descriptivo y neutral" y cómo encaja con su "**emancipatory power**".
+*Modelo:* Es una **teoría descriptiva** sobre la naturaleza del derecho: describe qué cuenta como law según **social facts**, sin prescripciones normativas, separando "**what law is**" de "**what law ought to be**". Su **poder emancipador**: al exponer que el derecho es **creación humana** (contingente y mutable), no hay excusa para aceptar el status quo — si está roto, **puede y debe arreglarse** (Bentham: "law is something men add to the world, not find within it").
+
+**🃏 Flashcards B12** (tapa la R):
+- P: Frase-resumen de Austin → R: *"The existence of law is one thing; its merit or demerit is another."*
+- P: Social thesis → R: El derecho es un **social fact/convención**.
+- P: Separability thesis → R: **No hay conexión necesaria** entre derecho y moral.
+- P: Hume's gap → R: No se deriva un **ought** de un **is**.
+- P: Monist position → R: "law" se aplica **solo al positive law**.
+- P: Kelsen y la justicia → R: *"I must accept a relative justice."*
+- P: Radbruch vs Garzón Valdés → R: Radbruch culpó al positivismo; Garzón Valdés, a un iusnaturalismo desviado.
+- P: Inclusive LP → R: La moral **puede** ser criterio de validez (si el sistema la incorpora).
+- P: Exclusive LP → R: La moral **nunca** es criterio de validez; solo social facts/pedigree.
+
+**🧠 Mnemo:** **"NPR"** (como la radio) = **N**atural→justice, **P**ositivism→validity, **R**ealism→efficacy. Tesis del positivismo = **"SoSe"** (**So**cial + **Se**parability).
+
+**⚔️ Misión — El Duelo de los Tres Sabios (Acto I: el Escriba de Hierro).** En la Torre de la Validez vive el Escriba **Austin**, que sella leyes sin mirar si son buenas o malas ("una ley que existe es ley, aunque la odies"). Te enseña el conjuro **is/ought** de Hume para no caer al Abismo Naturalista. *Objetivo:* dominar social + separability thesis. *Jefe:* el Fantasma de Núremberg (debate nazi). *Loot:* inclusive/exclusive positivism, Kelsen.
+
+---
+
+## 🎯👹 B13 — LEGAL REALISM
+
+**13.1 (10) Completa Holmes.** El derecho son "the ___ of what the courts will do in fact."
+*R:* **prophecies** (profecías). El derecho como **predicción**.
+
+**13.2 (20) MC.** El legal realism:
+- A) reduce efficacy a validity  B) **reduce validity a efficacy** (válidas = las normas que los jueces aplican) ✅
+*Por qué:* Para el realismo, la validez se mide por lo que los tribunales **hacen de hecho**.
+
+**13.3 (20) Completa.** "The life of the law has not been logic: it has been ___."
+*R:* **experience** (Holmes).
+
+**13.4 (20) MC.** Las dos escuelas del realismo son:
+- A) **American** (pragmática/conductista, "law in action") y **Scandinavian** (ataque filosófico, Alf Ross) ✅
+*Por qué:* ambas rechazan mezclar derecho y moral y desconfían de valores absolutos como "justice".
+
+**13.5 (20) Corta.** ¿Qué es el **hungry judge effect**?
+*R:* Hallazgo empírico de que los jueces fallan **más benévolamente tras comer**: factores no jurídicos (hambre/fatiga) influyen en la decisión.
+
+**13.6 (30) MC.** En **US v E.C. Knight (Sugar Trust)** el realismo critica que:
+- A) **se decidió "on labels", ignorando las consecuencias reales** (formalism / mechanical jurisprudence) ✅
+*Por qué:* se rechazó regular un monopolio del 98% del azúcar por una etiqueta ("manufacturing" ≠ "commerce"), ignorando la realidad económica.
+
+**13.7 (30) Corta.** Para **Alf Ross**, ¿qué significa "norm N is the law in force"?
+*R:* Una **predicción** de que los jueces aplicarán N en el futuro (porque la sienten **binding**). El derecho como **ciencia empírica/verificable**.
+
+**👹 JEFE FINAL B13 (50).** Explica la "**law as prophecy / predictive theory**" con el ejemplo del contrato.
+*Modelo:* Una norma es derecho si **predice con acierto lo que hará un tribunal**. Decir "este intercambio de promesas es un **contract**" equivale a predecir que un tribunal lo **hará cumplir** si se le pide; si el tribunal **no** lo hace cumplir, **no hay contrato** como cuestión de derecho. El objeto del estudio del derecho es "**the prediction of the incidence of the public force through the instrumentality of the courts**" (Holmes).
+
+**🃏 Flashcards B13:**
+- P: "Law as prophecy" → R: el derecho = predicción de lo que harán los tribunales (Holmes).
+- P: "The life of the law…" → R: *…has not been logic, it has been experience.*
+- P: American Realism → R: pragmático/conductista, "law in action".
+- P: Scandinavian Realism → R: ataque filosófico a los fundamentos metafísicos (Alf Ross).
+- P: validity ↔ efficacy → R: el realismo **reduce validity a efficacy**.
+- P: hungry judge effect → R: jueces más benévolos tras comer.
+- P: US v E.C. Knight → R: crítica al formalismo (decidir "on labels").
+- P: McLean v Arkansas → R: **falsabilidad**: "creation science" no es ciencia (no testable/refutable).
+- P: Alf Ross → R: "N is law in force" = predicción de que los jueces aplicarán N.
+
+**🧠 Mnemo:** Realism = **lo que el juez REAL hace** (experiencia, no lógica). Para el sesgo: **"juez con HAMbre = condena dura"**.
+
+**⚔️ Misión — El Duelo de los Tres Sabios (Acto II: la Oráculo de los Tribunales).** La maga **Holmes** no lee leyes: lee el **futuro** y profetiza qué hará el juez. En el Comedor de los Jueces descubres que un juez **hambriento** condena más duro. *Objetivo:* entender validity→efficacy. *Jefe:* el Trust del Azúcar (E.C. Knight). *Loot:* law as prophecy, Alf Ross, falsabilidad.
+
+---
+
+## 🎯👹 B14 — JUSTICE & THEORIES OF JUSTICE
+
+**14.1 (10) MC.** Los **tres tipos de justicia** son:
+- A) **Corrective, Distributive, Formal** ✅  B) civil, criminal, constitutional
+*Por qué:* son las tres caras de la justicia como concepto moral aplicado al derecho.
+
+**14.2 (20) MC.** **Corrective justice** es:
+- A) repartir bienes  B) **rectificar daños entre dos partes, restaurar el equilibrio** (la balanza) ✅
+*Por qué:* se discute en tort y contract law; símbolo: las **scales** (equilibrio) y la **blindfold** (imparcialidad).
+
+**14.3 (20) MC.** Los tres valores de la **distributive justice** democrática son:
+- A) **Freedom, Equality, Solidarity** ✅
+*Por qué:* "giving each his/her due" estructurando sociedad y gobierno.
+
+**14.4 (20) Corta.** Principio clave de la **formal justice**.
+*R:* Las reglas se aplican al **acto, no al actor** (depersonalización); es la base de la **legal certainty** (ej. **habeas corpus**, **in dubio pro reo**).
+
+**14.5 (20) MC.** **Ross** decía que invocar la justicia es:
+- A) un argumento racional  B) **"banging on the table"**: expresión emocional / persuasión, no argumento ✅
+
+**14.6 (20) MC.** El **utilitarismo** sostiene que la justicia es:
+- A) respetar la propiedad  B) **maximizar la felicidad** (Bentham: pain/pleasure, **principle of utility**) ✅
+
+**14.7 (20) Corta.** **Transplant dilemma**: act vs rule utilitarian.
+*R:* **Act**: sacrificar al sano para salvar a 5 (maximiza vidas **inmediatas**). **Rule**: "no matar nunca a un sano para sus órganos" (preserva la **confianza** en la medicina). El **rule utilitarianism** es el más relevante en derecho.
+
+**14.8 (30) MC.** **Rawls** propone:
+- A) **veil of ignorance + maximin**: eliges las reglas sin saber tu posición, y maximizas la posición del **peor situado** ✅
+*Por qué:* sus **dos principios**: (1) **equal basic liberties** para todos; (2) **democratic equality of opportunity**.
+
+**14.9 (30) MC.** **Nozick** defiende:
+- A) un Estado fuerte redistribuidor  B) **un minimal state + entitlement theory**: la distribución actual es justa salvo prueba en contra; **voluntary exchange**; liberty y equality son incompatibles ✅
+
+**👹 JEFE FINAL B14 (50).** Compara **Utilitarianism vs Rawls vs Nozick** (una idea cada uno).
+*Modelo:* **Utilitarianism** = la mayor felicidad para el mayor número (riesgo: sacrifica al individuo/minoría — *devaluation of personhood*, majoritarianism). **Rawls** = *justice as fairness*: lo que elegirías tras el **veil of ignorance**, protegiendo al **menos aventajado** (maximin). **Nozick** = **minimal state**: justicia = respetar **property rights** e intercambios **voluntarios**, sin imponer patrones de distribución.
+
+**🃏 Flashcards B14:**
+- P: 3 tipos de justicia → R: Corrective / Distributive / Formal.
+- P: Corrective justice → R: rectificar daños, restaurar el equilibrio (balanza).
+- P: Distributive justice → R: "giving each his due"; valores: freedom/equality/solidarity.
+- P: Formal justice → R: reglas al **acto, no al actor**; legal certainty.
+- P: Ross sobre la justicia → R: "banging on the table" (emoción, no argumento).
+- P: Principle of utility → R: maximizar felicidad (Bentham, pain/pleasure).
+- P: Act vs Rule utilitarianism → R: consecuencias del **acto** concreto vs de la **regla** general.
+- P: Veil of ignorance → R: elegir reglas sin saber tu posición social.
+- P: Maximin → R: maximizar la posición del peor situado.
+- P: Rawls' 2 principles → R: equal basic liberties + democratic equality of opportunity.
+- P: Nozick → R: minimal state, entitlement theory, voluntary exchange.
+
+**🧠 Mnemo:** Justicia = **"CDF"** (Corrective/Distributive/Formal). Distributiva = **"FES"** (Freedom/Equality/Solidarity). Teorías = **"U-R-N"**: **U**tilitarian (felicidad), **R**awls (velo/fairness), **N**ozick (libertad/propiedad). Recuerda: **"Rawls = velo; Nozick = sin velo (libertad)"**.
+
+**⚔️ Misión — El Juicio del Velo.** Para entrar al Reino Justo te pones el **Velo de la Ignorancia** de Rawls: diseñas las leyes sin saber si nacerás rey o mendigo (así eliges **maximin**). En la sala brillan la **balanza** (corrective), el **reparto** (distributive) y la **regla ciega** (formal). *Jefe:* el Dilema del Trasplante (¿act o rule?). *Loot:* veil of ignorance, entitlement theory.
+
+---
+
+## 🎯👹 B15 — CIVIL LAW TRADITION (Roman Law · Ius Commune · Features)
+
+**15.1 (10) MC.** Los **tres pilares** del civil law son:
+- A) **Roman law, Germanic customary law, Canon law** ✅
+*Por qué:* su fusión histórica formó el **ius commune**.
+
+**15.2 (10) MC.** La primera gran codificación romana (450 BC) fue:
+- A) el Corpus Juris  B) **the Twelve Tables** ✅
+*Por qué:* primera codificación pública del derecho civil romano; duró ~1000 años.
+
+**15.3 (20) MC.** Empareja: **ius gentium** y **ius honorarium**.
+- A) **ius gentium = derecho común a todos los pueblos bajo Roma; ius honorarium = derecho flexible creado por los praetores** ✅
+*Por qué:* el **ius civile** era solo para los **cives Romani**; el **ius gentium** amplió el alcance; tras la **Constitutio Antoniniana (212)** la distinción se difuminó.
+
+**15.4 (20) Corta.** ¿Qué es el **Corpus Juris Civilis** y sus partes?
+*R:* La codificación de **Justinian** (534): **Codex** (legislación imperial), **Digest** (la mayor; extractos de juristas) e **Institutions** (manual para estudiantes).
+
+**15.5 (20) MC.** El **ius privatum** romano se divide en:
+- A) **law of persons, things, actions** ✅
+*Por qué:* personas (status/familia), cosas (propiedad/contratos/sucesiones) y acciones (remedios/procedimiento).
+
+**15.6 (20) MC.** El **ius commune** es:
+- A) **la fusión de Roman + Canon + Germanic law, revivida en la universidad de Bologna** ✅
+*Por qué:* tras el redescubrimiento del **Digest**, las universidades formaron juristas que lo difundieron por Europa.
+
+**15.7 (20) MC.** Los dos grandes códigos nacionales:
+- A) **French Civil Code 1804** (private property, freedom of contract, patriarchal family) y **German BGB 1900** (5 libros, conceptualismo) ✅
+
+**15.8 (30) MC.** Sobre las **fuentes** y el razonamiento del civil law:
+- A) jerarquía **statutes > regulations > custom**; **sin stare decisis formal**, pero existe **jurisprudence constante**; derecho "**found not made**" (French CC **Art. 4**) ✅
+*Por qué:* razonamiento **deductivo** en un **closed system**; el juez no puede negarse a juzgar.
+
+**👹 JEFE FINAL B15 (50).** Traza el viaje del derecho romano hasta los códigos modernos.
+*Modelo:* **Twelve Tables (450 BC)** → desarrollo clásico (**ius civile/gentium/honorarium**, juristas) → **Corpus Juris Civilis** de Justiniano (**534**: Codex/Digest/Institutions) → **caída de Roma (476)** y fragmentación → redescubrimiento del **Digest** y revival en **Bologna** → **ius commune** (Roman+Canon+Germanic) → **School of Natural Law** + nacionalismo → **codificación**: **French Code 1804** y **German BGB 1900**.
+
+**🃏 Flashcards B15:**
+- P: 3 pilares del civil law → R: Roman, Germanic customary, Canon.
+- P: Twelve Tables → R: primera codificación romana, **450 BC**.
+- P: ius civile → R: derecho propio de los ciudadanos romanos (cives).
+- P: ius gentium → R: derecho común a todos los pueblos bajo Roma.
+- P: ius honorarium → R: derecho flexible creado por los **praetores**.
+- P: Corpus Juris Civilis → R: Justiniano, 534: **Codex, Digest, Institutions**.
+- P: ius privatum → R: law of **persons, things, actions**.
+- P: ius commune → R: Roman+Canon+Germanic, revivido en **Bologna**.
+- P: French Code → R: **1804**, Napoleón (propiedad, contrato, familia patriarcal).
+- P: German BGB → R: **1900**, 5 libros, conceptualismo.
+- P: Fuentes civil law → R: statutes > regulations > custom.
+- P: ¿Stare decisis? → R: No formal, pero **jurisprudence constante**.
+
+**🧠 Mnemo:** 3 pilares = **"RoGeCa"** (Roman/Germanic/Canon). Corpus Juris = **"CoDI"** (Codex/Digest/Institutions). ius privatum = **"PTA"** (Persons/Things/Actions). Fuentes = **"SRC"** (Statutes/Regulations/Custom). Códigos = **"Francia 1804, Alemania 1900"**.
+
+**⚔️ Misión — La Ciudad Eterna y la Forja de los Códigos.** Viajas a Roma y grabas las **Doce Tablas** en bronce; el emperador **Justiniano** te entrega el **Corpus Juris** (3 tomos: CoDI). Mil años después, en **Bologna**, redescubres el **Digest** y forjas el **ius commune**; luego Napoleón (1804) y los alemanes (1900) lo funden en sus **códigos**. *Jefe:* el Juez que "no puede negarse a juzgar" (Art. 4). *Loot:* ius civile/gentium/honorarium, codificación.
+
+---
+
+## 🎯👹 B16 — COMMON LAW HISTORY
+
+**16.1 (10) MC.** ¿Quién mandó jueces por **circuitos** unificando el derecho inglés?
+- A) **Henry II (1154-1189)** ✅
+*Por qué:* sus circuit judges crearon un derecho "**common to all**".
+
+**16.2 (10) MC.** Antes de 1066, el derecho inglés era esencialmente:
+- A) romano  B) **Germanic folk-law (anglosajón)** ✅
+
+**16.3 (20) MC.** El **writ system** funcionaba así:
+- A) **las acciones empezaban con un writ del chancery; sin un writ que encajara (Register of Writs), no había remedio** → "forms of action" ✅
+
+**16.4 (20) Corta.** ¿Por qué el writ system llevó a la **equity**?
+*R:* Por su **rigidez**: reglas estrictas y "sin writ no hay remedio" producían **injusticia**, así que se desarrolló la **equity** para remediarlo.
+
+**16.5 (20) MC.** **Bentham** y **Austin** criticaron el common law como:
+- A) **"merely imaginary" (Bentham) / "childish fiction" — declaratory theory (Austin)** ✅
+*Por qué:* se burlaban de la idea de que los jueces "declaran" un derecho eterno en vez de crearlo.
+
+**16.6 (30) MC.** Los **cuatro factores de supervivencia** del common law en el s. XVI:
+- A) **monarcas Tudor refashion (no eliminan); nuevos tribunales (Chancery, Star Chamber); el restatement de Coke; los Inns of Court ("toughness of a taught tradition")** ✅
+
+**👹 JEFE FINAL B16 (50).** Explica cómo el **writ system** fue a la vez la **base** y la **debilidad** del common law.
+*Modelo:* El writ system (**writs** del chancery, **forms of action**) **creó** el derecho común al estandarizar acciones y procedimientos (**procedure antes que substance**); pero su **rigidez** (sin un writ que encajara no había remedio) producía **injusticia**, lo que dio lugar a la **equity**. En el s. XVI casi sucumbe ante la presión del Roman law, pero sobrevive por **4 factores** (Tudor, nuevos tribunales, Coke, Inns of Court).
+
+**🃏 Flashcards B16:**
+- P: Derecho inglés pre-1066 → R: Germanic folk-law (anglosajón).
+- P: Henry II → R: jueces de circuito → derecho común.
+- P: Writ system → R: acción = writ del chancery; sin writ, no remedio.
+- P: Forms of action → R: categorías rígidas ligadas a cada writ.
+- P: Register of Writs → R: catálogo de writs disponibles.
+- P: ¿Por qué nació la equity? → R: por la rigidez/injusticia del writ system.
+- P: Crítica de Bentham → R: el common law es "merely imaginary".
+- P: Crítica de Austin → R: "childish fiction" (declaratory theory).
+- P: 4 factores de supervivencia → R: Tudor, nuevos tribunales, Coke, Inns of Court.
+- P: Inns of Court → R: "the toughness of a taught tradition" (Maitland).
+
+**🧠 Mnemo:** **"Sin WRIT, no hay remedio → nace la Equity."** Los 4 guardianes Tudor = **"T-N-C-I"** (Tudors / New courts / Coke / Inns).
+
+**⚔️ Misión — La Fortaleza de los Writs de Hierro.** En la Inglaterra de **Henry II**, jueces-jinetes recorren circuitos forjando un derecho común. Para demandar necesitas un **writ** del Register; si tu agravio no tiene writ, te quedas **sin remedio** (¡por eso en la misión vecina nace la **Equity**!). En el s. XVI la fortaleza casi cae, pero **4 guardianes** (Tudor, nuevos tribunales, Coke, Inns of Court) la salvan. *Jefe:* el Burócrata de las Forms of Action. *Loot:* writ system, forms of action.
+
+---
+
+## 🎯👹 B17 — EUROPEAN UNION (Understanding + Scope & Intensity)
+
+**17.1 (10) MC.** La UE es:
+- A) una federación como EEUU  B) **ni federación (EEUU) ni mera OI (ONU): pools sovereignty** ✅
+
+**17.2 (20) MC.** **Van Gend en Loos (1963)** estableció:
+- A) **el direct effect** (el derecho UE crea derechos para los individuos que los tribunales nacionales deben proteger) ✅
+
+**17.3 (20) MC.** **Costa v ENEL (1964)** estableció:
+- A) **la primacy** del derecho UE sobre el nacional en conflicto ✅
+*Por qué:* definió el derecho UE como "**an independent source of law**".
+
+**17.4 (20) Corta.** ¿Qué tratado **creó la UE** y cuándo? ¿Y cuál reformó su estructura?
+*R:* La creó **Maastricht (1993)**; la reformó **Lisbon (2009)** (tras el rechazo del Constitutional Treaty).
+
+**17.5 (20) MC.** Los **tres principios** que rigen el alcance de la UE:
+- A) **enumeration/conferral, subsidiarity, proportionality** ✅
+*Por qué:* qué puede hacer (enumeration), cuándo debe (subsidiarity) y hasta dónde (proportionality).
+
+**17.6 (20) MC.** Las competencias de la UE se clasifican en:
+- A) **exclusive / shared / complementary** ✅
+*Por qué:* en las **shared**, si hay conflicto **prevalece el derecho UE** (supremacy).
+
+**17.7 (30) MC.** Según el **Art. 288 TFEU**:
+- A) **Regulations** (directly applicable, sin transposición), **Directives** (binding as to result, con transposition, libres en forma/método), **Decisions** (binding) ✅
+*Por qué:* recommendations y opinions **no** son vinculantes.
+
+**👹 JEFE FINAL B17 (50).** Diferencia **Regulation** vs **Directive** y explica la **subsidiarity**.
+*Modelo:* **Regulation** = general, **vinculante en su totalidad** y **directamente aplicable** en todos los Estados (sin transposición). **Directive** = **vinculante en cuanto al resultado**, pero los Estados eligen **forma y método** y deben **transponerla** en un plazo. **Subsidiarity** = la UE solo actúa si los Estados **no pueden** lograr suficientemente los objetivos; se prefiere la **acción nacional** cuando es igual de eficaz (los parlamentos nacionales pueden sacar "**yellow cards**").
+
+**🃏 Flashcards B17:**
+- P: ¿Qué es la UE? → R: entidad única que **pools sovereignty** (ni federación ni mera OI).
+- P: Van Gend en Loos (1963) → R: **direct effect**.
+- P: Costa v ENEL (1964) → R: **primacy** del derecho UE.
+- P: ¿Tratado que creó la UE? → R: **Maastricht, 1993**.
+- P: ¿Tratado actual? → R: **Lisbon, 2009**.
+- P: Hitos fundacionales → R: ECSC **1951**, EEC (Treaties of Rome) **1957**.
+- P: 3 pilares (1993-2009) → R: EC (supranacional) / CFSP / JHA (intergubernamentales).
+- P: Instituciones → R: Parliament, Council, Commission, Court of Justice.
+- P: 3 principios de alcance → R: enumeration, subsidiarity, proportionality.
+- P: Competencias → R: exclusive / shared / complementary.
+- P: Art 288 TFEU → R: Regulations / Directives / Decisions.
+
+**🧠 Mnemo:** Límites de la UE = **"ESP"** (**E**numeration / **S**ubsidiarity / **P**roportionality). Casos: **"VGL = direct effect; Costa = primacy"** (*Costa cuesta más → prevalece*). Art 288 = **"R-D-D"** (Regulations directas, Directives se transponen, Decisions). Instituciones = **"PCCC"** (Parliament/Council/Commission/Court).
+
+**⚔️ Misión — El Consejo de las Estrellas Azules.** 27 reinos ceden parte de su soberanía a un Consejo con bandera de estrellas. Dos hechizos fundacionales: **Van Gend en Loos** (los ciudadanos ganan **derechos directos**) y **Costa v ENEL** (la ley del Consejo **manda** sobre la de los reinos). El Consejo solo actúa dentro de lo **conferido** (enumeration), si los reinos no bastan (subsidiarity) y **sin pasarse** (proportionality). *Jefe:* el Acertijo Regulation vs Directive. *Loot:* primacy, direct effect, Art. 288.
+
+---
+
+## 📅 Reparto de la semana (versión COMPLETA — 17 bloques)
+Sigue tu **Google Calendar** (ya actualizado), pero como guía rápida del pack:
+- **Mié 17:** B1 + B2 + **B15 Civil Law** (familias y su raíz romana van juntas).
+- **Jue 18:** B3 + B4 + **B12 Positivism** + **B13 Realism** (las 3 teorías del derecho de un tirón: justice/validity/efficacy) + **B14 Justice & Theories**.
+- **Vie 19:** **B16 Common Law History** + B5 Equity + B6 Common Law Features (todo el bloque common law seguido).
+- **Sáb 20:** B7 Sovereignty + B8 Constitutionalism + B9 Fundamental Rights.
+- **Dom 21:** B10 International + **B17 European Union**.
+- **Lun 22:** B11 Islamic + B12(Far East) … *(usa la numeración de los apuntes)*.
+- **Mar 23:** REPASO TOTAL — los **17 👹 Jefes Finales** + flashcards falladas.
+- **Mié 24:** mnemotecnias + jefes que fallaste. Nada nuevo. 💪
+
+---
+
+*Fin del manual. Suerte el miércoles, Gran Jurista de Legalia.*
+</script>
+
+<script>
+"use strict";
+/* ---------- util ---------- */
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function inl(s){
+  s=esc(s);
+  s=s.replace(/\*\*([^*]+?)\*\*/g,'<b>$1</b>');
+  s=s.replace(/(^|[^*])\*([^*]+?)\*(?!\*)/g,'$1<i>$2</i>');
+  s=s.replace(/`([^`]+?)`/g,'<span class="kbd">$1</span>');
+  return s;
+}
+function el(html){var d=document.createElement('div');d.innerHTML=html;return d;}
+var toastT;
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},1700);}
+
+/* ---------- parser ---------- */
+function parseGame(md){
+  var lines=md.split(/\r?\n/);
+  var blocks={};
+  var cur=null,flash=false,q=null,jefe=false,inTrucos=false;
+  var trucos=[];
+  function getB(n,title){
+    if(!blocks[n])blocks[n]={id:n,title:title||('Bloque '+n),questions:[],flashcards:[],mnemo:[],mision:'',jefe:null,raw:[]};
+    if(title)blocks[n].title=title;
+    return blocks[n];
+  }
+  for(var i=0;i<lines.length;i++){
+    var ln=lines[i];
+    var hm=ln.match(/^#{1,6}\s+(.*)$/);
+    if(hm){
+      var txt=hm[1];
+      var bm=txt.match(/B(?:LOQUE)?\s*0*(\d+)\b/i);
+      var isBlockHdr=bm && /🎯|🃏|👹/.test(txt);
+      if(isBlockHdr){
+        var n=+bm[1];
+        var t=txt.replace(/B(?:LOQUE)?\s*0*\d+/i,'').replace(/[🎯🃏👹🔥⚔️🧠🗺️🏆🌅🌍🔬⛰️🏰♟️📜🛡️🕊️🏜️]/g,'')
+                 .replace(/^[\s—\-·:]+/,'').replace(/\*\*/g,'').trim();
+        cur=getB(n,t||('Bloque '+n));
+        flash=/🃏/.test(txt)&&!/🎯/.test(txt);
+        q=null;jefe=false;inTrucos=false;
+        continue;
+      }
+      // global trucos / mnemo section
+      inTrucos=/TRUCOS|MNEMOTECNIA/i.test(txt);
+      cur=null;flash=false;q=null;jefe=false;
+      continue;
+    }
+    if(inTrucos){ if(ln.trim())trucos.push(ln); continue; }
+    if(!cur)continue;
+    cur.raw.push(ln);
+
+    // question start: **N.N (pts) label** rest
+    var qm=ln.match(/^\*\*\s*(\d+)\.(\d+)\s*\((\d+)\s*(?:pts?|puntos)?\)\s*([^*]*?)\*\*\s*(.*)$/);
+    if(qm){
+      var pts=+qm[3], label=(qm[4]||'').trim(), text=(qm[5]||'').trim();
+      var type=/m[uú]ltiple|\bMC\b/i.test(label)?'mc':'reveal';
+      q={pts:pts,type:type,q:text,label:label,opts:[],correct:-1,expl:'',ans:''};
+      cur.questions.push(q);jefe=false;
+      continue;
+    }
+    // jefe final
+    if(/JEFE\s+FINAL/i.test(ln)&&/^\*\*/.test(ln)){
+      var jm=ln.match(/\((\d+)[^)]*\)\.?\*\*\s*(.*)$/);
+      var jq=jm?jm[2]:ln.replace(/^\*\*[^]*?\*\*/,'').trim();
+      cur.jefe={pts:50,q:(jq||'').trim(),ans:''};jefe=true;q=null;
+      continue;
+    }
+    // options (one-per-line OR inline multi)
+    var om=ln.match(/^\s*-\s*[A-D]\)/);
+    if(om&&q){
+      var body=ln.replace(/^\s*-\s*/,'');
+      // split a line into one or more "X) ..." option segments (handles inline multi-option)
+      var segs=body.split(/\s(?=[A-D]\)\s)/);
+      for(var s=0;s<segs.length;s++){
+        var seg=segs[s].trim();
+        var m2=seg.match(/^([A-D])\)\s*([\s\S]*)$/);
+        if(!m2)continue;
+        var otxt=m2[2].trim(),correct=false;
+        if(otxt.indexOf('✅')>=0){correct=true;otxt=otxt.replace(/✅/g,'').trim();}
+        if(otxt){q.opts.push(otxt);if(correct)q.correct=q.opts.length-1;}
+      }
+      continue;
+    }
+    // markers: *Por qué:* / *R:* / *Respuesta:* / *Modelo:* / *Respuesta modelo:*
+    var mk=ln.match(/^\*([^*]+?):\*\s*(.*)$/);
+    if(mk){
+      var key=mk[1].trim().toLowerCase(), val=mk[2].trim();
+      if(jefe&&cur.jefe){ if(/modelo|respuesta/.test(key)) cur.jefe.ans=val; }
+      else if(q){
+        if(/qu[eé]/.test(key)) q.expl=val;
+        else if(/^(r|resp|respuesta)$/.test(key)) q.ans=val;
+        else if(/modelo/.test(key)) q.ans=val;
+      }
+      continue;
+    }
+    // flashcards part2: - P: ... → R: ...
+    var fp=ln.match(/^-\s*P:\s*([\s\S]+?)\s*(?:→|->)\s*R:\s*([\s\S]+)$/);
+    if(fp){ cur.flashcards.push({p:fp[1].trim(),a:fp[2].trim()}); continue; }
+    // flashcards part1: table rows
+    if(flash&&/^\s*\|/.test(ln)){
+      var cells=ln.split('|').map(function(c){return c.trim();}).filter(function(c){return c.length;});
+      if(cells.length>=2){
+        var c0=cells[0],c1=cells[1];
+        if(/^pregunta/i.test(c0)||/^respuesta/i.test(c1)||/^:?-{2,}:?$/.test(c0)||/^:?-{2,}:?$/.test(c1)){/*skip*/}
+        else cur.flashcards.push({p:c0,a:c1});
+      }
+      continue;
+    }
+    // mnemo part2
+    var mn=ln.match(/🧠\s*Mnemo:?\**\s*(.*)$/i);
+    if(mn&&mn[1]){ cur.mnemo.push(mn[1].replace(/\*\*$/,'').trim()); continue; }
+    // mission part2
+    var ms=ln.match(/⚔️\s*Misi[oó]n[^*]*\**\s*(.*)$/i);
+    if(ms){ cur.mision=(cur.mision?cur.mision+' ':'')+ln.replace(/^\*\*|\*\*$/g,'').trim(); continue; }
+  }
+  // finalize
+  var arr=Object.keys(blocks).map(function(k){return blocks[k];}).sort(function(a,b){return a.id-b.id;});
+  arr.forEach(function(b){
+    b.questions.forEach(function(qq){
+      if(qq.type==='mc'&&qq.opts.length<2){qq.type='reveal';if(!qq.ans&&qq.opts[0])qq.ans=qq.opts[0];}
+      if(qq.type==='mc'&&qq.correct<0)qq.correct=0;
+      qq.maxpts=qq.pts;
+    });
+    b.maxXP=b.questions.reduce(function(a,qq){return a+qq.pts;},0)+(b.jefe?50:0);
+  });
+  return {blocks:arr,trucos:trucos};
+}
+
+/* ---------- state / persistence ---------- */
+var KEY='legalquest2026';
+var save={total:0,best:{},jefe:{}};
+try{var raw=localStorage.getItem(KEY);if(raw)save=JSON.parse(raw);}catch(e){}
+if(!save.best)save.best={};if(!save.jefe)save.jefe={};
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(save));}catch(e){}}
+function totalXP(){
+  var t=0;for(var k in save.best)t+=save.best[k]||0;for(var j in save.jefe)if(save.jefe[j])t+=50;return t;
+}
+var RANKS=[
+  [0,'🪣 Becario del bufete'],[401,'📎 Pasante con ínfulas'],[901,'👔 Abogado junior'],
+  [1501,'⚖️ Abogado litigante'],[2201,'🎓 Catedrático'],[2901,'👑 Juez del Tribunal Supremo']
+];
+function rankFor(xp){var r=RANKS[0];for(var i=0;i<RANKS.length;i++)if(xp>=RANKS[i][0])r=RANKS[i];return r;}
+function nextThreshold(xp){for(var i=0;i<RANKS.length;i++)if(xp<RANKS[i][0])return RANKS[i][0];return RANKS[RANKS.length-1][0];}
+function refreshXP(){
+  var xp=totalXP();
+  document.getElementById('rank').textContent=rankFor(xp)[1];
+  document.getElementById('xpnum').textContent='· '+xp+' XP';
+  var nt=nextThreshold(xp);var prev=rankFor(xp)[0];
+  var pct=nt>prev?Math.min(100,Math.round((xp-prev)/(nt-prev)*100)):100;
+  if(xp>=2901)pct=100;
+  document.getElementById('fill').style.width=pct+'%';
+}
+
+/* ---------- game data ---------- */
+var DATA=parseGame(document.getElementById('src').textContent);
+var GAME=DATA.blocks;
+var app=document.getElementById('app');
+
+/* ---------- screens ---------- */
+function home(){
+  refreshXP();
+  document.getElementById('hint').textContent='Mapa del Reino · '+GAME.length+' misiones';
+  var h='<div class="card center"><h1>⚖️ LegalQuest 2026</h1><div class="sub">Las Crónicas del Reino de Legalia · '+GAME.length+' misiones</div>'+
+    '<div class="small">Examen: Introduction to Legal Systems · mié 24 jun · 9:00 · C4-2</div></div>';
+  h+='<div class="grid">';
+  GAME.forEach(function(b,idx){
+    var best=save.best[b.id]||0; var jd=save.jefe[b.id];
+    var done=(b.maxXP>0 && best>=Math.round(b.maxXP*0.7-(b.jefe?50:0)*0)); // visual only
+    var passed = best>0 && best>=Math.round((b.maxXP-(b.jefe?50:0))*0.7);
+    h+='<div class="tile" onclick="block('+idx+')">'+
+       (passed?'<span class="done">✅</span>':'')+
+       '<div class="n">Misión '+(idx+1)+'</div>'+
+       '<div class="t">'+inl(b.title)+'</div>'+
+       '<div class="m">'+b.questions.length+' preguntas · '+b.flashcards.length+' flashcards'+(b.jefe?' · 👹 jefe':'')+'</div>'+
+       '<span class="tag">⭐ '+best+(jd?' · 👑':'')+' XP</span>'+
+       '</div>';
+  });
+  h+='</div>';
+  h+='<div class="card btn-row"><button onclick="trucos()">🧠 Trucos &amp; Mnemotecnia</button><button onclick="resetAll()">♻️ Reiniciar progreso</button></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function backBtn(){return '<button class="back" onclick="home()">← Mapa</button>';}
+
+function block(idx){
+  var b=GAME[idx];
+  var h=backBtn();
+  h+='<div class="card center"><div class="n small">Misión '+(idx+1)+'</div><h1 style="font-size:1.25rem">'+inl(b.title)+'</h1>'+
+     '<span class="tag">Mejor: '+(save.best[b.id]||0)+' XP'+(save.jefe[b.id]?' · 👑 jefe vencido':'')+'</span></div>';
+  if(b.mision){h+='<div class="card"><div class="small" style="color:var(--gold)">⚔️ Misión</div><div>'+inl(b.mision)+'</div></div>';}
+  h+='<div class="card btn-row3">'+
+     '<button class="btn-gold" onclick="quiz('+idx+')">🎯 Quiz ('+b.questions.length+')</button>'+
+     '<button onclick="cards('+idx+')">🃏 Flashcards ('+b.flashcards.length+')</button>'+
+     '<button onclick="jefe('+idx+')">👹 Jefe Final</button>'+
+     '</div>';
+  h+='<div class="card btn-row">'+
+     (b.mnemo.length?'<button onclick="mnemo('+idx+')">🧠 Mnemotecnia</button>':'<button onclick="trucos()">🧠 Trucos</button>')+
+     '<button onclick="rawview('+idx+')">📖 Texto completo</button></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+
+/* ----- quiz runner ----- */
+var Q={};
+function quiz(idx){
+  var b=GAME[idx];
+  if(!b.questions.length){toast('Este bloque no tiene quiz, ¡usa flashcards!');return cards(idx);}
+  Q={idx:idx,i:0,score:0,correct:0};
+  renderQ();
+}
+function renderQ(){
+  var b=GAME[Q.idx], q=b.questions[Q.i];
+  var h=backBtn();
+  h+='<div class="prog">Misión: '+inl(b.title)+' · Pregunta '+(Q.i+1)+'/'+b.questions.length+' · <span class="pill">'+q.pts+' pts</span></div>';
+  h+='<div class="card"><div style="font-size:1.08rem;margin-bottom:6px">'+inl(q.q||q.label)+'</div>';
+  if(q.type==='mc'){
+    h+='<div id="opts">';
+    q.opts.forEach(function(o,k){h+='<button class="opt" onclick="answer('+k+')">'+String.fromCharCode(65+k)+') '+inl(o)+'</button>';});
+    h+='</div>';
+  }else{
+    h+='<div id="opts"><button class="btn-gold" onclick="reveal()">🔎 Revelar respuesta</button></div>';
+  }
+  h+='<div id="after"></div></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function lockOpts(){var o=document.getElementById('opts');var bs=o.querySelectorAll('button');bs.forEach(function(x){x.disabled=true;});}
+function answer(k){
+  var b=GAME[Q.idx], q=b.questions[Q.i];
+  var bs=document.getElementById('opts').querySelectorAll('button');
+  lockOpts();
+  bs[q.correct].classList.add('correct');
+  var ok=(k===q.correct);
+  if(!ok)bs[k].classList.add('wrong');
+  if(ok){Q.score+=q.pts;Q.correct++;}
+  var aft=document.getElementById('after');
+  aft.innerHTML=(ok?'<div class="expl">✅ <b>¡Correcto!</b> +'+q.pts+' XP</div>':'<div class="expl">❌ La correcta era <b>'+String.fromCharCode(65+q.correct)+'</b>.</div>')+
+    (q.expl?'<div class="expl">💡 '+inl(q.expl)+'</div>':'')+
+    '<button class="btn-gold" style="margin-top:10px" onclick="nextQ()">'+(Q.i+1<b.questions.length?'Siguiente ▶':'Ver resultado 🏁')+'</button>';
+  if(ok)toast('+'+q.pts+' XP');
+}
+function reveal(){
+  var b=GAME[Q.idx], q=b.questions[Q.i];
+  lockOpts();
+  var aft=document.getElementById('after');
+  aft.innerHTML='<div class="expl">📝 <b>Respuesta:</b> '+inl(q.ans||q.expl||'(ver texto)')+'</div>'+
+    (q.expl&&q.ans?'<div class="expl">💡 '+inl(q.expl)+'</div>':'')+
+    '<div class="small" style="margin-top:8px">¿La sabías?</div>'+
+    '<div class="btn-row" style="margin-top:6px"><button class="btn-gold" onclick="selfScore(true)">✅ La sabía (+'+q.pts+')</button><button onclick="selfScore(false)">❌ A repasar</button></div>';
+}
+function selfScore(ok){
+  var b=GAME[Q.idx], q=b.questions[Q.i];
+  if(ok){Q.score+=q.pts;Q.correct++;toast('+'+q.pts+' XP');}
+  nextQ();
+}
+function nextQ(){
+  var b=GAME[Q.idx];
+  if(Q.i+1<b.questions.length){Q.i++;renderQ();}
+  else finishQuiz();
+}
+function finishQuiz(){
+  var b=GAME[Q.idx];
+  var prev=save.best[b.id]||0, improved=false;
+  if(Q.score>prev){save.best[b.id]=Q.score;improved=true;persist();}
+  var xpBefore=totalXP();
+  refreshXP();
+  var rankNow=rankFor(totalXP())[1];
+  var h=backBtn();
+  h+='<div class="card center"><h1 style="font-size:1.3rem">🏁 Misión completada</h1>'+
+     '<div style="font-size:2rem;margin:6px">'+Q.correct+'/'+b.questions.length+'</div>'+
+     '<div>Puntuación: <b>'+Q.score+' XP</b>'+(improved?' <span class="pill">¡nuevo récord!</span>':' <span class="small">(récord: '+prev+')</span>')+'</div>'+
+     '<div class="small" style="margin-top:6px">Rango actual: <b>'+rankNow+'</b> · '+totalXP()+' XP totales</div>'+
+     '<div class="btn-row" style="margin-top:14px"><button class="btn-gold" onclick="quiz('+Q.idx+')">🔁 Reintentar</button><button onclick="jefe('+Q.idx+')">👹 Jefe Final</button></div>'+
+     '<button style="margin-top:10px" onclick="home()">← Volver al mapa</button></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+  if(b.questions.length&&Q.correct===b.questions.length)toast('¡Pleno! 🌟');
+}
+
+/* ----- flashcards ----- */
+var FC={};
+function cards(idx){
+  var b=GAME[idx];
+  if(!b.flashcards.length){toast('Sin flashcards en este bloque');return block(idx);}
+  FC={idx:idx,i:0,flip:false};renderFC();
+}
+function renderFC(){
+  var b=GAME[FC.idx], c=b.flashcards[FC.i];
+  var h=backBtn();
+  h+='<div class="prog">'+inl(b.title)+' · Flashcard '+(FC.i+1)+'/'+b.flashcards.length+'</div>';
+  h+='<div class="card flip" onclick="flipFC()"><div>'+(FC.flip?'<span class="small">RESPUESTA</span><br>'+inl(c.a):'<span class="small">PREGUNTA (toca para girar)</span><br>'+inl(c.p))+'</div></div>';
+  h+='<div class="card btn-row3">'+
+     '<button onclick="moveFC(-1)">◀</button>'+
+     '<button class="btn-gold" onclick="flipFC()">🔄 Girar</button>'+
+     '<button onclick="moveFC(1)">▶</button></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function flipFC(){FC.flip=!FC.flip;renderFC();}
+function moveFC(d){var b=GAME[FC.idx];FC.i=(FC.i+d+b.flashcards.length)%b.flashcards.length;FC.flip=false;renderFC();}
+
+/* ----- jefe ----- */
+function jefe(idx){
+  var b=GAME[idx];
+  var h=backBtn();
+  if(!b.jefe){h+='<div class="card center">Este bloque no tiene Jefe Final. 😌</div>';app.innerHTML=h;return;}
+  h+='<div class="card"><div class="center" style="font-size:1.6rem">👹</div>'+
+     '<div class="center pill" style="display:block;margin:6px auto;width:fit-content">JEFE FINAL · 50 XP</div>'+
+     '<div style="font-size:1.05rem;margin:10px 0">'+inl(b.jefe.q)+'</div>'+
+     '<div class="small">Intenta responder de memoria (en voz alta o por escrito). Luego revela el modelo.</div>'+
+     '<div id="jbox"><button class="btn-gold" style="margin-top:10px" onclick="revealJefe('+idx+')">🔎 Revelar respuesta modelo</button></div></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function revealJefe(idx){
+  var b=GAME[idx];
+  var box=document.getElementById('jbox');
+  box.innerHTML='<div class="expl">📜 <b>Respuesta modelo:</b><br>'+inl(b.jefe.ans)+'</div>'+
+    '<div class="small" style="margin-top:8px">¿Lo clavaste?</div>'+
+    '<div class="btn-row" style="margin-top:6px"><button class="btn-gold" onclick="winJefe('+idx+')">👑 ¡Sí! (+50 XP)</button><button onclick="block('+idx+')">❌ A repasar</button></div>';
+}
+function winJefe(idx){
+  var b=GAME[idx];
+  if(!save.jefe[b.id]){save.jefe[b.id]=true;persist();toast('👑 +50 XP · ¡Jefe vencido!');}
+  else toast('Jefe ya vencido 😎');
+  refreshXP();block(idx);
+}
+
+/* ----- mnemo / trucos / raw ----- */
+function mnemo(idx){
+  var b=GAME[idx];
+  var h=backBtn()+'<div class="card"><h1 style="font-size:1.2rem">🧠 Mnemotecnia — '+inl(b.title)+'</h1>';
+  b.mnemo.forEach(function(m){h+='<div class="expl">'+inl(m)+'</div>';});
+  if(!b.mnemo.length)h+='<div class="small">Sin truco específico; mira los 🧠 Trucos globales.</div>';
+  h+='<button style="margin-top:10px" onclick="trucos()">🧠 Ver todos los trucos</button></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function renderMd(linesArr){
+  var out='',inTable=false;
+  linesArr.forEach(function(ln){
+    if(/^\s*$/.test(ln)){out+='<br>';return;}
+    var h=ln.match(/^(#{1,6})\s+(.*)$/);
+    if(h){out+='<h3>'+inl(h[2])+'</h3>';return;}
+    if(/^\s*\|/.test(ln)){
+      var cells=ln.split('|').map(function(c){return c.trim();}).filter(function(c){return c.length;});
+      if(cells.every(function(c){return /^:?-{2,}:?$/.test(c);}))return;
+      out+='<div>• '+cells.map(function(c){return inl(c);}).join(' — ')+'</div>';return;
+    }
+    if(/^\s*[-*]\s+/.test(ln)){out+='<div style="margin-left:8px">• '+inl(ln.replace(/^\s*[-*]\s+/,''))+'</div>';return;}
+    if(/^>\s?/.test(ln)){out+='<div class="expl">'+inl(ln.replace(/^>\s?/,''))+'</div>';return;}
+    if(/^---+$/.test(ln)){out+='<hr class="hr">';return;}
+    out+='<div>'+inl(ln)+'</div>';
+  });
+  return out;
+}
+function rawview(idx){
+  var b=GAME[idx];
+  var h=backBtn()+'<div class="card rawmd"><h1 style="font-size:1.2rem">📖 '+inl(b.title)+' — texto completo</h1>'+renderMd(b.raw)+'</div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function trucos(){
+  var h=backBtn()+'<div class="card rawmd"><h1 style="font-size:1.2rem">🧠 Trucos &amp; Mnemotecnia</h1>'+renderMd(DATA.trucos)+'</div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function resetAll(){
+  if(confirm('¿Seguro que quieres borrar todo tu progreso (XP y récords)?')){
+    save={total:0,best:{},jefe:{}};persist();refreshXP();toast('Progreso reiniciado');home();
+  }
+}
+
+/* ---------- go ---------- */
+home();
+</script>
+</body>
+</html>
