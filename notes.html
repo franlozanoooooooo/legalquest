@@ -3,689 +3,514 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Introduction to Legal Systems — Exam Notes</title>
+<title>Legal Systems — Lecture-by-Lecture Notes</title>
 <style>
 :root{
-  --bg:#f6f7f9; --card:#ffffff; --ink:#1f2430; --muted:#5b6472;
-  --navy:#1d2b53; --navy2:#2c3e74; --accent:#b9892f; --accent2:#caa14a;
-  --line:#e6e8ee; --green:#e9f7ee; --greenL:#1f8a4c; --amber:#fff5e3; --amberL:#a9701a;
-  --pillgrey:#eceef3; --pillgreyT:#697086; --pillgold:#fbeecb; --pillgoldT:#8a6614;
+  --navy:#16233f; --navy2:#22345c; --gold:#c79320; --gold2:#e3b53e;
+  --bg:#eef1f6; --card:#ffffff; --ink:#1c2333; --muted:#5b6781; --line:#e2e7f0;
+  --green:#eaf7ee; --greenL:#2e8b57; --amber:#fdf3e3; --amberL:#b9791b;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; background:var(--bg); color:var(--ink);
+html{scroll-behavior:smooth; scroll-padding-top:70px}
+body{margin:0; background:var(--bg); color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  font-size:17px; line-height:1.66; -webkit-text-size-adjust:100%;
-}
-.wrap{max-width:840px; margin:0 auto; padding:0 16px 80px}
-/* top bar */
-.bar{position:sticky; top:0; z-index:30; background:linear-gradient(180deg,var(--navy),var(--navy2));
-  color:#fff; padding:11px 14px; display:flex; align-items:center; gap:10px;
-  box-shadow:0 2px 12px rgba(0,0,0,.18)}
-.bar h1{font-size:16px; margin:0; font-weight:650; letter-spacing:.2px; flex:1; line-height:1.25}
-.bar .sub{display:block; font-size:11px; font-weight:400; color:#b9c2e0}
-.tocbtn{background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,255,255,.22);
-  border-radius:9px; padding:7px 11px; font-size:13px; cursor:pointer; white-space:nowrap}
-.tocbtn:active{transform:scale(.97)}
-/* TOC */
-#toc{display:none; background:var(--card); border:1px solid var(--line); border-radius:14px;
-  margin:14px 0; padding:8px; box-shadow:0 6px 22px rgba(20,30,60,.07)}
+  font-size:17px; line-height:1.62; -webkit-text-size-adjust:100%}
+.bar{position:sticky; top:0; z-index:20; background:var(--navy);
+  color:#fff; display:flex; align-items:center; gap:10px; padding:11px 14px;
+  box-shadow:0 2px 12px rgba(10,18,40,.28)}
+.bar b{font-size:15px; font-weight:700; letter-spacing:.2px}
+.bar .sub{color:#aebbd6; font-size:12px; margin-left:auto}
+#menuBtn{background:var(--gold); color:#1a1406; border:0; font-weight:700;
+  padding:8px 12px; border-radius:9px; font-size:14px; cursor:pointer}
+#toc{display:none; position:sticky; top:54px; z-index:19; background:#0f1a30;
+  border-bottom:3px solid var(--gold); max-height:62vh; overflow:auto; padding:8px 6px}
 #toc.open{display:block}
-#toc a{display:block; padding:9px 12px; color:var(--navy); text-decoration:none; border-radius:9px; font-size:15px}
-#toc a:active,#toc a:hover{background:#f0f2f8}
-#toc .star{color:var(--accent); font-weight:700}
-#toc .low{color:var(--pillgreyT); font-size:13px}
-/* hero */
-.hero{background:linear-gradient(135deg,#22326b,#324a8f); color:#fff; border-radius:16px;
-  padding:18px 18px 16px; margin:16px 0 8px}
-.hero h2{margin:.1em 0 .2em; font-size:21px}
-.hero p{margin:.3em 0; color:#d7def2; font-size:14px}
-.legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
-/* sections */
-section{background:var(--card); border:1px solid var(--line); border-radius:16px;
-  padding:16px 16px 6px; margin:14px 0; box-shadow:0 4px 16px rgba(20,30,60,.05); scroll-margin-top:64px}
-h2.sec{font-size:19px; color:var(--navy); margin:.1em 0 .5em; line-height:1.28; display:flex; flex-wrap:wrap; align-items:center; gap:8px}
-h2.sec .n{display:inline-flex; min-width:30px; height:30px; padding:0 7px; align-items:center; justify-content:center;
-  background:var(--navy); color:#fff; border-radius:9px; font-size:14px; font-weight:700}
-h3{font-size:15.5px; color:var(--navy2); margin:1.1em 0 .35em; letter-spacing:.2px}
-p,li{margin:.45em 0}
-ul,ol{padding-left:1.25em; margin:.4em 0}
-b,strong{color:#172554}
-.t{color:var(--accent); font-weight:700} /* key term */
-blockquote{margin:.6em 0; padding:.55em .9em; border-left:4px solid var(--accent2);
-  background:#faf7f0; color:#3a3324; font-style:italic; border-radius:0 10px 10px 0; font-size:15px}
-/* pills */
-.pill{display:inline-block; font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px; vertical-align:middle; letter-spacing:.2px}
-.pill.low{background:var(--pillgrey); color:var(--pillgreyT)}
-.pill.star{background:var(--pillgold); color:var(--pillgoldT)}
-/* boxes */
-.box{border-radius:12px; padding:11px 13px; margin:12px 0; font-size:15px}
-.box.key{background:var(--green); border:1px solid #c7ead4}
-.box.key b{color:var(--greenL)}
-.box.trap{background:var(--amber); border:1px solid #f3dcab}
-.box.trap b{color:var(--amberL)}
-.box .lab{font-weight:800; display:block; margin-bottom:2px}
-/* tables */
-.tw{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:.6em 0; border:1px solid var(--line); border-radius:12px}
-table{border-collapse:collapse; width:100%; min-width:430px; font-size:14.5px}
-th,td{text-align:left; padding:9px 11px; border-bottom:1px solid var(--line); vertical-align:top}
-th{background:#f2f4fa; color:var(--navy); font-weight:700}
-tr:last-child td{border-bottom:none}
-/* back to top */
-#top{position:fixed; right:16px; bottom:16px; z-index:40; display:none;
-  background:var(--navy); color:#fff; border:none; width:46px; height:46px; border-radius:50%;
-  font-size:20px; box-shadow:0 6px 18px rgba(0,0,0,.28); cursor:pointer}
-#top.show{display:block}
-.foot{color:var(--muted); font-size:13px; text-align:center; margin:24px 6px 0}
-@media(min-width:560px){ body{font-size:17.5px} .bar h1{font-size:17px} }
+#toc a{display:block; color:#dfe6f4; text-decoration:none; padding:9px 14px;
+  border-radius:8px; font-size:15px}
+#toc a:active{background:#22345c}
+#toc .pri{color:var(--gold2); font-weight:700}
+.wrap{max-width:860px; margin:0 auto; padding:16px 14px 80px}
+.intro{background:linear-gradient(135deg,var(--navy),var(--navy2)); color:#fff;
+  border-radius:16px; padding:18px 18px 6px; margin-bottom:18px;
+  box-shadow:0 10px 26px rgba(16,30,60,.30)}
+.intro h1{margin:.1em 0 .3em; font-size:23px; line-height:1.25}
+.intro p{color:#c7d2e8; font-size:14.5px; margin:.2em 0 .8em}
+.plan{display:grid; gap:8px; margin:6px 0 14px}
+.plan .d{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
+  border-radius:11px; padding:9px 12px; font-size:14px}
+.plan .d b{color:var(--gold2)}
+section.lec{background:var(--card); border:1px solid var(--line); border-radius:16px;
+  padding:18px 17px; margin:0 0 18px; box-shadow:0 4px 16px rgba(20,30,55,.06)}
+section.lec>h2{margin:.1em 0 .5em; font-size:21px; line-height:1.28; color:var(--navy);
+  border-left:5px solid var(--gold); padding-left:11px}
+.pill{display:inline-block; vertical-align:middle; font-size:11px; font-weight:800;
+  letter-spacing:.4px; padding:3px 9px; border-radius:999px; margin-left:8px}
+.pill.star{background:#fcefcf; color:#8a6308; border:1px solid #e9cf86}
+h3{color:var(--navy2); font-size:16px; margin:1.1em 0 .35em}
+b.k{color:var(--gold); }
+p,li{font-size:16.5px}
+ul{padding-left:20px; margin:.4em 0}
+li{margin:.28em 0}
+blockquote{margin:.7em 0; padding:10px 14px; background:#f4f6fb;
+  border-left:4px solid var(--navy2); border-radius:8px; color:#33405c; font-style:italic; font-size:15.5px}
+.tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:.6em 0; border-radius:10px; border:1px solid var(--line)}
+table{border-collapse:collapse; width:100%; min-width:440px; font-size:15px}
+th,td{border-bottom:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+th{background:#f0f3fa; color:var(--navy2); font-weight:700}
+.box{border-radius:12px; padding:12px 14px; margin:.9em 0 .2em; font-size:15.5px}
+.box.ess{background:var(--green); border:1px solid #bfe3cb}
+.box.ess b.t{color:var(--greenL)}
+.box.warn{background:var(--amber); border:1px solid #f0d9a8}
+.box.warn b.t{color:var(--amberL)}
+.box .t{display:block; font-weight:800; margin-bottom:4px; letter-spacing:.2px}
+.box ul{margin:.2em 0}
+#btt{display:none; position:fixed; right:16px; bottom:18px; z-index:30;
+  background:var(--navy); color:#fff; border:0; width:46px; height:46px; border-radius:50%;
+  font-size:20px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.foot{text-align:center; color:var(--muted); font-size:13px; padding:10px}
+@media(min-width:680px){ body{font-size:17.5px} .intro h1{font-size:27px} }
 </style>
 </head>
 <body>
+
 <div class="bar">
-  <h1>Introduction to Legal Systems<span class="sub">Exam notes · English · final 24 June</span></h1>
-  <button class="tocbtn" onclick="document.getElementById('toc').classList.toggle('open')">☰ Contents</button>
+  <b>⚖️ Legal Systems</b>
+  <span class="sub">lecture by lecture · EN</span>
+  <button id="menuBtn">☰ Contents</button>
 </div>
+
+<nav id="toc">
+  <a href="#lec1">Lecture 1 — What is Law?</a>
+  <a href="#lec2">Lecture 2 — Legal Systems (families)</a>
+  <a href="#lec3">Lecture 3 — Exploring Normativity</a>
+  <a href="#lec4">Lecture 4 — Validity / Efficacy / Justice</a>
+  <a href="#lec5">Lecture 5 — Conceptual Independence</a>
+  <a href="#lec8">Lecture 8 — Legal Realism</a>
+  <a href="#lec9">Lecture 9 — Justice &amp; Legal Systems</a>
+  <a href="#lec10">Lecture 10 — Theories of Justice</a>
+  <a href="#lec11">Lecture 11 — Roman Law</a>
+  <a href="#lec12">Lecture 12 — Ius Commune &amp; Codification</a>
+  <a href="#lec14">Lecture 14 — Common Law: History</a>
+  <a href="#lec15">Lecture 15 — The Rise of Equity</a>
+  <a class="pri" href="#lec19">★ Lecture 19 — Sovereignty</a>
+  <a class="pri" href="#lec22">★ Lecture 22 — Nature of International Law</a>
+  <a class="pri" href="#lec23">★ Lecture 23 — Sources of International Law</a>
+  <a class="pri" href="#lec24">★ Lecture 24 — Hierarchy / Jus Cogens</a>
+  <a class="pri" href="#lec25">★ Lecture 25 — Understanding the EU</a>
+  <a class="pri" href="#lec26">★ Lecture 26 — Scope &amp; Intensity of EU Law</a>
+  <a href="#islamic">Islamic Law — The Shariah</a>
+  <a href="#fareast">Law in the Far East</a>
+</nav>
 
 <div class="wrap">
 
-<nav id="toc">
-  <a href="#s1">1 · What is Law?</a>
-  <a href="#s2">2 · Legal Systems &amp; Families</a>
-  <a href="#s3">3 · Validity / Efficacy / Justice</a>
-  <a href="#s4" class="low">4 · Natural Law (low priority)</a>
-  <a href="#s5" class="low">5 · Legal Positivism (low priority)</a>
-  <a href="#s6">6 · Legal Realism</a>
-  <a href="#s7">7 · Justice &amp; Legal Systems</a>
-  <a href="#s8">8 · Theories of Justice (Rawls / Nozick)</a>
-  <a href="#s9">9 · Roman Law</a>
-  <a href="#s10">10 · Ius Commune &amp; Codification</a>
-  <a href="#s11" class="low">11 · Civil Law Features (low priority)</a>
-  <a href="#s12">12 · Common Law History</a>
-  <a href="#s13">13 · The Rise of Equity</a>
-  <a href="#s14" class="low">14 · Common Law Features (low priority)</a>
-  <a href="#s15" class="star">★ 15 · Sovereignty</a>
-  <a href="#s16" class="low">16 · Constitutionalism (low priority)</a>
-  <a href="#s17" class="low">17 · Fundamental Rights (low priority)</a>
-  <a href="#s18" class="star">★ 18 · International Law</a>
-  <a href="#s19" class="star">★ 19 · The EU — Understanding</a>
-  <a href="#s20" class="star">★ 20 · The EU — Scope &amp; Intensity</a>
-  <a href="#s21">21 · Islamic Law (Shariah)</a>
-  <a href="#s22">22 · Law in the Far East</a>
-  <a href="#s23">23 · Glossary &amp; Cases</a>
-</nav>
-
-<div class="hero">
-  <h2>Your exam survival notes</h2>
-  <p>Prof. Alexis Galán · CUNEF · 26 lectures, all in English. The exam is essay-style: you pick <b style="color:#fff">2 of 3</b> statements and develop them.</p>
-  <div class="legend">
-    <span class="pill star">★ Most likely</span>
-    <span class="pill low">Already examined — low priority</span>
+<div class="intro">
+  <h1>Legal Systems — Lecture-by-Lecture Notes</h1>
+  <p>20 lectures that count, in English, ordered by lecture. ★ = most likely on the exam. Tap <b>☰ Contents</b> to jump anywhere.</p>
+  <div class="plan">
+    <div class="d"><b>Fri</b> — Lectures 1, 2, 3, 4, 5</div>
+    <div class="d"><b>Sat</b> — Lectures 8, 9, 10, 11, 12</div>
+    <div class="d"><b>Sun</b> — Lectures 14, 15, 19★, 22★, 23★</div>
+    <div class="d"><b>Mon</b> — Lectures 24★, 25★, 26★, Islamic Law, Far East</div>
+    <div class="d"><b>Tue</b> — Review (model essays + glossary) + play the game</div>
+    <div class="d"><b>Wed</b> — Light review → EXAM 9:00 (C4-2)</div>
   </div>
 </div>
 
-<!-- 1 -->
-<section id="s1">
-<h2 class="sec"><span class="n">1</span> What is Law?</h2>
-<p><b>Core idea:</b> <span class="t">Law is a multidimensional phenomenon</span> — at once a <b>fact</b>, a <b>system of norms</b> and a <b>system of values</b>.</p>
-<ul>
-<li><b>Hart</b> (<i>The Concept of Law</i>): no question has been answered in so many diverse ways as <i>"What is law?"</i> → law is <b>essentially contested</b>.</li>
-<li><b>Bobbio:</b> every definition of law contains an <i>"element of arbitrariness"</i> when fixing its scope.</li>
-</ul>
+<section class="lec" id="lec1">
+<h2>Lecture 1 — What is Law?</h2>
+<p><b class="k">Law is a multidimensional phenomenon</b> — there is no single definition. <b>Hart</b> (<i>The Concept of Law</i>): the question "What is law?" has been answered in "diverse, strange and even paradoxical ways" like no other discipline. <b>Bobbio</b>: every definition contains "an element of arbitrariness".</p>
 <h3>The three dimensions</h3>
-<div class="tw"><table>
+<div class="tablewrap"><table>
 <tr><th>Dimension</th><th>Meaning</th></tr>
-<tr><td><span class="t">Law as a human phenomenon</span> (fact)</td><td>Arises from concrete social realities (context, ideology, conflicts). <b>Historical character</b> → it evolves.</td></tr>
-<tr><td><span class="t">Law as societal ordering</span></td><td>Sets <b>patterns of behaviour</b> (cf. <i>Nudge Theory</i>). Cicero: <i>"We are slaves of the law so that we may be free."</i></td></tr>
-<tr><td><span class="t">Law as a system of values</span></td><td>Embodies <b>justice</b> and moral rightness. <b>No legal system is politically neutral.</b></td></tr>
+<tr><td><b class="k">Law as a human phenomenon</b> (fact)</td><td>Arises from concrete social realities — context, ideology, conflict. <b>Historical character</b>: it evolves with society.</td></tr>
+<tr><td><b class="k">Law as societal ordering</b></td><td>Sets patterns/models of behaviour (Nudge theory; smoking bans). Cicero: <i>"We are slaves of the law so that we may be free."</i></td></tr>
+<tr><td><b class="k">Law as a system of values</b></td><td>Embodies views on justice and moral rightness. <b>No legal system is politically neutral.</b></td></tr>
 </table></div>
-<h3>The functions of law — Lord Denning</h3>
+<h3>The two great functions — Lord Denning</h3>
 <blockquote>"The law has two great objects: to preserve <b>order</b> and to do <b>justice</b>; and the two do not always coincide."</blockquote>
 <ul>
-<li><b>Order:</b> <i>necessity of law</i>; <span class="t">legal certainty</span> = certainty about (1) the content of the law, (2) that it will be <b>enforced</b>, (3) that it will be applied <b>consistently</b>.</li>
-<li><b>Justice:</b> balance/proportion; <b>treat like cases alike</b>; <b>treat different cases differently</b>.</li>
+<li><b class="k">Order</b>: necessity of law; <b>legal certainty</b> = certainty about (1) the content of the law, (2) that it will be enforced, (3) that it will be applied consistently.</li>
+<li><b class="k">Justice</b>: balance/proportion; equal treatment (<i>treat like cases alike</i>); differentiation (<i>treat different cases differently</i>).</li>
 </ul>
-<p><b>Key case — <i>Bellinger v Bellinger</i> (2001/2003):</b> a transsexual woman seeks recognition of her marriage. The <b>majority</b> followed <i>Corbett v Corbett</i> (chromosomal/gonadal/genital factors are decisive) and held that changing the definition of "female" is <b>a matter for Parliament, not the courts</b> (public policy). The dissent argued <i>"the world had moved on."</i> → illustrates the <b>order/certainty vs justice</b> tension.</p>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>3 dimensions · order vs justice (Denning) · legal certainty (3 certainties) · Bellinger / Corbett.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>"Politically neutral" is FALSE. Don't confuse <i>order</i> with <i>justice</i>.</div>
+<h3>Key case — <i>Bellinger v Bellinger</i> (2001/2003)</h3>
+<p>A transsexual woman sought recognition of her marriage. The majority held the biological factors from <i>Corbett v Corbett</i> (chromosomal, gonadal, genital) were determinative, and that changing the definition of "female" was a matter <b>for Parliament, not the courts</b> (public policy). The dissent felt "the world had moved on". → tension between <b>order/legal certainty</b> and <b>justice</b>.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>3 dimensions: fact / system of norms / system of values.</li>
+<li>Denning: order vs justice (don't always coincide).</li>
+<li>Legal certainty = content + enforcement + consistency.</li>
+<li>Bellinger/Corbett: definition of "female" is for Parliament.</li>
+</ul></div>
+<div class="box warn"><span class="t">⚠️ Watch out</span>"No legal system is politically neutral" is TRUE. Don't confuse <i>order</i> with <i>justice</i>.</div>
 </section>
 
-<!-- 2 -->
-<section id="s2">
-<h2 class="sec"><span class="n">2</span> A Multiplicity of Legal Systems (Families)</h2>
-<p><b>Core idea:</b> law is a <b>product of society</b>; each system has its own traditions and keeps evolving.</p>
-<h3>Western Legal Tradition — 4 features</h3>
-<ol>
+<section class="lec" id="lec2">
+<h2>Lecture 2 — A Multiplicity of Legal Systems</h2>
+<p>Law is a <b class="k">product of society</b>: each system rests on its own traditions and culture and is constantly evolving.</p>
+<h3>Western legal tradition — 4 features</h3>
+<ul>
 <li><b>Clear demarcation</b> between legal institutions and others.</li>
-<li><span class="t">Rule of Law</span> — legal authority is <b>supreme</b> over political institutions.</li>
-<li><b>Legal doctrine</b> as the principal source.</li>
+<li><b class="k">Rule of law</b> — legal authority is supreme over political institutions.</li>
+<li><b>Legal doctrine</b> as the principal source and basis of practice.</li>
 <li><b>Coherent body</b> with internal logic.</li>
-</ol>
-<blockquote><b>Rule of Law:</b> <i>"no one is above the law."</i> A system of <b>general, clear, prospective and impartial</b> rules; an indispensable curb on the abuse of power, securing <i>fairness, transparency, equal access to justice</i>.</blockquote>
-<h3>The families</h3>
-<ul>
-<li><b>Civil Law</b> (codified): <i>French</i> (France, Belgium, <b>Spain</b>, Italy…), <i>German</i> (Germany, Austria, Switzerland, <b>Japan, Korea, Taiwan</b>), <i>Scandinavian</i> (Sweden, Denmark, Norway, Iceland), <i>Chinese</i> (civil + socialist).</li>
-<li><b>Common Law:</b> <i>unwritten / non-textual</i>, built on <b>cases</b>, governed by the <span class="t">doctrine of precedent</span>.</li>
-<li><b>Mixed / Hybrid:</b> e.g. <b>South Africa</b> = Roman-Dutch + English Common Law.</li>
 </ul>
+<blockquote><b>Rule of law</b>: "no one is above the law" — a rational system of <b>general, clear, prospective and impartial</b> rules; an indispensable curb on abuse of power, securing fairness, transparency and equal access to justice.</blockquote>
+<h3>The legal families</h3>
+<div class="tablewrap"><table>
+<tr><th>Family</th><th>Notes</th></tr>
+<tr><td><b class="k">Civil law</b> (codified)</td><td>French (France, Belgium, <b>Spain</b>, Italy…), German (Germany, Austria, Switzerland, <b>Japan, S. Korea, Taiwan</b>), Scandinavian, Chinese (civil + socialist).</td></tr>
+<tr><td><b class="k">Common law</b></td><td>Unwritten / non-textual, <b>case-based</b>, governed by the <b>doctrine of precedent</b>.</td></tr>
+<tr><td><b>Mixed / hybrid</b></td><td>e.g. <b>South Africa</b> = Roman-Dutch law + English common law.</td></tr>
+</table></div>
 <h3>Divisions of law</h3>
-<div class="tw"><table>
-<tr><th>Division</th><th>Categories</th></tr>
-<tr><td><b>Public vs Private</b></td><td>Public (the State is involved): constitutional, administrative, criminal. Private: contract, property, tort. <i>EU Law blurs the line.</i></td></tr>
-<tr><td><b>Substantive vs Procedural</b></td><td>Substantive: grants rights. Procedural: rules of court procedure and the organisation of the judiciary.</td></tr>
-</table></div>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>4 features of the Western tradition · rule of law · civil vs common vs mixed · public/private · substantive/procedural.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Japan is <b>German</b> civil law, not French. Common law is "unwritten" even though today it is heavily statutory.</div>
+<ul>
+<li><b>Public vs Private</b>: public = the State plays a role (constitutional, administrative, criminal); private = it does not (contract, property, tort). <i>EU law blurs the line.</i></li>
+<li><b>Substantive vs Procedural</b>: substantive gives rights; procedural gives the rules of court procedure and judicial organisation.</li>
+</ul>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>4 features of the Western tradition; rule of law is the key one.</li>
+<li>Civil vs common vs mixed; public/private; substantive/procedural.</li>
+</ul></div>
+<div class="box warn"><span class="t">⚠️ Watch out</span>Japan is <b>German</b> civil law, not French. Common law is "unwritten" even though today it is heavily statutory.</div>
 </section>
 
-<!-- 3 -->
-<section id="s3">
-<h2 class="sec"><span class="n">3</span> The Normative Dimension — Validity / Efficacy / Justice</h2>
-<h3>Normativity &amp; language</h3>
+<section class="lec" id="lec3">
+<h2>Lecture 3 — Exploring Normativity</h2>
+<p>Law is a <b class="k">normative system</b>: it dictates conduct as <b>compulsory, prohibited or allowed</b>. It belongs to the realm of <i>"what ought to be"</i>.</p>
+<p>Law builds behavioural models <b>through language</b>:</p>
 <ul>
-<li>Law commands behaviour as <b>compulsory / prohibited / allowed</b>. It belongs to the realm of the <i>"ought to be."</i></li>
-<li><b>Descriptive statements</b> → "what is", can be <b>true/false</b>. <b>Prescriptive statements</b> → "what ought to be", <b>cannot</b> be true/false.</li>
+<li><b class="k">Descriptive statements</b> → describe reality ("what is"); can be <b>true or false</b>.</li>
+<li><b class="k">Prescriptive statements</b> → prescribe conduct ("what ought to be"); <b>cannot</b> be true or false.</li>
 </ul>
-<h3>Validity / Efficacy / Justice — the pillar of the course</h3>
-<div class="tw"><table>
+<p>Typical exercise: classify articles. e.g. "The capital of Spain is Madrid" → descriptive; "Non-emancipated minors cannot marry" → prescriptive.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Compulsory / prohibited / allowed.</li>
+<li>Descriptive (true/false) vs prescriptive (not true/false).</li>
+</ul></div>
+</section>
+
+<section class="lec" id="lec4">
+<h2>Lecture 4 — Normative Dimension II: Validity / Efficacy / Justice</h2>
+<p>The three criteria used to analyse a legal rule — <b class="k">the pillar of the course</b>.</p>
+<div class="tablewrap"><table>
 <tr><th>Criterion</th><th>What it assesses</th></tr>
-<tr><td><span class="t">Validity</span></td><td>A <b>relational</b> concept: a norm is valid because it <b>belongs to a legal system</b>; it is <b>binding</b> and backed by the State. Requires <b>formal</b> and <b>material</b> requirements.</td></tr>
-<tr><td><span class="t">Efficacy</span></td><td>Is it complied with? Looks at <b>obedience</b> and <b>enforcement</b>.</td></tr>
-<tr><td><span class="t">Justice</span></td><td>Adequacy to an <b>ideal system of values</b> (the <b>axiological</b> dimension); traditionally the ultimate goal of law.</td></tr>
+<tr><td><b class="k">Validity</b></td><td><b>Relational</b> concept: a norm is valid because it <b>belongs to a legal system</b>. It is <b>binding</b> and backed by the State's enforcement machinery. Needs <b>formal</b> and <b>material</b> requirements.</td></tr>
+<tr><td><b class="k">Efficacy</b></td><td>Is it obeyed in practice? Looks at <b>obedience</b> and <b>enforcement</b> (punishment for breach).</td></tr>
+<tr><td><b class="k">Justice</b></td><td>Adaptation to an <b>ideal system of values</b> (the <b>axiological</b> dimension); traditionally the ultimate goal of law.</td></tr>
 </table></div>
-<p><b>Reasons for obeying:</b> habit · avoiding punishment · agreement · self-interest.<br>
-<b>Compliance spectrum:</b> spontaneous → threat-induced → non-compliance despite threat → complete non-compliance.</p>
-<div class="box trap"><span class="lab">⚠️ Common traps</span><b>Efficacy</b> (is it obeyed / punished?) ≠ <b>Efficiency</b> (did it achieve its goal?).</div>
-<h3>Conceptual independence</h3>
-<ul>
-<li><b>At the NORM level → independence:</b> the 8 combinations of valid / effective / just.</li>
-<li><b>At the SYSTEM level → interdependence:</b> democratic systems positivise justice in their <b>superior norms</b> (e.g. Art. 1.1 of a constitution); a norm, to be valid, cannot contradict them.</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>Define validity/efficacy/justice · prescriptive vs descriptive · efficacy ≠ efficiency · independence (norm) vs interdependence (system).</div>
+<p><b>Reasons for obeying the law</b>: habit · avoiding punishment · agreement · self-interest.</p>
+<p><b>Compliance spectrum</b>: spontaneous → threat-induced → non-compliance despite threat → complete non-compliance.</p>
+<div class="box warn"><span class="t">⚠️ Watch out</span><b>Efficacy</b> (is it obeyed/punished?) ≠ <b>Efficiency</b> (did it achieve its goal?).</div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Define validity (relational, formal + material), efficacy, justice.</li>
+<li>Efficacy ≠ efficiency.</li>
+</ul></div>
 </section>
 
-<!-- 4 -->
-<section id="s4">
-<h2 class="sec"><span class="n">4</span> Natural Law <span class="pill low">Already examined — low priority</span></h2>
-<p><b>Three schools of legal theory:</b> <b>Natural Law</b> (law–morality connection), <b>Legal Positivism</b> (law = human construct, validity from formal processes), <b>Legal Realism</b> (what judges actually do).</p>
-<p>Natural law starts from <b>justice</b> and a <span class="t">higher law</span> (divine revelation, human nature, reason).</p>
-<p><b>Two assumptions:</b> (1) a <b>cognitivist</b> position in meta-ethics (true, universal moral principles exist, knowable by reason); (2) a <b>dualist</b> position (objective Natural Law ↔ human-made Positive Law).</p>
-<p><b>How the principles are known:</b></p>
+<section class="lec" id="lec5">
+<h2>Lecture 5 — Normative Dimension III: Conceptual Independence</h2>
 <ul>
-<li><b>Naturalism</b> (nature + reason): <b>Cicero</b> (<i>"true law is right reason in agreement with nature… one eternal law for all nations and times"</i>); <b>Aquinas</b>.</li>
-<li><b>Intuitionism</b> (moral intuition): <b>Grotius</b> (valid <i>"even if there were no God,"</i> like 2+2=4); <b>Finnis</b> — <span class="t">basic goods</span>: life, knowledge, play, aesthetic experience, sociability/friendship, practical reasonableness, religion.</li>
+<li><b class="k">At the norm level → conceptual independence</b>: validity, efficacy and justice are independent → all <b>8 combinations</b> exist (valid–ineffective–unjust, valid–effective–just, etc.).</li>
+<li><b class="k">At the legal-system level → conceptual interdependence</b>:
+  <ul>
+  <li><b>Validity &amp; effectiveness</b>: a system must be broadly effective to exist.</li>
+  <li><b>Validity &amp; justice</b>: democratic systems positivise justice in their <b>superior norms</b> (e.g. Art. 1.1 of the Constitution, Title I). A norm, to be valid, cannot contradict them.</li>
+  </ul>
+</li>
 </ul>
-<p><b>Non-cognitivism</b> (the opposite): emotivism, moral relativism, epistemic limitation.</p>
-<h3>Natural Law ↔ Positive Law</h3>
-<ul>
-<li><b>Aquinas:</b> <i>Lex iniusta non est lex</i> (an unjust law is not law) — but disobedience is justified only to avoid scandal/disorder.</li>
-<li><b>Finnis:</b> unjust laws are not "law" in the fullest sense.</li>
-<li><b>Lon Fuller — internal morality of law:</b> the tale of <b>King Rex</b> and his <b>8 failures</b>: (1) no consistent rules; (2) no promulgation; (3) retroactivity; (4) incomprehensible rules; (5) contradictions; (6) demanding the impossible; (7) constant change; (8) mismatch between rule and administration. → His <b>8 principles</b>: generality, promulgation, non-retroactivity, clarity, non-contradiction, possibility of compliance, constancy, congruence. The test is <b>procedural</b>, not one of moral content.</li>
-</ul>
-<p><b>Case — <i>R v Dudley and Stephens</i> (1884):</b> shipwreck of the <i>Mignonette</i>; <b>necessity is NOT a valid defence to murder</b> (Lord Coleridge).</p>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>cognitivism/dualism · naturalism vs intuitionism · <i>Lex iniusta non est lex</i> · Fuller (King Rex, 8 principles, procedural) · Dudley &amp; Stephens · Finnis' basic goods.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Fuller = <b>internal/procedural</b> morality, not moral content. Grotius = intuitionism.</div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Independence at norm level (8 combos) vs interdependence at system level.</li>
+</ul></div>
 </section>
 
-<!-- 5 -->
-<section id="s5">
-<h2 class="sec"><span class="n">5</span> Legal Positivism <span class="pill low">Already examined — low priority</span></h2>
-<p>A <b>modern</b> conception (18th–19th c., dominant in the 20th). Against natural law (which centres on <b>justice</b>), positivism centres on <span class="t">validity</span>.</p>
-<blockquote><b>John Austin:</b> "The existence of law is one thing; its merit or demerit is another."</blockquote>
-<h3>Reaction against natural law</h3>
-<ul>
-<li><b>Non-cognitivism in ethics:</b> if morality has no rational solution, natural-law principles are mere <b>subjective opinion</b>.</li>
-<li><span class="t">Hume's critique (is/ought gap):</span> you cannot logically derive an <b>"ought"</b> from an <b>"is."</b> The natural-law syllogism ("all animals breed / humankind is an animal → humankind <b>ought to</b> breed") smuggles a new term (<i>ought</i>) into the conclusion = the <b>naturalistic fallacy</b>.</li>
-</ul>
-<h3>Core theses</h3>
-<ul>
-<li><b>Social thesis:</b> law is a <b>social fact / convention</b>.</li>
-<li><b>Separability thesis:</b> <b>no necessary connection between law and morality</b>.</li>
-<li><b>Monist position:</b> "law" applies only to <b>positive law</b>; call the rest "morality"/"justice", not "law".</li>
-<li><b>Kelsen:</b> <i>"I cannot say what justice is… I must accept a relative justice."</i></li>
-<li><b>Descriptive &amp; "neutral"</b>: a theory about the <b>nature</b> of law, no prescriptions; rooted in <b>empiricism</b>.</li>
-</ul>
-<h3>The problem of evil regimes (post-WWII)</h3>
-<ul>
-<li><b>Radbruch:</b> it was <b>legal positivism</b> ("law is law, however unjust") that helped German jurists fail to resist Nazi law.</li>
-<li><b>Garzón Valdés:</b> the opposite — most pro-Nazi jurists acted from a <b>distorted natural law</b>.</li>
-<li><b>Emancipatory power:</b> positivists reply they fight injustice better by exposing law as <b>contingent and changeable</b> ("could always have been otherwise" → if broken, it <b>ought to be fixed</b>). <b>Bentham:</b> <i>law is something men add to the world, not find within it.</i></li>
-</ul>
-<h3>Inclusive vs Exclusive Legal Positivism</h3>
-<div class="tw"><table>
-<tr><th></th><th>Inclusive LP (ILP)</th><th>Exclusive LP (ELP)</th></tr>
-<tr><td>Morality as a validity criterion</td><td><b>CAN</b> be, <i>if</i> the system incorporates it</td><td><b>NEVER</b>: morality cannot be a validity criterion</td></tr>
-<tr><td>Validity based on</td><td>social facts + (sometimes) incorporated morality</td><td>only <b>social facts / pedigree</b> (competent authority, procedure)</td></tr>
-</table></div>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>Austin (existence vs merit) · Hume is/ought · social + separability thesis · monism · Kelsen · evil regimes (Radbruch vs Garzón Valdés) · ILP vs ELP.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Separability = <b>no necessary</b> connection (not that there cannot be one → that is ILP). Positivism is <b>descriptive</b>.</div>
-</section>
-
-<!-- 6 -->
-<section id="s6">
-<h2 class="sec"><span class="n">6</span> Legal Realism</h2>
-<p><b>Thesis:</b> law = <b>the standards courts actually apply</b>. Realism <span class="t">reduces validity to efficacy</span>: valid norms are those judges apply.</p>
-<div class="tw"><table>
+<section class="lec" id="lec8">
+<h2>Lecture 8 — Legal Realism</h2>
+<p>Law = <b class="k">the standards enforced by the courts</b>. Realism <b>reduces validity to efficacy</b>: valid norms are those judges actually apply.</p>
+<div class="tablewrap"><table>
 <tr><th>American Realism</th><th>Scandinavian Realism</th></tr>
-<tr><td>Pragmatic &amp; behaviourist; <i>"law in action"</i>; focused on the <b>judicial process</b>.</td><td>A <b>philosophical</b> attack on the metaphysical foundations of law.</td></tr>
+<tr><td>Pragmatist &amp; behaviourist; "law in action"; focused on the judicial process.</td><td>Philosophical attack on the metaphysical foundations of law.</td></tr>
 </table></div>
-<p>Both reject the law–morality conflation and distrust absolute values like "justice".</p>
+<p>Both reject the conflation of law and morality and distrust absolutes like "justice".</p>
+<blockquote><b>Oliver Wendell Holmes Jr</b>: "The prophecies of what the courts will do in fact… are what I mean by the law." — <b class="k">law as prophecy</b>. And: "The life of the law has not been logic: it has been experience."</blockquote>
 <ul>
-<li><b>Oliver Wendell Holmes Jr:</b> <span class="t">law as prophecy</span> → <i>"The prophecies of what the courts will do in fact… are what I mean by the law."</i> And: <i>"The life of the law has not been logic: it has been experience."</i></li>
-<li><b>Features:</b> decisions driven by <b>hunches</b>/biases; rules are <b>indeterminate</b> and not neutral; bigger role for the <b>social sciences</b>.</li>
-<li>Reaction against <b>legal formalism / mechanical jurisprudence</b>. Case <b>Sugar Trust (<i>US v E.C. Knight Co</i>)</b>: decided "on labels", ignoring that controlling 98% of sugar refining affected interstate commerce.</li>
-<li><b>Hungry judge effect:</b> physiological factors (hunger/fatigue) sway decisions → shows the weight of the <b>extra-legal</b>.</li>
-<li><b>Scandinavian (Alf Ross):</b> law = <b>directives addressed to judges</b>; legal science is <b>empirical/factual</b> (<i>"N is the law in force in country P"</i> = a prediction that judges will apply N). Influence of <b>logical empiricism / falsifiability</b> (<b>McLean v Arkansas</b>: "creation science" is not science because not falsifiable).</li>
+<li>Decisions often rest on <b>hunches</b>/biases; rules are indeterminate; bigger role for the <b>social sciences</b>.</li>
+<li>Reaction against <b>legal formalism / mechanical jurisprudence</b>. Case: <b><i>US v E.C. Knight Co</i> (Sugar Trust)</b> — decided "on labels", ignoring that 98% control of sugar refining affects interstate commerce.</li>
+<li><b>Hungry judge effect</b>: physiological factors (hunger/fatigue) influence rulings.</li>
+<li><b>Scandinavian (Alf Ross)</b>: law = <b>directives addressed to judges</b>; legal science is empirical; "N is the law in force in country P" predicts judges will apply N. Influence of logical empiricism / <b>falsifiability</b> (<i>McLean v Arkansas</i>: "creation science" is not falsifiable → not science).</li>
 </ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>validity→efficacy · Holmes (law as prophecy; logic vs experience) · American vs Scandinavian (Alf Ross) · Sugar Trust · hungry judge · McLean v Arkansas.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Realism = law is what judges <b>do</b> (a prediction), not what the books say.</div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Validity → efficacy; law = what courts do (prediction).</li>
+<li>Holmes (law as prophecy; experience over logic).</li>
+<li>American vs Scandinavian (Alf Ross); Sugar Trust; hungry judge; McLean v Arkansas.</li>
+</ul></div>
 </section>
 
-<!-- 7 -->
-<section id="s7">
-<h2 class="sec"><span class="n">7</span> Justice &amp; Legal Systems</h2>
-<p>The <b>third dimension</b> (law as values). Justice is a <b>subset of morality</b>.</p>
-<blockquote><b>Alf Ross (sceptic):</b> "To invoke justice is the same thing as banging on the table: an emotional expression which turns one's demand into an absolute postulate." → the "ideology of justice" breeds intransigence.</blockquote>
-<ul>
-<li>Justice requires <b>consciousness, rationality and a moral sense</b>. <i>Just/unjust</i> is predicated of: <b>agents</b> (a just man), <b>actions</b> (a just decision), <b>states of affairs</b> (a just system).</li>
-<li>Suffering from natural disasters is <b>not injustice</b> in itself; injustice arises from <b>failing to relieve it</b> or helping some at others' expense.</li>
-</ul>
-<h3>Three types of justice</h3>
-<div class="tw"><table>
+<section class="lec" id="lec9">
+<h2>Lecture 9 — Justice &amp; Legal Systems</h2>
+<p>Justice is a <b class="k">moral concept</b> — a subset of morality requiring consciousness, rationality and a moral sense.</p>
+<blockquote><b>Alf Ross</b> (sceptic): "To invoke justice is the same thing as banging on the table: an emotional expression which turns one's demand into an absolute postulate."</blockquote>
+<p>Just/unjust can be predicated of <b>agents</b> (a just man), <b>actions</b> (a just decision) and <b>states of affairs</b> (a just legal system). Suffering from natural disasters is not in itself injustice.</p>
+<h3>The three types of justice</h3>
+<div class="tablewrap"><table>
 <tr><th>Type</th><th>What it is</th></tr>
-<tr><td><span class="t">Corrective justice</span></td><td>Rectifying harm between two parties (restore the <b>balance</b>; tort/contract; the <b>scales</b> of the statue of Justice; the <b>blindfold</b> = impartiality).</td></tr>
-<tr><td><span class="t">Distributive justice</span></td><td>Fair allocation of goods — <i>"giving each person his or her due."</i> Values: <b>freedom, equality, solidarity</b>. Concerns the <b>legislator</b>.</td></tr>
-<tr><td><span class="t">Formal justice</span></td><td><b>Legal certainty</b>: consistent application of rules; <b>depersonalisation</b> → rules apply to the <b>act, not the actor</b>.</td></tr>
+<tr><td><b class="k">Corrective</b></td><td>Rectifying harm between two parties — restoring <b>equilibrium</b> (tort/contract; the <b>scales</b> and <b>blindfold</b> of the statue of Justice).</td></tr>
+<tr><td><b class="k">Distributive</b></td><td>Fair allocation of goods — "giving each their due". Values: <b>freedom, equality, solidarity</b>. The legislator's concern.</td></tr>
+<tr><td><b class="k">Formal</b></td><td><b>Legal certainty</b>: consistent application of rules; <b>depersonalisation</b> → rules apply to the <b>act, not the actor</b>.</td></tr>
 </table></div>
-<p><b>Manifestations of formal justice:</b> against power (<b>habeas corpus, in dubio pro reo</b>); in the system (validity criteria = legal certainty, <i>back to Fuller</i>); in society (private property, binding force of contracts). Interaction corrective ↔ distributive (cases: <b>insurance fraud</b>, <b>squatting</b> amid a housing crisis).</p>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>Ross "banging on the table" · agents/actions/states of affairs · corrective / distributive (freedom-equality-solidarity) / formal (act not actor) · habeas corpus, in dubio pro reo.</div>
+<p><b>Manifestations of formal justice</b>: against power (<b>habeas corpus, in dubio pro reo</b>); in the system (validity criteria — back to Fuller); in society (private property, binding contracts).</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Ross "banging on the table"; agents/actions/states of affairs.</li>
+<li>Corrective / distributive (freedom-equality-solidarity) / formal (act not actor).</li>
+</ul></div>
 </section>
 
-<!-- 8 -->
-<section id="s8">
-<h2 class="sec"><span class="n">8</span> Theories of Justice (Rawls / Nozick)</h2>
-<p>Three theories answer <i>why</i> justice matters and <i>how</i> the system reflects it.</p>
+<section class="lec" id="lec10">
+<h2>Lecture 10 — Theories of Justice</h2>
 <h3>1) Utilitarianism</h3>
-<ul>
-<li><b>Bentham:</b> pain &amp; pleasure as "sovereign masters"; the <span class="t">principle of utility</span> = maximise happiness/preferences.</li>
-<li><b>Act utilitarianism</b> (judge each <b>action</b> by its consequences) vs <b>Rule utilitarianism</b> (judge the <b>rule</b> everyone should follow — more relevant in law).</li>
-<li><b>Transplant dilemma:</b> sacrifice 1 healthy person to save 5? <i>Act</i>: yes (5&gt;1). <i>Rule</i>: no ("doctors should never kill a healthy patient" → preserves trust in medicine).</li>
-<li><b>Criticisms:</b> devaluation of personhood; distribution problem; majoritarianism (sacrifices minorities).</li>
-</ul>
+<p><b>Bentham</b>: pain &amp; pleasure as "sovereign masters"; the <b>principle of utility</b> = maximise happiness/preferences. <b class="k">Act</b> utilitarianism (judge each action by its consequences) vs <b class="k">Rule</b> utilitarianism (judge the rule everyone should follow). <b>Transplant dilemma</b>: sacrifice 1 healthy person to save 5? Act = yes; Rule = no (preserves trust in medicine). Critiques: <b>devaluation of personhood</b>, distribution, <b>majoritarianism</b>.</p>
 <h3>2) Rawls — Justice as Fairness</h3>
-<ul>
-<li>An alternative to utilitarianism (which fails to protect <b>basic rights</b>).</li>
-<li><span class="t">Veil of ignorance:</span> design society without knowing your position (gender, wealth, race, talents…) → impartial principles = legitimate.</li>
-<li><b>Maximin:</b> choose the scheme that <b>maximises the minimum position</b> (best outcome for the worst-off).</li>
-<li><b>Two principles:</b> (1) <b>equal basic liberties</b> for all; (2) <b>democratic equality of opportunity</b> (reduce the arbitrary advantages of the "natural lottery"; e.g. education).</li>
-</ul>
+<p>An alternative to utilitarianism. <b class="k">Veil of ignorance</b>: design society without knowing your position → impartial = legitimate. <b>Maximin</b>: choose the scheme that maximises the minimum position. <b>Two principles</b>: (1) equal basic liberties for all; (2) democratic equality of opportunity (reduce the arbitrary advantages of the "natural lottery").</p>
 <h3>3) Nozick — Libertarianism</h3>
-<ul>
-<li><b>Minimal state</b>; <b>distributive justice is irrelevant</b>.</li>
-<li><span class="t">Entitlement theory:</span> the current distribution is just if reached through <b>voluntary exchange</b> or gift (<i>"no central distribution"</i>).</li>
-<li><b>Liberty vs Equality:</b> incompatible — maintaining equality requires intervening and violating liberty.</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>act vs rule utilitarianism + transplant dilemma + 3 criticisms · Rawls (veil of ignorance, maximin, 2 principles) · Nozick (minimal state, entitlement, liberty vs equality).</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Rawls = alternative <b>to utilitarianism</b>. Nozick = the opposite of Rawls (rejects patterns of distribution).</div>
+<p><b>Minimal state</b>; distributive justice is irrelevant. <b class="k">Entitlement theory</b>: a distribution is just if reached through voluntary exchange or gift. <b>Liberty vs equality</b> are incompatible — maintaining equality requires violating liberty.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Act vs rule utilitarianism + transplant dilemma + 3 critiques.</li>
+<li>Rawls: veil of ignorance, maximin, two principles.</li>
+<li>Nozick: minimal state, entitlement theory, liberty vs equality.</li>
+</ul></div>
 </section>
 
-<!-- 9 -->
-<section id="s9">
-<h2 class="sec"><span class="n">9</span> Civil Law Tradition I — Roman Law</h2>
-<p>The <b>civil law</b> tradition is the <b>oldest and most widespread</b> (Continental Europe, Latin America, Africa, Asia).</p>
-<h3>Three pillars</h3>
-<ol>
-<li><b>Roman Law</b> (via <b>Justinian's</b> 6th-c. codification).</li>
-<li><b>Germanic customary law</b>.</li>
-<li><b>Canon Law</b> (Church law, partly derived from Roman law).</li>
-</ol>
-<h3>Periods &amp; milestones</h3>
-<p>Archaic → Pre-Classical → Classical (Principate) → Post-Classical (to Justinian).</p>
-<ul>
-<li><b>Mores maiorum</b> (custom); paterfamilias; <span class="t">Twelve Tables (450 BC)</span> = first codification of Roman civil law, public, in force ~1000 years.</li>
-<li><b>Lex Hortensia (287 BC)</b>; <b>ius honorarium</b> (created by the <b>praetors</b>, flexible); <b>Praetor Peregrinus (242 BC)</b> → <b>ius gentium</b>.</li>
-<li><b>Constitutio Antoniniana (AD 212):</b> citizenship to all free inhabitants → the ius civile/ius gentium distinction fades.</li>
-</ul>
-<h3>Ius civile / gentium / honorarium</h3>
-<ul>
-<li><b>Ius civile:</b> law of <b>Roman citizens</b> (principle of <b>personality</b> of law).</li>
-<li><b>Ius gentium:</b> institutions common to <b>all</b> subjects of Rome (broadens the scope).</li>
-<li><b>Ius honorarium:</b> law created by magistrates when applying the law (progressive, flexible).</li>
-</ul>
-<h3>Corpus Juris Civilis (Justinian, 534)</h3>
-<p><b>Codex</b> (imperial legislation) · <b>Digest</b> (the largest part: jurists' extracts) · <b>Institutions</b> (student textbook).</p>
-<p><b>Ius privatum = three branches:</b> <b>law of persons</b> (status: liberty/slavery, citizenship, family) · <b>law of things</b> (property, contract, delict, succession) · <b>law of actions</b> (remedies and procedure). <i>Roman private law grew out of the law of actions.</i></p>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>3 pillars · Twelve Tables 450 BC · ius civile/gentium/honorarium · Corpus Juris Civilis (Codex/Digest/Institutions) · ius privatum (persons/things/actions).</div>
+<section class="lec" id="lec11">
+<h2>Lecture 11 — The Civil Law Tradition: Roman Law</h2>
+<p>The civil law tradition is the world's oldest and most widespread. <b class="k">Three pillars</b>: Roman law, Germanic customary law, Canon law.</p>
+<p><b>Periods</b>: Archaic → Pre-classical → Classical (Principate) → Post-classical. <b>Twelve Tables (450 BC)</b> = first codification, public, lasting ~1000 years. <b>Lex Hortensia (287 BC)</b>; <b>ius honorarium</b> (created by the praetors, flexible); <b>Praetor Peregrinus (242 BC)</b> → <b>ius gentium</b>. <b>Constitutio Antoniniana (AD 212)</b>: citizenship to all free inhabitants.</p>
+<div class="tablewrap"><table>
+<tr><th>Body of law</th><th>Meaning</th></tr>
+<tr><td><b class="k">Ius civile</b></td><td>Law of Roman citizens (principle of personality of law).</td></tr>
+<tr><td><b class="k">Ius gentium</b></td><td>Institutions common to all peoples under Rome.</td></tr>
+<tr><td><b class="k">Ius honorarium</b></td><td>Law created by magistrates when applying the law — progressive, flexible.</td></tr>
+</table></div>
+<p><b class="k">Corpus Juris Civilis</b> (Justinian, 534): <b>Codex</b> (imperial legislation) · <b>Digest</b> (the largest part — excerpts of jurists) · <b>Institutions</b> (student textbook).</p>
+<p><b>Ius privatum</b> = law of <b>persons</b> / <b>things</b> / <b>actions</b>.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>3 pillars; Twelve Tables 450 BC; ius civile/gentium/honorarium.</li>
+<li>Corpus Juris Civilis = Codex/Digest/Institutions.</li>
+</ul></div>
 </section>
 
-<!-- 10 -->
-<section id="s10">
-<h2 class="sec"><span class="n">10</span> Civil Law Tradition II — Ius Commune &amp; Codification</h2>
+<section class="lec" id="lec12">
+<h2>Lecture 12 — Ius Commune &amp; the Codification of Law</h2>
 <ul>
-<li><b>476 AD:</b> fall of the Western Roman Empire → <b>legal fragmentation</b>; Roman law survives in <b>vulgarised</b> form, mixed with Germanic custom.</li>
-<li><b>Revival (11th–12th c.):</b> rediscovery of Justinian's <b>Digest</b>; the <b>Empire vs Papacy</b> struggle (both seeking legal justification); birth of the <b>universities</b> (<b>Bologna</b>, Paris, Salamanca) → professional jurists.</li>
-<li><span class="t">Ius commune</span> = <b>Roman + Canon + Germanic custom</b>, a <b>universalising</b> factor of Continental Europe (uneven reception by region).</li>
-<li><b>Humanists</b> (historical-philological reading) + the <b>School of Natural Law</b> (<b>Grotius, Pufendorf, Thomasius, Wolff</b>) → ideological basis for codification.</li>
+<li><b>476 AD</b>: fall of the Western Roman Empire → legal fragmentation; Roman law survives in vulgarised form, mixed with Germanic custom.</li>
+<li><b>Revival (11th–12th c.)</b>: rediscovery of Justinian's <b>Digest</b>; struggle between Empire and Papacy; rise of the <b>universities</b> (<b>Bologna</b>, Paris, Salamanca) producing professional jurists.</li>
+<li><b class="k">Ius commune</b> = Roman + Canon + Germanic custom — a universalising factor across Continental Europe.</li>
+<li><b>Humanists</b> + the <b>School of Natural Law</b> (Grotius, Pufendorf, Thomasius, Wolff) provide the ideological basis for codification.</li>
 </ul>
-<h3>The codification movement (nationalism + rationalism)</h3>
-<ul>
-<li>Early codes: Denmark (1683), Sweden (1734), Bavaria, Prussia (1794), Austria (1811).</li>
-<li><b>French Civil Code 1804 (Code Napoléon):</b> unifies French law; 3 pillars = <b>private property, freedom of contract, the patriarchal family</b>; rejects feudalism; <b>flexible general rules</b> (room for the judge).</li>
-<li><b>German Civil Code / BGB 1900:</b> <b>5 books</b> (general, obligations, property, family, succession); <b>conceptualism</b> (precise definitions, 19th-c. German legal science); driven by unifying nationalism.</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>476 → revival (Digest/Bologna) · ius commune = Roman+Canon+Germanic · School of Natural Law · French Code 1804 (3 pillars) · BGB 1900 (5 books, conceptualism).</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>The BGB (1900) is more <b>modern</b> than the French Code (1804): it recognises social obligations and gives women more power over property.</div>
+<div class="tablewrap"><table>
+<tr><th>Code</th><th>Features</th></tr>
+<tr><td><b class="k">French Civil Code 1804</b> (Code Napoléon)</td><td>Unifies French law; three pillars = <b>private property, freedom of contract, the patriarchal family</b>; broad, flexible rules leaving room for the judge.</td></tr>
+<tr><td><b class="k">German Civil Code / BGB 1900</b></td><td><b>5 books</b> (general, obligations, property, family, succession); <b>conceptualism</b> (precise definitions); driven by national unification. More modern than the French Code.</td></tr>
+</table></div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>476 → revival (Digest/Bologna) → ius commune = Roman+Canon+Germanic.</li>
+<li>French Code 1804 (3 pillars) vs German BGB 1900 (5 books, conceptualism).</li>
+</ul></div>
 </section>
 
-<!-- 11 -->
-<section id="s11">
-<h2 class="sec"><span class="n">11</span> Civil Law — Defining Features <span class="pill low">Already examined — low priority</span></h2>
-<p>Analysed through <b>5 factors</b>: history, mode of legal thinking, institutions, sources, ideology (these are <b>generalisations</b>).</p>
+<section class="lec" id="lec14">
+<h2>Lecture 14 — The Common Law Tradition: History</h2>
+<blockquote><b>Bentham</b>: the common law is "a thing merely imaginary." <b>Austin</b>: "childish fiction… made by nobody" (attacking the <b>declaratory theory</b> that judges only "declare" pre-existing law).</blockquote>
 <ul>
-<li><b>Deductive reasoning:</b> from <b>general principles</b> to concrete cases; a <b>closed system</b> (answers come from interpreting existing norms); law is <b>"found, not made."</b> <b>French Civil Code Art. 4:</b> a judge who refuses to decide on the pretext of silence/obscurity commits a <b>denial of justice</b>.</li>
-<li><b>Institutions:</b> <b>private / public (administrative) / criminal</b> courts; private law dominates development.</li>
-<li><b>Hierarchy of sources:</b> <b>statutes &gt; regulations &gt; custom</b> (only these three). <b>No formal stare decisis</b>, yet judges follow higher-court precedents in practice → <b>jurisprudence constante</b>.</li>
-<li><b>Transformation:</b> <b>decodification</b> (micro-systems, e.g. labour law); <b>judge-made law</b> (e.g. tort under French codes); <b>rise of constitutionalism</b> (German, Austrian, Italian, Spanish constitutional courts, French Conseil constitutionnel); impact of <b>EU law</b> and the <b>ECHR</b>.</li>
+<li><b>Pre-Norman</b> England: Germanic <b>folk-law</b>. The <b>Norman Conquest (1066)</b> began centralisation.</li>
+<li><b class="k">Henry II (1154–89)</b>: divided England into <b>circuits</b> and sent royal judges → law "common" to the whole country.</li>
+<li><b class="k">Writ system</b>: an action began with a <b>writ</b> from the chancery; each writ became a precedent; from the 14th c. writs issued only if facts matched earlier cases (<b>Register of Writs</b>); no suitable writ → no remedy. The <b>forms of action</b> classified and ossified claims → <b>rigidity → injustice → the rise of equity</b>.</li>
+<li><b>16th-century crisis</b> (pressure to receive Roman law) survived thanks to <b>4 factors</b>: Tudor monarchs reshaped institutions; new courts (Chancery, Star Chamber) covered gaps; <b>Coke</b>'s restatement modernised principles; the <b>Inns of Court</b> kept "the toughness of a taught tradition" (Maitland).</li>
 </ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>deductive / closed system / found-not-made · French CC Art. 4 · sources statutes&gt;regulations&gt;custom · no stare decisis but jurisprudence constante · decodification + constitutionalism + EU law.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Civil law: the judge does <b>not</b> create law (in theory) and is <b>not</b> bound by formal precedent — the reverse of common law.</div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Bentham/Austin (declaratory theory); Henry II + circuits.</li>
+<li>Writ system / forms of action / Register of Writs → rigidity → equity.</li>
+<li>16th-c. crisis + 4 survival factors (Tudor, new courts, Coke, Inns of Court).</li>
+</ul></div>
 </section>
 
-<!-- 12 -->
-<section id="s12">
-<h2 class="sec"><span class="n">12</span> Common Law Tradition I — History</h2>
-<blockquote><b>Bentham:</b> the common law is "a thing merely imaginary." <b>Austin:</b> "childish fiction… common law is made by nobody" (a critique of the <b>declaratory theory</b> — that judges only "declare" pre-existing law).</blockquote>
+<section class="lec" id="lec15">
+<h2>Lecture 15 — The Rise of Equity</h2>
+<p>After the Norman Conquest the <b>common law</b> grew out of the <i>curia regis</i>. <b class="k">Shortcomings</b> that created the need for equity:</p>
 <ul>
-<li><b>3 perspectives:</b> a family of systems derived from English law; a system developed in <b>England from the 12th c.</b>; <b>court-developed / case-based law</b> (≠ statute law).</li>
-<li><b>Global reach:</b> former colonies (Australia, Canada except Quebec, New Zealand); partial (<b>USA</b>, Ireland, India, Pakistan, Malaysia, Singapore, Hong Kong); African hybrids.</li>
-<li><b>Origins:</b> pre-Norman = <b>Germanic folk-law</b>; <b>Norman Conquest (1066)</b> → centralisation; <span class="t">Henry II (1154–89)</span> divides England into <b>circuits</b> and sends judges → law <b>common</b> to the whole country.</li>
-<li><span class="t">Writ system:</span> an action begins with a <b>writ</b> from the chancery; each writ becomes a <b>precedent</b>; from the 14th c. writs issue only if facts match prior cases (<b>Register of Writs</b>); no suitable writ → <b>no remedy</b>. The <b>forms of action</b> classified and ossified actions → <b>rigidity → injustice → hence equity arose</b>.</li>
-<li><b>16th-c. crisis</b> (pressure to receive Roman law) and <b>4 survival factors:</b> (1) the <b>Tudors</b> preferred reshaping institutions; (2) new courts (Chancery, Star Chamber) covered deficiencies; (3) <b>Coke</b> restated/modernised its principles; (4) the <b>Inns of Court</b> preserved <i>"the toughness of a taught tradition"</i> (Maitland).</li>
+<li><b>Limited writs</b> — no suitable writ, no remedy.</li>
+<li><b>Inflexibility</b> — rigidity producing unconscionable results.</li>
+<li><b>Corruption &amp; intimidation</b> — courts influenced by the powerful.</li>
 </ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>Bentham/Austin (declaratory theory) · Henry II circuits · writ system / forms of action / Register of Writs · 16th-c. crisis + 4 factors (Tudors, courts, Coke, Inns of Court).</div>
+<p><b class="k">Equity = fairness/justice</b>. The wronged party would <b>petition the monarch</b> ("the fountain of justice") appealing to <b>conscience</b> → referred to the <b>Lord Chancellor</b> → the <b>Court of Chancery</b> (late 14th c.). <b>Systematisation</b>: Lord <b>Nottingham</b> (1675), Lord <b>Hardwicke</b> (1737), Lord <b>Eldon</b> (1801, precedent).</p>
+<p>Conflict resolved under <b>James I</b> (<i>Earl of Oxford's Case</i>, 1615): <b class="k">equity prevails</b>. <b>Judicature Acts 1873–75</b>: one Supreme Court; any division applies common law and equity; in conflict, equity prevails. <b>Merger debate</b> — Ashburner: "the two streams… run side by side and do not mingle their waters" (not fused). <b>Maxims</b> (e.g. "he who comes to equity must come with <b>clean hands</b>"). Equitable remedies: injunction, specific performance, rescission, rectification, account.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>3 shortcomings → Chancellor/Chancery/conscience.</li>
+<li>Judicature Acts 1873–75 (equity prevails); merger debate (Ashburner); maxims; clean hands.</li>
+</ul></div>
 </section>
 
-<!-- 13 -->
-<section id="s13">
-<h2 class="sec"><span class="n">13</span> The Rise of Equity</h2>
-<p>After the <b>Norman Conquest (1066)</b> the <b>common law</b> developed from the <i>curia regis</i>.</p>
-<h3>Why equity arose — shortcomings</h3>
-<ol>
-<li><b>Limited writs</b> (no suitable writ → no remedy).</li>
-<li><b>Inflexibility</b> (rigidity → unconscionable results).</li>
-<li><b>Corruption and intimidation</b> (courts swayed by the powerful).</li>
-</ol>
-<p>→ <span class="t">Equity = fairness/justice</span>; it fills the gap <i>"whenever the common law might fall short of the ideal."</i> It works <b>alongside</b> the common law.</p>
-<h3>Birth &amp; systematisation</h3>
-<ul>
-<li>The wronged party <b>petitions the monarch</b> ("fountain of justice"), appealing to <b>conscience</b> → the King refers it to the <b>Lord Chancellor</b> → <b>Court of Chancery</b> (late 14th c.).</li>
-<li><b>Systematisation:</b> <b>Lord Nottingham (1675)</b> (principles), <b>Lord Hardwicke (1737)</b> (certainty/flexibility), <b>Lord Eldon (1801)</b> (precedent).</li>
-</ul>
-<h3>Conflict &amp; resolution</h3>
-<ul>
-<li>Equity used the <b>common injunction</b>. Resolved under <b>James I (<i>Earl of Oxford's Case</i>, 1615): equity prevails.</b></li>
-<li><span class="t">Judicature Acts 1873–75:</span> (1) a single <b>Supreme Court</b>; (2) three <b>Divisions</b>; (3) any may apply common law <b>and</b> equity; (4) in conflict, <b>equity shall prevail</b>.</li>
-<li><b>Merger debate:</b> administration was fused; the systems? <b>Ashburner:</b> <i>"the two streams… run side by side and do not mingle their waters"</i> (NOT fused — the dominant view).</li>
-</ul>
-<p><b>Maxims of Equity:</b> <i>He who seeks equity must do equity · Delay defeats equity · Where the equities are equal, the first in time prevails · Equity will not suffer a wrong to be without a remedy · Equity follows the law · Equity will not decree a vain thing · He who comes to equity must come with <b>clean hands</b> · Equity looks to the intent rather than the form.</i> <b>Equitable remedies:</b> injunction, specific performance, rescission, rectification, account.</p>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>3 shortcomings · Chancellor/Chancery/conscience · Judicature Acts (equity prevails) · merger debate (Ashburner) · maxims · clean hands.</div>
-</section>
-
-<!-- 14 -->
-<section id="s14">
-<h2 class="sec"><span class="n">14</span> Common Law — Defining Features <span class="pill low">Already examined — low priority</span></h2>
-<p><b>5 factors:</b> history, modes of thinking, institutions, sources, ideology.</p>
-<ol>
-<li><b>History:</b> minor Roman-law influence; 1066 → feudalism; writ system; rise of equity.</li>
-<li><b>Empirical / case-based thinking:</b> "think in pictures", reason from cases (≠ civil-law <b>deductive</b>). <span class="t">Ratio decidendi</span> (binding) ≠ <b>obiter dicta</b>; found through the <b>material facts</b> (<i>Lupton v FA &amp; AB Ltd</i>). Reasoning by analogy — <b>Donoghue v Stevenson</b> (the specific snail or "defective products"?). Pragmatism over logic.</li>
-<li><b>Institutions:</b> <b>haphazard</b> development; <b>procedure before substance</b>; blurred public/private; organised by <b>liability/remedies</b>.</li>
-<li><b>Open system:</b> evolves via judges; torts, trusts, estoppel; judicial creativity.</li>
-<li><b>Sources &amp; ideology:</b> Law &amp; Equity (debt/damages vs injunctions/specific performance); statutory interpretation and the <b>"myth of case-law dominance"</b> (today heavily statutory; <b>Parliamentary supremacy</b>); ideology: private property, freedom of contract, feudal vestiges (<i>fee simple, estates in land</i>).</li>
-</ol>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>ratio decidendi vs obiter dicta · Donoghue v Stevenson · empiricism / think in pictures · pragmatism · myth of case-law dominance.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span>Don't confuse <b>ratio</b> (binding) with <b>obiter</b> (said in passing).</div>
-</section>
-
-<!-- 15 -->
-<section id="s15">
-<h2 class="sec"><span class="n">15</span> Sovereignty: from Westphalia to Globalization <span class="pill star">★ Most likely</span></h2>
-<h3>Peace of Westphalia (1648)</h3>
-<ul>
-<li>Pre-Westphalia: <b>Ius Commune</b>. The treaties divide Europe into <b>sovereign Nation-States</b> with <b>exclusive</b> power over their territory → law becomes <b>national law</b>.</li>
-<li><span class="t">Westphalian Duo:</span> <b>National State Law</b> + <b>International Public Law</b> (the only two forms law could take).</li>
-</ul>
-<h3>Elements of the State</h3>
-<p><b>Sovereignty · Government · Territory &amp; Population.</b> Civil law → codes (Justinian, Napoleon); common law → <b>Magna Carta (1215)</b>.</p>
+<section class="lec" id="lec19">
+<h2>Lecture 19 — Sovereignty: From Westphalia to Globalization <span class="pill star">★ Most likely</span></h2>
+<p><b class="k">Peace of Westphalia (1648)</b> ended several wars and divided Europe into <b>sovereign Nation-States</b> with exclusive power over their territory → law became <b>national law</b>. <b>Westphalian duo</b>: the only two forms of law = <b>national State law</b> + <b>international public law</b>.</p>
+<p><b>Elements of the State</b>: sovereignty · government · territory &amp; population.</p>
 <h3>Classical theories of sovereignty</h3>
-<div class="tw"><table>
-<tr><th>Author</th><th>Year</th><th>Thesis</th></tr>
-<tr><td><b>Jean Bodin</b></td><td>16th c.</td><td><i>"absolute and perpetual power"</i>; strong monarchy.</td></tr>
-<tr><td><b>Thomas Hobbes</b></td><td>1651</td><td>Absolute sovereignty via the <b>social contract</b> (liberty for security).</td></tr>
-<tr><td><b>John Locke</b></td><td>1689</td><td><b>Limited</b> sovereignty; <b>consent of the people</b>.</td></tr>
-<tr><td><b>Rousseau</b></td><td>1762</td><td><b>Popular sovereignty</b>; the <b>general will</b>.</td></tr>
+<div class="tablewrap"><table>
+<tr><th>Author</th><th>Thesis</th></tr>
+<tr><td><b>Jean Bodin</b> (16th c.)</td><td>Sovereignty = "absolute and perpetual power"; strong monarchy.</td></tr>
+<tr><td><b>Thomas Hobbes</b> (1651)</td><td>Absolute sovereignty via the <b>social contract</b> — liberty traded for security.</td></tr>
+<tr><td><b>John Locke</b> (1689)</td><td><b>Limited</b> sovereignty; government rests on the <b>consent</b> of the people.</td></tr>
+<tr><td><b>J.-J. Rousseau</b> (1762)</td><td><b>Popular sovereignty</b>; the <b>general will</b> guides government.</td></tr>
 </table></div>
-<h3>Types &amp; challenges</h3>
-<ul>
-<li><b>Internal vs External · Legal vs Political · Negative vs Positive.</b></li>
-<li><b>Challenges:</b> globalisation, human rights, supranational institutions (EU, WTO, UN). From natural law to legal positivism (Westphalia → formal systems). Milestones: Magna Carta 1215 → Bill of Rights 1689 → US Constitution 1787 → French Revolution 1789.</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>Westphalia 1648 + Westphalian duo · Bodin/Hobbes/Locke/Rousseau · types of sovereignty · 4 constitutional milestones.</div>
+<p><b>Types</b>: internal/external · legal/political · negative/positive. <b>Challenges</b>: globalization &amp; economic integration; international human rights; supranational institutions (EU, WTO, UN). Shift <b>from natural law to legal positivism</b>. Constitutional milestones: Magna Carta 1215 → Bill of Rights 1689 → US Constitution 1787 → French Revolution 1789.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Westphalia 1648 + Westphalian duo.</li>
+<li>Bodin / Hobbes / Locke / Rousseau (who says what).</li>
+<li>Types of sovereignty + modern challenges.</li>
+</ul></div>
 </section>
 
-<!-- 16 -->
-<section id="s16">
-<h2 class="sec"><span class="n">16</span> Constitutionalism &amp; Sovereignty <span class="pill low">Already examined — low priority</span></h2>
-<p><b>Constitutionalism</b> = legal frameworks should <b>limit government power</b>.</p>
-<blockquote><b>Constitution (Finer):</b> codes regulating the <b>allocation of powers</b> among government organs and their relationship with the public. It divides power between <b>executive / legislative / judiciary</b> — a counterweight to sovereignty.</blockquote>
-<h3>Key characteristics</h3>
-<ol>
-<li><b>Prior to government.</b></li>
-<li><b>Government created subject to it</b> (<b>constituent power</b>; in a democracy, the people's).</li>
-<li><b>Superior to ordinary law</b> (it empowers <b>and</b> limits).</li>
-<li><b>Entrenched</b> (rigid, long-lived).</li>
-</ol>
-<h3>Forms &amp; theory</h3>
+<section class="lec" id="lec22">
+<h2>Lecture 22 — The Nature of International Law <span class="pill star">★ Most likely</span></h2>
+<p><b>Rosalyn Higgins</b>: the law governing relations between States and between States and international organisations — "in a world divided by politics, it is our common language."</p>
+<p><b>Three elements</b>: <b class="k">Public</b> · <b class="k">International</b> · <b class="k">Law</b> — but <b>consent-based</b> (is it "law" in the full sense?).</p>
+<h3>No centralised institutions</h3>
 <ul>
-<li><b>Written/codified</b> (US, Spain) vs <b>Unwritten</b> (UK).</li>
-<li><b>Formal constitutionalism:</b> the constitution = norms with <b>absolute legal supremacy</b> (apex; <b>judicial enforcement</b>, central or diffuse; <b>constitutional review</b>). From this view, neither the UK nor China have "real" constitutions.</li>
-<li><b>Material constitutionalism:</b> only certain constitutions are "real" → links the constitution to <b>(representative) democracy</b> and <b>limited government</b>: <b>Democratic</b> ("government of the people, by the people, for the people") and <b>Liberal</b> (separation of powers + (human) rights, "government of laws, not of men"). Those lacking these = <b>"façade" constitutions</b>.</li>
+<li><b>Legislative</b>: no world parliament → <b>ILC</b>, UN General Assembly resolutions.</li>
+<li><b>Judicial</b>: no unified court → <b>ICJ, ICC</b>, regional courts, arbitration.</li>
+<li><b>Executive</b>: no global police → UN peacekeeping, regional coalitions (NATO, AU).</li>
 </ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>4 characteristics · constituent power · written vs unwritten · formal vs material · democratic vs liberal · façade constitutions.</div>
+<blockquote><b>Louis Henkin</b>: "Almost all nations observe almost all principles of international law and almost all of their obligations almost all of the time."</blockquote>
+<p><b>Basic principles</b>: <b>sovereign equality</b> of States · respect for independence · <b>prohibition on war</b> (<b>UN Charter Art. 2(3)-(4)</b>; exception <b>Art. 51</b> self-defence). Critiques from the Global South (Rajagopal: rooted in Western dominance). What is IL <i>for</i>? instrument of power ↔ tool of emancipation ↔ self-preservation of form ↔ promise of justice.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Higgins definition; Public/International/Law; consent-based.</li>
+<li>No parliament/court/police (ILC, ICJ/ICC, peacekeeping); Henkin quote.</li>
+<li>Sovereign equality · independence · prohibition on war (Art 2 &amp; 51).</li>
+</ul></div>
 </section>
 
-<!-- 17 -->
-<section id="s17">
-<h2 class="sec"><span class="n">17</span> Constitutionalism &amp; Fundamental Rights <span class="pill low">Already examined — low priority</span></h2>
-<p>Protecting rights = a central task of 20th-c. constitutions; a <b>check on internal sovereignty</b>. <i>"Without fundamental rights there is no constitution."</i></p>
-<h3>Origins</h3>
+<section class="lec" id="lec23">
+<h2>Lecture 23 — Sources of International Law <span class="pill star">★ Most likely</span></h2>
+<p><b>Formal sources</b> create binding law; <b>material sources</b> only evidence its content (e.g. custom).</p>
+<h3>Article 38 ICJ Statute (memorise)</h3>
 <ul>
-<li><b>Natural Law (Maritain):</b> human dignity → the person is a <b>subject of rights</b>.</li>
-<li><b>American Declaration of Independence:</b> <i>"endowed by their Creator with certain unalienable Rights: Life, Liberty and the pursuit of Happiness."</i></li>
-<li><b>Positive Law (Bentham):</b> <i>"Natural rights is simple nonsense."</i></li>
+<li><b class="k">International conventions / treaties</b></li>
+<li><b class="k">International custom</b> — "evidence of a general practice accepted as law"</li>
+<li><b class="k">General principles of law</b> (good faith, equity)</li>
+<li><b class="k">Subsidiary means</b> — judicial decisions &amp; the teachings of publicists (doctrine)</li>
 </ul>
-<h3>Concepts</h3>
-<p><b>Formal</b> (in the constitution / specially protected) · <b>Procedural</b> (distrust of the democratic process: not left to simple majorities) · <b>Substantial</b> (an <b>ideal</b> dimension: they positivise <b>human rights</b> as moral rights).</p>
-<h3>Three generations</h3>
-<div class="tw"><table>
-<tr><th>Gen.</th><th>Content</th><th>Type</th></tr>
-<tr><td><b>1st — Civil &amp; Political</b></td><td>Liberal origin (Locke).</td><td><b>Negative rights</b> (State non-intervention).</td></tr>
-<tr><td><b>2nd — Economic, Social &amp; Cultural</b></td><td>Housing, health, education… <i>"Human rights begin with breakfast"</i> (Senghor); welfare state.</td><td><b>Positive rights</b> (State action).</td></tr>
-<tr><td><b>3rd — Collective</b></td><td>Self-determination, environment, resources.</td><td>Collective, controversial.</td></tr>
-</table></div>
-<p><b>2nd-gen controversy:</b> implementation, intrusive judicial enforcement, budgetary impact, separation of powers. <b>Enforcement:</b> <b>Thin</b> (review only of the executive) vs <b>Thick</b> (also parliamentary legislation).</p>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>natural vs positive law (Maritain/Bentham) · formal/procedural/substantial · 3 generations (negative vs positive) · thin vs thick.</div>
+<p><b>Custom = state practice + opinio juris</b>. <b>Persistent objector</b>: a State objecting consistently from the start is not bound. New States are bound by existing rules. Debate on <b>specially affected States</b> (<i>Nuclear Weapons Advisory Opinion</i>).</p>
+<p><b>Treaties</b> (<b>VCLT Art. 2(1)</b>): a written agreement between States; bind only those who consent. A treaty can <b>bind</b> parties, <b>develop</b>, <b>crystallise</b> or <b>codify</b> custom. <b>Subsidiary</b>: no binding precedent (Art. 59 ICJ); <b>soft law</b> (GA resolutions, ILC) — non-binding but shapes custom.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Article 38 (4 sources); custom = practice + opinio juris.</li>
+<li>Persistent objector; the 4 ways a treaty relates to custom.</li>
+</ul></div>
 </section>
 
-<!-- 18 -->
-<section id="s18">
-<h2 class="sec"><span class="n">18</span> International Law — Nature / Sources / Hierarchy <span class="pill star">★ Most likely</span></h2>
-<h3>18.1 Nature</h3>
-<ul>
-<li><b>Higgins:</b> the law governing relations <b>between States</b> and with international organisations; <i>"our common language."</i></li>
-<li><b>Three elements:</b> <b>Public · International · Law</b> (but <b>consent-based</b>).</li>
-<li><b>No centralised institutions:</b> no parliament (→ <b>ILC</b>, <b>UN GA</b>), no unified court system (<b>ICJ, ICC</b>…), no global police (<b>UN peacekeeping</b>). <b>Henkin:</b> <i>"Almost all nations observe almost all principles of international law… almost all of the time."</i></li>
-<li><b>Principles:</b> <b>sovereign equality · respect for independence · prohibition on war</b> (<b>UN Charter Art. 2(3)-(4)</b>; exception <b>Art. 51</b> self-defence).</li>
-<li>Critiques (Global South, <b>Rajagopal</b>); what is it for? (power / emancipation / form / justice).</li>
-</ul>
-<h3>18.2 Sources</h3>
-<ul>
-<li><b>Formal</b> (create law) vs <b>Material</b> (evidence it, e.g. custom).</li>
-<li><span class="t">Article 38 ICJ Statute:</span> (1) <b>conventions/treaties</b>; (2) <b>custom</b>; (3) <b>general principles</b>; (4) <b>subsidiary means</b> (judicial decisions + doctrine).</li>
-<li><b>Custom = state practice + opinio juris.</b> <b>Persistent objector</b> (not bound if it objects from the start); <b>new states</b> are bound.</li>
-<li><b>Treaties (VCLT Art. 2(1)):</b> a written agreement between States; bind only those who <b>consent</b>. A treaty can <b>bind / develop / crystallise / codify</b> custom.</li>
-<li><b>Subsidiary:</b> no binding precedent (<b>Art. 59 ICJ Statute</b>); <b>soft law</b> (GA resolutions, ILC).</li>
-</ul>
-<h3>18.3 Hierarchy</h3>
-<ul>
-<li><b>Relative normativity:</b> no formal hierarchy of sources; <b>content</b> matters.</li>
-<li><span class="t">Jus cogens:</span> <b>peremptory norms</b> (<b>VCLT Arts. 53 &amp; 64</b> → a conflicting treaty is <b>void</b>); accepted by the community <i>"as a whole."</i> List: <b>slavery &amp; apartheid, crimes against humanity, war crimes, genocide, torture</b>. Case-law: <i>Nicaragua (1986) → Furundžija (1998) → Congo v Rwanda (2006) → Belgium v Senegal (2012)</i>.</li>
-<li><b>Erga omnes:</b> obligations owed to the <b>whole community</b>; any State may invoke responsibility. <i>All jus cogens is erga omnes, not vice versa.</i></li>
-<li><b>Conflicts:</b> <b>lex specialis · lex posterior</b>; <b>fragmentation</b>.</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>Article 38 · custom = practice + opinio juris · persistent objector · 4 treaty↔custom routes · jus cogens (VCLT 53/64 + list + cases) · erga omnes · lex specialis/posterior.</div>
+<section class="lec" id="lec24">
+<h2>Lecture 24 — Hierarchy of Norms / Jus Cogens <span class="pill star">★ Most likely</span></h2>
+<p><b>Relative normativity</b>: international law has <b>no formal hierarchy</b> of sources — value lies in the <b>content</b> of rules.</p>
+<p><b class="k">Jus cogens (peremptory norms)</b>: norms from which <b>no derogation</b> is permitted, regardless of consent. <b>VCLT Arts. 53 &amp; 64</b>: a treaty conflicting with jus cogens is <b>void</b>. Accepted by the international community "as a whole".</p>
+<p><b>Examples</b>: slavery &amp; apartheid · crimes against humanity · war crimes · genocide · torture. <b>Case evolution</b>: <i>Nicaragua</i> (1986) → <i>Furundžija</i> (1998) → <i>Congo v Rwanda</i> (2006, genocide) → <i>Belgium v Senegal</i> (2012, torture).</p>
+<p><b class="k">Erga omnes</b>: obligations owed to the whole international community — any State may invoke responsibility. All jus cogens are erga omnes, but not vice versa. <b>Treaty conflicts</b>: <b>lex specialis</b>, <b>lex posterior</b>. <b>Fragmentation</b> of specialised regimes.</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Jus cogens (VCLT 53/64; list; void treaties; the 4 cases).</li>
+<li>Erga omnes; lex specialis / lex posterior; fragmentation.</li>
+</ul></div>
 </section>
 
-<!-- 19 -->
-<section id="s19">
-<h2 class="sec"><span class="n">19</span> The European Union I — Understanding the EU <span class="pill star">★ Most likely</span></h2>
-<p>The EU <span class="t">pools the sovereignty</span> of its States: <b>neither a federation (like the US) nor a mere IO (like the UN)</b>.</p>
+<section class="lec" id="lec25">
+<h2>Lecture 25 — Understanding the European Union <span class="pill star">★ Most likely</span></h2>
+<p>The EU <b class="k">pools the sovereignty</b> of its Member States — <b>neither a federation (like the US) nor a mere international organisation (like the UN)</b>.</p>
 <h3>Legal foundation</h3>
 <ul>
-<li><b>Treaty-based</b> · <b>Rule of law</b> (the <b>ECJ</b> ensures compliance) · <b>Direct effect</b> (creates rights for individuals) · <b>Primacy</b> (EU law prevails over national law).</li>
-<li><b>Constitutional qualities:</b> individual rights, institutional balance, judicial review, <b>conferred powers</b>.</li>
+<li><b>Treaty-based</b> · <b>Rule of law</b> (the ECJ ensures compliance) · <b class="k">Direct effect</b> (creates rights for individuals) · <b class="k">Primacy</b> over national law.</li>
 </ul>
-<h3>History</h3>
-<ul>
-<li><b>1951 ECSC</b> (Coal &amp; Steel) → <b>1957 Treaties of Rome / EEC</b> → enlargements (UK/Ireland/Denmark 1973; Spain &amp; Portugal 1986) → <b>Maastricht 1993 → the EU is born</b> → Amsterdam/Nice → <b>Lisbon 2009</b> (after the Constitutional Treaty was rejected).</li>
-<li><b>3 pillars (1993–2009):</b> (1) <b>EC</b> — supranational, internal market, monetary union; (2) <b>CFSP</b> — intergovernmental; (3) <b>JHA</b> (Justice &amp; Home Affairs) — intergovernmental.</li>
-</ul>
-<h3>Institutions</h3>
-<p><b>European Parliament</b> (elected, co-legislates) · <b>Council of the EU</b> (ministers) · <b>European Commission</b> (proposes &amp; implements) · <b>Court of Justice (CJEU)</b> (uniform interpretation).</p>
+<p><b>History</b>: ECSC 1951 → Treaties of Rome / EEC 1957 → enlargements (UK/Ireland/Denmark 1973; Spain &amp; Portugal 1986) → <b>Maastricht 1993 (EU born)</b> → Amsterdam/Nice → <b>Lisbon 2009</b>. <b>Three pillars (1993–2009)</b>: EC (supranational) · CFSP &amp; JHA (intergovernmental).</p>
+<p><b>Institutions</b>: European Parliament (elected, co-legislates) · Council of the EU (ministers) · European Commission (proposes &amp; executes) · Court of Justice (uniform interpretation).</p>
 <h3>Landmark cases</h3>
 <ul>
-<li><b>Van Gend en Loos (1963):</b> creates the doctrine of <b>direct effect</b> (EU law gives individuals rights national courts must protect).</li>
-<li><b>Costa v ENEL (1964):</b> establishes the <b>primacy</b> of EU law over national law ("an independent source of law").</li>
+<li><b class="k">Van Gend en Loos (1963)</b> → doctrine of <b>direct effect</b>.</li>
+<li><b class="k">Costa v ENEL (1964)</b> → <b>primacy</b> of EU law ("an independent source of law").</li>
 </ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>pools sovereignty (neither federation nor IO) · treaty-based/direct effect/primacy · ECSC 1951 / Rome 1957 / Maastricht 1993 / Lisbon 2009 · 3 pillars · Van Gend en Loos (direct effect) + Costa v ENEL (primacy).</div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Pools sovereignty (not a federation, not an IO); treaty-based/direct effect/primacy.</li>
+<li>ECSC 1951 / Rome 1957 / Maastricht 1993 / Lisbon 2009; 3 pillars; institutions.</li>
+<li>Van Gend en Loos (direct effect) + Costa v ENEL (primacy).</li>
+</ul></div>
 </section>
 
-<!-- 20 -->
-<section id="s20">
-<h2 class="sec"><span class="n">20</span> The European Union II — Scope &amp; Intensity of EU Law <span class="pill star">★ Most likely</span></h2>
-<p>The EU acts only on <b>conferred powers</b> (unlike a sovereign State).</p>
-<h3>Three principles</h3>
-<ol>
-<li><b>Enumeration / Conferral:</b> every action needs a <b>legal basis in the Treaties</b>; what is not conferred stays with the States.</li>
-<li><b>Subsidiarity:</b> "should the EU act even though it can?" — only if the States <b>cannot</b> achieve the objective sufficiently. Check: <b>"yellow cards"</b> from national parliaments.</li>
-<li><b>Proportionality:</b> action must not exceed what is necessary.</li>
-</ol>
-<h3>Competences</h3>
-<div class="tw"><table>
-<tr><th>Type</th><th>Who acts</th></tr>
-<tr><td><b>Exclusive</b></td><td>Only the EU (customs union, competition rules, common commercial policy, marine resources).</td></tr>
-<tr><td><b>Shared</b></td><td>EU and States (in conflict, <b>the EU prevails</b> by supremacy).</td></tr>
-<tr><td><b>Complementary / Supporting</b></td><td>The EU supports/coordinates.</td></tr>
-</table></div>
-<p><b>Teleological interpretation:</b> the ECJ prefers reading by the <b>telos/purpose</b> (over historical or literal) → maximum discretion → an <b>expansive</b> view of competences.</p>
-<h3>Sources — Art. 288 TFEU</h3>
-<div class="tw"><table>
+<section class="lec" id="lec26">
+<h2>Lecture 26 — The Scope &amp; Intensity of EU Law <span class="pill star">★ Most likely</span></h2>
+<p>The EU acts only on <b class="k">conferred powers</b>. Three governing principles:</p>
+<ul>
+<li><b class="k">Enumeration / conferral</b>: every action needs a legal basis in the Treaties; whatever is not conferred stays with the States.</li>
+<li><b class="k">Subsidiarity</b>: should the EU act even though it can? Only if the States cannot achieve the objective sufficiently. Enforcement: national parliaments' "<b>yellow cards</b>".</li>
+<li><b class="k">Proportionality</b>: action must not exceed what is necessary.</li>
+</ul>
+<p><b>Competences</b>: <b>exclusive</b> (only the EU — customs union, competition, common commercial policy, marine resources) · <b>shared</b> (EU prevails in conflict) · <b>complementary</b>. <b>Teleological interpretation</b>: the ECJ reads by <b>purpose (telos)</b> → expansive view of competences.</p>
+<h3>Sources — Article 288 TFEU</h3>
+<div class="tablewrap"><table>
 <tr><th>Instrument</th><th>Effect</th></tr>
-<tr><td><b>Regulations</b></td><td>General application, <b>binding in entirety</b> and <b>directly applicable</b> (no transposition).</td></tr>
-<tr><td><b>Directives</b></td><td><b>Binding as to the result</b>; States choose <b>form and methods</b> (<b>transposition</b> within a deadline).</td></tr>
-<tr><td><b>Decisions</b></td><td>Binding in entirety (only on addressees if specified).</td></tr>
-<tr><td><b>Recommendations / Opinions</b></td><td><b>Not</b> binding.</td></tr>
+<tr><td><b class="k">Regulations</b></td><td>General application, binding in entirety, <b>directly applicable</b> (no transposition).</td></tr>
+<tr><td><b class="k">Directives</b></td><td>Binding as to the <b>result</b>; States choose form &amp; methods (<b>transposition</b> with a deadline).</td></tr>
+<tr><td><b class="k">Decisions</b></td><td>Binding in entirety (only on addressees if specified).</td></tr>
+<tr><td>Recommendations / Opinions</td><td><b>Not</b> binding.</td></tr>
 </table></div>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>conferral + subsidiarity (yellow cards) + proportionality · exclusive/shared/complementary · teleological interpretation · Art. 288: Regulations (directly applicable) vs Directives (transposition) vs Decisions.</div>
-<div class="box trap"><span class="lab">⚠️ Common traps</span><b>Regulation</b> = directly applicable; <b>Directive</b> = must be <b>transposed</b>. Don't swap them!</div>
+<div class="box warn"><span class="t">⚠️ Watch out</span><b>Regulation</b> = directly applicable; <b>Directive</b> = must be <b>transposed</b>. Don't swap them!</div>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Conferral + subsidiarity (yellow cards) + proportionality.</li>
+<li>Exclusive / shared / complementary; teleological interpretation.</li>
+<li>Art. 288: regulations vs directives vs decisions.</li>
+</ul></div>
 </section>
 
-<!-- 21 -->
-<section id="s21">
-<h2 class="sec"><span class="n">21</span> Islamic Law — The Shariah</h2>
-<ul>
-<li><b>Shariah</b> = rules <b>revealed by God</b>; its validity is the <b>will of Allah</b>, not dependent on any earthly legislator.</li>
-<li><b>Key difference:</b> the West changes law to fit society; Islam holds that <b>society must adapt to the law</b>. Jurists do not <b>create</b>, they <b>discover</b>. It regulates <b>all of life</b>.</li>
-<li><span class="t">Four roots</span> (codified by As-Shafi'i, d. 820): <b>Qur'an</b> (supreme, few legal verses) → <b>Sunna</b> (the Prophet's practice; "largely unhistorical", Schacht) → <b>Ijma</b> (consensus; the <b>critical</b> role) → <b>Qiyas</b> (analogy).</li>
-<li><span class="t">Four schools:</span> <b>Maliki</b> (Medina; N/W/Central Africa) · <b>Hanafi</b> (Kufa, Iraq; Near/Middle East, Indus) · <b>Shafi'i</b> (E. Africa, Malaysia, Indonesia) · <b>Hanbali</b> (Saudi Arabia).</li>
-<li><b>Rigidity &amp; hiyal:</b> evasion devices (the <b>double sale</b> to dodge usury/<i>riba</i>); the Shariah was confined to <b>private law</b>.</li>
-<li><b>Modernisation (from 1850):</b> the <b>Majalla</b> (1869–76); <b>Turkey</b> → <b>Swiss Civil Code (1926)</b> (a radical break); <b>Anglo-Muhammadan Law</b> (British India, Common Law principles → case-law).</li>
-<li><b>Reislamification:</b> the <b>Iranian Revolution (Khomeini)</b> reversed secularisation (Iran: Supreme Supervisory Council).</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>divine foundation (society adapts to law) · 4 roots (Qur'an/Sunna/Ijma/Qiyas) · 4 schools · hiyal/double sale · Turkey 1926 · reislamification (Iran).</div>
+<section class="lec" id="islamic">
+<h2>Islamic Law — The Shariah</h2>
+<p>The <b class="k">Shariah</b> is the complex of <b>divinely revealed rules</b> the faithful must observe; its sole ground of validity is that it is the <b>manifested will of Allah</b> — it does not depend on any earthly law-giver.</p>
+<p><b>Key difference from Western law</b>: the West changes law to fit needs; Islam holds that <b>society must adapt itself to the law</b> (revealed once and for all through Muhammad). Jurists do not <b>create</b> law — they <b>discover</b> it. It covers <b>all of life</b>.</p>
+<h3>The four roots / sources (As-Shafi'i, d. 820)</h3>
+<ol>
+<li><b class="k">Qur'an</b> — highest source (but few verses are directly applicable legal rules).</li>
+<li><b class="k">Sunna</b> — inspired practice of the Prophet (largely "unhistorical" — Schacht).</li>
+<li><b class="k">Ijma</b> — consensus of scholars; the <b>critical</b> role.</li>
+<li><b class="k">Qiyas</b> — reasoning by analogy.</li>
+</ol>
+<p><b>Four schools</b>: Maliki (Medina; N/W/Central Africa) · Hanafi (Kufa, Iraq; Near/Middle East, Indus) · Shafi'i (E. Africa, Malaysia, Indonesia) · Hanbali (Saudi Arabia).</p>
+<p><b>Rigidity &amp; hiyal</b> (legal evasion, e.g. the "double sale" to dodge the ban on usury). <b>Modernisation</b> (Majalla 1869–76; <b>Turkey → Swiss Civil Code 1926</b>; Anglo-Muhammadan law in British India). <b>Reislamification</b> after the <b>Iranian Revolution</b> (Khomeini).</p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Divine foundation (society adapts to the law); jurists discover, not create.</li>
+<li>4 roots (Qur'an/Sunna/Ijma/Qiyas) &amp; 4 schools; hiyal; Turkey 1926; reislamification.</li>
+</ul></div>
 </section>
 
-<!-- 22 -->
-<section id="s22">
-<h2 class="sec"><span class="n">22</span> Law in the Far East</h2>
-<ul>
-<li><b>Fundamental difference:</b> the West regulates with <b>objective rules + courts</b>; the Far East prefers <b>conciliation, compromise, arbitration</b> over litigation.</li>
-<li><b>No "Far Eastern legal family":</b> China and Japan are <b>fundamentally different</b> (shared Confucian heritage).</li>
-<li><b>Confucianism &amp; 'li':</b> a universe in <b>harmony</b>; the rules of <b>li</b> are calibrated by status; whoever litigates is seen as a <b>disruptive, uncultivated person</b>; virtue = <b>forbearance</b>.</li>
-<li><b>Legists vs Confucians:</b> Legists (man is selfish; <b>severe penal sanctions</b>; all equal before the law) vs Confucians (man is good; education; respect for status). The <b>TS'IN (221 BC)</b> favoured the Legists (burning books); the <b>HAN (206 BC)</b> restored Confucianism as state ideology for 2,000 years.</li>
-<li><b>Chinese codes:</b> mostly <b>criminal &amp; administrative</b> (penalties graded by status); <b>private law almost absent</b> (resolved outside the courts).</li>
-<li><b>Modern China:</b> unequal treaties (1850) → 1911 republic (Kuomintang: <b>German/Swiss</b> law) → <b>1949 Mao</b> → <b>Cultural Revolution</b> (legal collapse, lawyers persecuted) → <b>Deng</b> (<b>Fundamentals of Private Law, 1987</b>); open future (<b>Lubman</b>: without political reform, law won't have the value the West attributes).</li>
-<li><b>Japan:</b> <b>Tokugawa (1603–1867)</b> feudal/Confucian → <b>Meiji</b>: 1853 US ships → 1889 <b>Prussian</b>-style constitution → <b>1898 Civil Code based on the German BGB</b> → after <b>WWII</b> the 1946 <b>American</b>-influenced constitution. <b>Living law:</b> conciliation persists ("invisible accounts"); debate (<b>Haley/Oda</b>: overburdened courts, not only Confucius).</li>
-</ul>
-<div class="box key"><span class="lab">🔑 Exam essentials</span>conciliation &gt; litigation · no single family · li · Legists vs Confucians (TS'IN/HAN) · China: 1949 / Cultural Revolution / Deng 1987 · Japan: BGB 1898 + American influence post-1945 · "reception ≠ implementation".</div>
+<section class="lec" id="fareast">
+<h2>Law in the Far East</h2>
+<p><b>Fundamental difference</b>: the West regulates important questions through <b>objective rules of law</b> enforced by courts; in the Far East <b class="k">informal dispute resolution</b> (conciliation, compromise, arbitration) is far more important than litigation.</p>
+<p>There is <b>no single "Far Eastern legal family"</b>: China and Japan are fundamentally different, despite a shared <b>Confucian</b> heritage.</p>
+<p><b>Confucianism &amp; <i>li</i></b>: a harmoniously ordered universe; rules of proper behaviour (<b>li</b>) calibrated by status. Whoever drags a fellow citizen to court is seen as disruptive and uncultivated; virtue lies in <b>forbearance</b>. <b>Legists vs Confucians</b>: the TS'IN dynasty (221 BC) favoured the Legists (burning Confucian texts); the HAN dynasty (206 BC) restored Confucianism as state ideology for ~2000 years.</p>
+<p><b>Chinese codes</b>: mainly <b>criminal &amp; administrative</b>; private law almost absent (resolved outside the courts). <b>Modern China</b>: unequal treaties (1850) → 1911 Republic (Kuomintang: German/Swiss law) → 1949 Mao → <b>Cultural Revolution</b> (lawyers persecuted) → Deng (<b>Fundamentals of Private Law, 1987</b>). Lubman: without political reform, law won't have the value the West gives it.</p>
+<p><b>Japan</b>: Tokugawa (1603–1867, feudal/Confucian) → Meiji (1853 US ships; 1889 Prussian-style constitution; <b>1898 Civil Code based on the German BGB</b>) → post-WWII American influence (1946 constitution). <b>Living law</b>: conciliation persists ("invisible accounts"); Haley/Oda argue low litigation reflects overburdened courts, not just Confucianism. <b>Reception ≠ implementation.</b></p>
+<div class="box ess"><span class="t">🔑 Exam essentials</span><ul>
+<li>Conciliation &gt; litigation; no single family (China ≠ Japan).</li>
+<li>Confucianism/li; Legists vs Confucians (TS'IN/HAN).</li>
+<li>China (1949 / Cultural Revolution / Deng 1987); Japan (BGB 1898 + US post-1945); "reception ≠ implementation".</li>
+</ul></div>
 </section>
 
-<!-- 23 -->
-<section id="s23">
-<h2 class="sec"><span class="n">23</span> Glossary &amp; Key Cases</h2>
-<h3>Express glossary</h3>
-<ul>
-<li><b>Rule of law</b> — no one is above the law; general, clear, prospective, impartial rules.</li>
-<li><b>Validity / Efficacy / Justice</b> — belonging to the system (binding) / actual compliance / fit with values.</li>
-<li><b>Efficacy vs Efficiency</b> — is it obeyed? vs did it achieve its goal?</li>
-<li><b>Is/ought gap (Hume)</b> — you cannot derive the "ought" from the "is".</li>
-<li><b>Social thesis / Separability thesis</b> — law = social fact / no <b>necessary</b> law–morality link.</li>
-<li><b>ILP vs ELP</b> — morality can / can never be a validity criterion.</li>
-<li><b>Law as prophecy (Holmes)</b> — law = prediction of what courts will do.</li>
-<li><b>Veil of ignorance (Rawls) / Maximin</b> — design without knowing your position / maximise the minimum.</li>
-<li><b>Entitlement theory (Nozick)</b> — a distribution is just if reached by voluntary exchange.</li>
-<li><b>Twelve Tables</b> — first Roman codification (450 BC). <b>Corpus Juris Civilis</b> — Codex/Digest/Institutions (Justinian, 534).</li>
-<li><b>Ius civile / gentium / honorarium</b> — law of citizens / common to all / created by magistrates.</li>
-<li><b>Ius commune</b> — Roman + Canon + Germanic custom.</li>
-<li><b>Writ / Forms of action</b> — formal order enabling an action / rigid categories of actions.</li>
-<li><b>Ratio decidendi / Obiter dicta</b> — binding reason / non-binding remark.</li>
-<li><b>Stare decisis / Jurisprudence constante</b> — binding precedent (common) / persuasive trend (civil).</li>
-<li><b>Direct effect / Primacy</b> — rights for individuals (Van Gend) / EU supremacy (Costa).</li>
-<li><b>Subsidiarity / Proportionality / Conferral</b> — act only if States cannot / not beyond necessary / only conferred powers.</li>
-<li><b>Regulation vs Directive</b> — directly applicable vs requires transposition.</li>
-<li><b>Jus cogens / Erga omnes</b> — peremptory non-derogable norm / obligation owed to the whole community.</li>
-<li><b>Opinio juris</b> — belief in legal obligation (custom). <b>Persistent objector</b> — State not bound by objecting from the start.</li>
-<li><b>Lex iniusta non est lex</b> — an unjust law is not law (Aquinas). <b>Hiyal</b> — Islamic legal evasion. <b>Li</b> — Confucian rules of conduct.</li>
-</ul>
-<h3>Must-know cases</h3>
-<div class="tw"><table>
-<tr><th>Case</th><th>Topic</th><th>Idea</th></tr>
-<tr><td><b>Bellinger v Bellinger</b></td><td>What is law</td><td>Defining "female" → Parliament, not the court.</td></tr>
-<tr><td><b>R v Dudley and Stephens</b> (1884)</td><td>Natural Law</td><td>Necessity is <b>not</b> a defence to murder.</td></tr>
-<tr><td><b>US v E.C. Knight (Sugar Trust)</b></td><td>Legal Realism</td><td>Critique of formalism (deciding "on labels").</td></tr>
-<tr><td><b>McLean v Arkansas</b></td><td>Legal Realism</td><td>Falsifiability: "creation science" is not science.</td></tr>
-<tr><td><b>Donoghue v Stevenson</b></td><td>Common law</td><td>Level of abstraction of the precedent.</td></tr>
-<tr><td><b>Earl of Oxford's Case</b> (1615)</td><td>Equity</td><td><b>Equity prevails</b> (James I).</td></tr>
-<tr><td><b>Nuclear Weapons Adv. Opinion</b></td><td>Custom</td><td>Weight of "specially affected States".</td></tr>
-<tr><td><b>Belgium v Senegal</b> (2012)</td><td>Jus cogens</td><td>Torture is jus cogens.</td></tr>
-<tr><td><b>Van Gend en Loos</b> (1963)</td><td>EU Law</td><td><b>Direct effect</b>.</td></tr>
-<tr><td><b>Costa v ENEL</b> (1964)</td><td>EU Law</td><td><b>Primacy</b> of EU law.</td></tr>
-</table></div>
-</section>
-
-<p class="foot">Built from the 26 lectures (Alexis Galán, Introduction to Legal Systems). If anything clashes with what was said in class, the class wins. Good luck! 💪</p>
+<div class="foot">Made for Fran · Introduction to Legal Systems · exam Wed 24. Sources: the actual lecture slides. Good luck! ⚖️</div>
 
 </div>
 
-<button id="top" title="Back to top">↑</button>
+<button id="btt" aria-label="Back to top">↑</button>
+
 <script>
 (function(){
   var toc=document.getElementById('toc');
-  toc.addEventListener('click',function(e){ if(e.target.tagName==='A') toc.classList.remove('open'); });
-  var top=document.getElementById('top');
-  window.addEventListener('scroll',function(){
-    if(window.pageYOffset>520) top.classList.add('show'); else top.classList.remove('show');
-  });
-  top.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  var btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){ toc.classList.toggle('open'); });
+  toc.addEventListener('click',function(e){ if(e.target&&e.target.tagName==='A'){ toc.classList.remove('open'); } });
+  var btt=document.getElementById('btt');
+  window.addEventListener('scroll',function(){ btt.style.display = (window.pageYOffset>520?'block':'none'); });
+  btt.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
 })();
 </script>
 </body>
